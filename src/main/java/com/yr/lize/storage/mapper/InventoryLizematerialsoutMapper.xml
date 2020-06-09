@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.storage.mapper.InventoryLizematerialsoutMapper">
+<!-- //丽泽材料类出库 -->
+<!-- 添加主表记录 -->
+
+ 	<insert id="insert" parameterType="Object">
+		insert into inventory_lizeMaterialsout
+		(buy_number, proposer, proposer_id, proposer_department, proposer_date,area,
+		customer_name,contract_id,warehouse,Payment_agreement,accessories_agreement,
+		special_agreement,apply_reason,contract_amount,actual_receipt,outstanding_receipt)
+		values
+		(#{buy_number}, #{proposer}, #{proposer_id}, #{proposer_department}, #{proposer_date}, #{area}
+		, #{customer_name}, #{contract_id}, #{warehouse}, #{Payment_agreement}, #{accessories_agreement}, #{special_agreement}
+		, #{apply_reason}, #{contract_amount}, #{actual_receipt}, #{outstanding_receipt});
+	</insert>
+<!-- 	添加附表信息 -->
+    <insert id="inserttable" parameterType="Object">
+       insert into inventory_lizeMaterialsouttable
+       (number,runproduct_name,runproduct_dates,inventory_id,product_name,
+       specifications_models,unit,fAvaQuantity,lizeMaterials_id,cWhName,cPosCode,cWhCode)
+       values
+       (#{number},#{runproduct_name},#{runproduct_dates},#{inventory_id},#{product_name},
+       #{specifications_models},#{unit},#{fAvaQuantity},#{lizeMaterials_id},#{cWhName},#{cPosCode},#{cWhCode});
+    </insert>
+    
+
+<!-- 查询语句 -->
+<!--     <sql id="main"> -->
+<!--        * -->
+<!--     </sql> -->
+ <!--     查询条件 --> 
+<!-- 	<sql id="Example_Where_Clause"> -->
+<!-- 		where 1=1 -->
+<!-- 			<if test="lizeMaterials_id != null"> -->
+<!-- 				and a.lizeMaterials_id = #{lizeMaterials_id} -->
+<!-- 			</if> -->
+<!-- 			<if test="proposer != null and proposer != ''"> -->
+<!-- 				and a.proposer like ${proposer} -->
+<!-- 			</if> -->
+<!-- 			<if test="proposer_department != null and proposer_department != ''"> -->
+<!-- 				and a.proposer_department like ${proposer_department} -->
+<!-- 			</if> -->
+<!-- 			<if test="warehouse != null and warehouse != ''"> -->
+<!-- 				and a.warehouse like #{warehouse} -->
+<!-- 			</if> -->
+<!-- 	</sql> -->
+ <!-- 查询数量-->
+<!-- 	<select id="selectCount" resultType="java.lang.Integer" parameterType="Object"> -->
+<!-- 		select count(1) from lize.inventory_lizeMaterialsout as a -->
+<!-- 		<include refid="Example_Where_Clause" /> -->
+<!-- 	</select> -->
+
+ 	<!-- 查询主表信息列表 -->
+<!-- 	<select id="selectInventory_lizeMaterialsout"  parameterType="Object"> -->
+<!-- 		select  -->
+<!-- 		<include refid="Base_Column_List" /> -->
+<!-- 		from lize.inventory_lizeMaterialsout as a -->
+<!-- 		<include refid="Example_Where_Clause" /> -->
+<!-- 			<if test="pageOn"> -->
+<!-- 			limit ${rowStart},${pageLimit} -->
+<!-- 		   </if> -->
+<!-- 	</select>  -->
+
+</mapper>

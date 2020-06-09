@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+/* 打印内容区域 */
+i{
+	font-style:normal;
+}
+.layui-textarea{
+	border: 0 !important;
+}
+.content{
+	padding:10px;
+	margin:10px;
+	font-family:NSimSun !important;
+}
+/* 控制编号 */
+.content>.sign{
+	text-align:left;
+}
+.content>.sign>i{
+	font-size:14px;
+	font-weight:bolder;
+}
+/* 表名 */
+.content>.title{
+	padding:5px;
+	text-align:center;
+}
+.content>.title>h2{
+	font-size:24px;
+	font-weight:bolder;
+}
+/* 二级表名 */
+.subtitle{text-align:left;}
+.subtitle>h2{
+	font-size:20px;
+	font-weight:bolder;
+}
+/* 三级表名 */
+.threetitle{text-align:left;}
+.threetitle>h2{
+	font-size:16px;
+	font-weight:bolder;
+}
+/* 四级表名 */
+.fourtitle{text-align:left;}
+.fourtitle>h2{
+	font-size:14px;
+	font-weight:bolder;
+}
+/* 表格内容 */
+.content table{
+	border-collapse:collapse;
+	width:100%;
+}
+.content table>thead{}
+.content table>tbody{}
+.content table tr{}
+.content table th,td{
+	padding:5px;
+	text-align:center;
+	font-size:14px;
+}
+.content table th{}
+.content table td{}
+td.checkbox{
+	vertical-align:middle;
+}
+td.checkbox>i{
+	vertical-align:middle;
+}
+td.checkbox>input[type='checkbox']{
+	vertical-align:middle;
+	margin-left:15px;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    -webkit-appearance:none;
+    border: 1px solid #333;
+    outline: none;
+    position:relative;
+}
+/* 选中的复选框 */
+td.checkbox>input[type='checkbox']:checked:before{
+	position:absolute;top:0;left:0;
+	content:'\2713';
+	font-size:14px;
+	width: 14px;
+    height: 14px;
+    line-height:14px;
+    text-align:center;
+}
+td.checkbox>div.layui-form-checkbox{margin:5px 5px 5px 15px;}
+td.checkbox>div.layui-form-checkbox>i{
+	vertical-align:middle;
+}
+/* 底部日期 */
+.content>.notes{
+	padding:5px;
+	text-align:right;
+}
+.content>.notes>i{
+	font-size:14px;
+}
+/* 顶部日期 */
+.content>.notes0{
+	padding:5px;
+	width:100%;
+	box-sizing:border-box;
+	text-align:left;
+}
+.content>.notes0>i{
+	font-size:14px;
+}
+/*.content>.notes0>i:last-child{
+	float:right;
+}*/
+/* 打印按钮 */
+.bottom{
+	text-align:right;
+	padding:10px 20px;
+}

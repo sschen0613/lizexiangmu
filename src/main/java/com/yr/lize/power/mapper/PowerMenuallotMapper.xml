@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.power.mapper.PowerMenuallotMapper">
+ 	<!-- //删除已拥有菜单 -->
+ 	<delete id="deleteMenuallot">
+ 		delete from power_menuallot where administrate_id = #{param1}
+ 	</delete>
+ 	<!-- //添加未拥有菜单 -->
+ 	<insert id="addMenuallot" parameterType="com.yr.lize.pojo.PowerMenuallot">
+ 		INSERT INTO power_menuallot (menu_id, position_id) values (#{menu_Id}, #{position_Id})
+ 	</insert>
+ 	<!-- 批量添加未拥有菜单 -->
+ 	<insert id="addMenuallots">
+ 		INSERT INTO power_menuallot
+ 		(menu_id, position_id)
+ 		VALUES
+ 		<foreach item="item" index="index" collection="param1" separator=",">
+ 		(#{item}, #{param2})
+ 		</foreach>
+ 	</insert>
+ 	<!-- //批量删除未拥有菜单 -->
+ 	<delete id="deleteMenuallots">
+ 		DELETE FROM power_menuallot WHERE administrate_id in(
+	        <foreach item="item" index="index" collection="ids" separator=",">
+	            #{item}
+	        </foreach>
+        )
+ 	</delete>
+</mapper>

@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+/* 顶部菜单栏 */
+ul.topNav_revise{
+	margin-right:20px;
+}
+li.layui-nav-item>a{
+	padding:0 40px !important;
+}
+li.layui-nav-item>a>i.navicon{
+	color:rgba(255,255,255,.9);
+	font-size:22px;
+	font-weight:bolder;
+	padding:0 7px;
+}
+.staffName_revise{
+	left:-1px !important;
+}
+.staffName_revise:before,.message_revise:before{
+	content:'';
+	width:0;height:0;
+	position:absolute;left:50%;top:-9px;transform:translateX(-50%);z-index:100;
+	border:10px solid white;
+	border-top:none;
+	border-left-color: transparent;
+    border-right-color: transparent;
+}
+.staffName_revise:after,.message_revise:after{
+	content:'';
+	width:0;height:0;
+	position:absolute;left:50%;top:-10px;transform:translateX(-50%);z-index:10;
+	border:10px solid #d2d2d2;
+	border-top:none;
+	border-left-color: transparent;
+    border-right-color: transparent;
+}
+.message_revise{
+	left:-20px !important;
+}
+.message_revise a{
+	padding-right:45px !important;
+}
+/* 	消息徽章 */
+.layui-badge{
+	height:15px;line-height:15px;
+	margin: -8px 3px 0 !important;
+	padding: 0 3px !important;
+}
+
+/*  样式修改 */
+.logo_revise{
+	padding:0 20px;
+	font-size:20px !important;
+	font-weight:bold;
+	font-family:'宋体';
+	color:#000 !important;
+	text-shadow: 2px 2px 1px white;
+}
+/*顶部 */
+.header_revise{
+/* 	background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%); */
+	background-image: linear-gradient(-45deg, #93a5cf 0%, #e4efe9 100%);
+/* 	background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%) !important; */
+/* 	background-color:white !important; */
+	border-bottom:1px solid #999;
+	box-shadow:0 0 5px 1px #999;
+}
+ul.topNav_revise>li>a{
+	color:#393D49 !important;
+}
+ul.topNav_revise>li>a:hover{
+	color:black !important;
+}
+ul.topNav_revise>li>a:hover>i.navicon{
+	color:white !important;
+}
+/* 		顶部小三角 */
+ul.topNav_revise>li>a>span.layui-nav-more{}
+/*左侧菜单菜单栏 */
+.side_revise{
+	box-shadow:0 0 5px 1px #ccc;
+}
+.side_revise>div{}
+/* 	一级菜单 */
+ul.menu_revise{
+	background-color:white !important;
+}
+ul.menu_revise>li{}
+ul.menu_revise>li:hover{
+/* 	background-color:#dfe9f3 !important; */
+	background:linear-gradient(to right,#ffffff,#dfe9f3) !important;
+}
+ul.menu_revise>li:hover>a{
+/* 	background-color:#dfe9f3 !important; */
+	background:linear-gradient(to right,#ffffff,#dfe9f3) !important;
+}
+/* 		字体颜色样式。。。 */
+ul.menu_revise>li>a>span{
+	color:#6b7b73 !important;
+	font-size:bolder;
+}
+ul.menu_revise>li>a>span.layui-icon{
+	padding-right:10px;
+}
+/* 		图标字体颜色样式。。。 */
+/* 		小三角 */
+ul.menu_revise>li.layui-nav-itemed>a>span.layui-nav-more{
+	border-color:transparent !important;
+	border-bottom-color:#9ba5a0 !important;
+}
+ul.menu_revise>li>a>span.layui-nav-more{
+	border-top-color:#9ba5a0 !important;
+}
+/* 	二级菜单 */
+ul.menu_revise>li>dl.layui-nav-child{
+	background-color:white !important;
+}
+/* ul.menu_revise>li>dl.layui-nav-child>dd>a{text-align:center;} */
+ul.menu_revise>li>dl.layui-nav-child>dd>a>span.menuname{
+	color:#9ba5a0 !important;
+	padding-left:30px;
+}
+/* 		选中的项 */
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this{
+	background:linear-gradient(to right,#ffffff,#dfe9f3) !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a{
+	background:linear-gradient(to right,#ffffff,#dfe9f3) !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a>span.menuname{
+	color:#009688 !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a:hover{
+	background:linear-gradient(to right,#ffffff,#dfe9f3) !important;
+}
+/* 	主体内容区域 */
+.body_revise{
+	
+}
+/* 底部 */
+.footer_revise{
+	color:#333;
+}

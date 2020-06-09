@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+/* table{ */
+/* 	border-collapse:collapse !important; */
+/* 	border-spacing:0 !important; */
+/* 	border:1px solid #ccc !important;  */
+/* } */
+
+th,td{  
+	text-align:center !important; 
+} 
+
+/* in index.jsp */
+.layui-table-view {}
+
+.layui-table-tool-temp{
+	font-size:20px !important;
+	font-weight:bold;
+	/* text-align:center; */
+}
+
+div.print{
+}
+.print>a{
+}
+
+.title{
+}

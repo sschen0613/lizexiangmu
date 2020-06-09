@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.U8SystemDataMapper">
+
+
+	<update id="updateSystemRdRecord09Id" parameterType="java.lang.Integer">
+		update UA_Identity SET iFatherId = #{id} WHERE cAcc_Id='201' And  cVouchType='rd'
+	</update>
+    <select id="querySystemRdRecord09Id" resultType="java.lang.Integer">
+        select iFatherId+1 from UA_Identity where cAcc_Id='201' And  cVouchType='rd'
+    </select>
+
+
+	<!-- //修改流水号 -->
+	<update id="updateSystemRdRecord09ChildId">
+		UPDATE UA_Identity SET iChildId = #{id}
+		WHERE
+		cAcc_Id='201' And  cVouchType='rd'
+	</update>
+
+    <select id="querySystemRdRecord09ChildId" resultType="java.lang.Integer">
+        select iChildId+1 from UA_Identity where cAcc_Id='201' And  cVouchType='rd'
+    </select>
+
+</mapper>

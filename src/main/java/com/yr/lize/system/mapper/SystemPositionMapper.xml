@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemPositionMapper">
+ 	<select id="getPosition" resultType="com.yr.lize.pojo.SystemPosition">
+ 		select * from System_position
+ 	</select>
+ 	<!-- //查询所有职位信息 -->
+ 	<select id="seletePosition" resultType="HashMap">
+ 		SELECT 
+		<if test="param1.pagerows != null">TOP ${param1.pagerows}</if> 
+		* FROM system_position
+		<where>
+			delete_id = 1
+			<if test="param2.position_Name != null">AND position_name LIKE '%${param2.position_Name}%'</if>
+			<if test="param1.start != null">AND system_position.position_id NOT IN (SELECT top ${param1.start} position_id 
+			FROM System_position 
+				<where>
+					<if test="param2.position_Name != null">AND position_name LIKE '%${param2.position_Name}%'</if>
+				</where>
+			ORDER BY position_id)ORDER BY System_position.position_id</if>
+		</where>
+ 	</select>
+ 	<!-- //查询所有职位信息数量 -->
+ 	<select id="getRows" resultType="Integer">
+ 		 SELECT 
+		count(*) FROM system_position
+		<where>
+			delete_id=1
+			<if test="position_Name != null">AND position_name LIKE '%${position_Name}%'</if>
+		</where>
+ 	</select>
+ 	<!-- //查询职位名是存在 -->
+ 	<select id="selectPositionName" resultType="com.yr.lize.pojo.SystemPosition">
+ 		SELECT * FROM system_position WHERE position_name =#{param1}
+ 	</select>
+ 	<!-- 修改职位名称 -->
+ 	<update id="updatePosition" parameterType="com.yr.lize.pojo.SystemPosition">
+ 		UPDATE system_position 
+ 		SET 
+ 		<if test="position_Name != ''">position_name =#{position_Name},</if>
+ 		<if test="position_Power != null">position_power =#{position_Power},</if>
+ 		<if test="position_storage != null">position_storage =#{position_storage},</if>
+ 		<if test="position_details != null">position_details =#{position_details}</if>
+ 		WHERE position_id =#{position_Id}
+ 	</update>
+ 	<!-- 添加职位 -->
+ 	<insert id="addPosition" parameterType="com.yr.lize.pojo.SystemPosition">
+ 		INSERT INTO system_position (position_name,position_power,position_details,position_storage) 
+ 		values (#{position_Name},#{position_Power},#{position_details},#{position_storage})
+ 	</insert>
+ 	<!-- //修改职位删除标识 -->
+ 	<update id="deletePosition2">
+ 		UPDATE system_position SET delete_id = 2 WHERE position_id =#{param1}
+ 	</update>
+ 	<!-- //根据id查询职位信息 -->
+ 	<select id="selectPositionById" resultType="com.yr.lize.pojo.SystemPosition">
+ 		SELECT * FROM system_position WHERE position_id =#{param1}
+ 	</select>
+</mapper>

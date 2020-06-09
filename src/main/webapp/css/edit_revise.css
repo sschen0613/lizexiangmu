@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+
+	.form_revise{
+		padding-top:10px;
+	}
+    .layui-input-block{
+    	margin-right:110px !important;
+    } 
+    
+/*     。button_position_revise{
+    	text-align:center;
+    } */
+    
+    .layui-upload-file{
+    	border:1px solid black;
+    }
+    
+/* 系统管理 角色管理 添加编辑弹出框     */
+.position_form_revise label{
+	width:140px !important;
+}
+.position_form_revise div.layui-input-block{
+	margin-left:170px !important;
+}

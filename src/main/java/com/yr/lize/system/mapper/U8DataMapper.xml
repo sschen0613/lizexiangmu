@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.U8DataMapper">
+	<!-- 获取U8中区域信息 -->
+	<select id="getRegion" resultType="HashMap">
+		SELECT * FROM DistrictClass
+	</select>
+	<!-- //根据区域查询客户 -->
+	<select id="selectUser" resultType="HashMap">
+		SELECT * FROM Customer WHERE
+		cDCCode = #{param}
+	</select>
+	<!--查询所有客户信息-->
+	<select id="selectAllUser" resultType="HashMap">
+		SELECT * FROM Customer
+	</select>
+	<!-- //查询U8当前的客户销售合同 -->
+	<select id="selectContract" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_B
+		<where>
+			GETDATE() &lt;= convert(DATETIME,strContractEndDate,120)
+			and
+			CM_Contract_B.strBisectionUnit = #{param1}
+			and iStatus = 1
+			<if test="param2 != '' and param2 != null">
+				AND strContractType = #{param2}
+			</if>
+		</where>
+	</select>
+
+	<!-- //查询U8当前的客户销售合同 -->
+	<select id="selectContractForTask" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_B
+		where DATEDIFF(d,GETDATE(),strContractEndDate) BETWEEN 0 AND 30
+		AND strContractType = #{param} and iStatus = 1
+	</select>
+
+
+	<!-- //查询U8当前的客户销售合同 -->
+	<select id="selectContractById" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_B
+		where strContractID = #{strContractID} and iStatus = 1
+	</select>
+	<!-- //根据合同编号获取合同金额 收付金额 合同付款约定 合同特殊约定 -->
+	<select id="selectContractAll" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_Caluse_B WHERE strContractID = #{param}
+	</select>
+	<!-- //根据合同编号获取运营设备信息 -->
+	<select id="selectshebei" resultType="HashMap">
+		SELECT
+		Inventory.iTaxRate 税率
+		,Inventory.cInvCode 商品编号, Inventory.cInvName 商品名称,
+		CM_Contract_Item_B.dtEndDate 结束时间 , CM_Contract_Item_B.dtStartDate
+		开始时间
+		,Inventory.cInvStd 规格, ComputationUnit.cComUnitName 数量单位
+		,CurrentStock.iQuantity 可用量
+		,CM_Contract_Item_B.dblQuantity 合同数量
+		,CM_Contract_Item_B.dblUntaxPrice 无税单价
+		,CM_Contract_Item_B.dblPrice 含税原币单价
+		,CM_Contract_B.strContractOrderDate 合同签订日期
+		,rdrecords01.iOriTaxCost 单价
+		FROM Inventory
+		LEFT JOIN CM_Contract_Item_B ON CM_Contract_Item_B.strCorrItemID = Inventory.cInvCode OR CM_Contract_Item_B.strInvoiceID = Inventory.cInvCode
+		LEFT JOIN CM_Contract_B ON CM_Contract_B.strContractID = CM_Contract_Item_B.strContractID
+		LEFT JOIN ComputationUnit ON ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		LEFT JOIN CurrentStock ON CurrentStock.cInvCode = CM_Contract_Item_B.strInvoiceID
+		LEFT JOIN rdrecords01 ON rdrecords01.cInvCode = Inventory.cInvCode
+		AND rdrecords01.AutoID =(SELECT MAX(AutoID) FROM rdrecords01 WHERE rdrecords01.cInvCode = Inventory.cInvCode)
+		<where>
+			<if test="param1 !='' and param1 != null">
+				CM_Contract_B.strContractID = #{param1}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectshebei1" resultType="HashMap">
+		SELECT
+		Inventory.iTaxRate 税率
+		,Inventory.cInvCode 商品编号, Inventory.cInvName 商品名称,Inventory.cInvCCode 大类编码
+		,Inventory.cInvStd 规格, ComputationUnit.cComUnitName 数量单位
+		,CurrentStock.iQuantity 可用量
+		,rdrecords01.iOriTaxCost 单价
+		FROM Inventory
+		LEFT JOIN ComputationUnit ON ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		LEFT JOIN CurrentStock ON Inventory.cInvCode = CurrentStock.cInvCode
+		LEFT JOIN rdrecords01 ON rdrecords01.cInvCode = Inventory.cInvCode
+		AND rdrecords01.AutoID =(SELECT MAX(AutoID) FROM rdrecords01 WHERE rdrecords01.cInvCode = Inventory.cInvCode)
+		<where>
+			<if test="param1 !='' and param1 != null">
+				CM_Contract_B.strContractID = #{param1}
+			</if>
+			<if test="param2 != null and param2 != ''">
+				AND Inventory.cInvCCode LIKE '${param2}%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 反写合同 ：对U8生成简易合同主表信息，strContractType：合同类型：01：销售类合同；02：应收类合同（运营类）；03：技术服务类合同-->
+	<insert id="insertCMContractB" parameterType="com.yr.lize.pojo.CurrencyApply">
+		INSERT INTO CM_Contract_B
+		(GUID,strContractID,strContractGrp,strContractType,strContractKind,strContractName,strBisectionUnit,strContractOrderDate,strContractStartDate,
+		strContractEndDate,strCurrency,cBusType,strSetupDate,strSetupPerson,strWay,strDeptID,strSource,dblTotalCurrency,strPersonID )
+		VALUES
+		(newid(),#{currency_string6} ,#{currency_string3},
+		#{currency_string3},#{currency_string4},#{currency_string14},#{currency_string11}, #{currency_string15} ,
+		#{currency_string16}, #{currency_string17},'人民币','普通销售',CONVERT(varchar(10), GETDATE(), 120),#{currency_string7},'收',#{currency_string18},'C',#{currency_money},#{currency_name})
+	</insert>
+
+	<insert id="insertCMContractB36" parameterType="com.yr.lize.pojo.CurrencyApply">
+		INSERT INTO CM_Contract_B
+		(GUID,strContractID,strContractGrp,strContractType,strContractKind,strContractName,strBisectionUnit,strContractOrderDate,strContractStartDate,
+		strContractEndDate,strCurrency,cBusType,strSetupDate,strSetupPerson,strWay,strDeptID ,strSource,dblTotalCurrency,strPersonID)
+		VALUES
+		(newid(),#{currency_string6} ,#{currency_string3},
+		#{currency_string3},#{currency_string4},#{currency_string14},#{currency_string11}, #{currency_string15} ,
+		#{currency_string16}, #{currency_string17},'人民币','技术服务',CONVERT(varchar(10), GETDATE(), 120),#{currency_string7},'收',#{currency_string18},'C',#{currency_money},#{currency_name})
+	</insert>
+	<!--信泽技术服务合同-->
+	<insert id="insertCMContractB47" parameterType="com.yr.lize.pojo.CurrencyApply">
+		INSERT INTO CM_Contract_B
+		(GUID,strContractID,strContractGrp,strContractType,strContractKind,strContractName,strBisectionUnit,strContractOrderDate,strContractStartDate,
+		strContractEndDate,strCurrency,cBusType,strSetupDate,strSetupPerson,strWay,strDeptID ,strSource,dblTotalCurrency,cDefine14,strPersonID)
+		VALUES
+		(newid(),#{currency_string6} ,#{currency_string3},
+		#{currency_string3},#{currency_string4},#{currency_string14},#{currency_string11}, #{currency_string15} ,
+		#{currency_string16}, #{currency_string17},'人民币','技术服务',CONVERT(varchar(10), GETDATE(), 120),#{currency_string7},'收',#{currency_string18},'C',#{currency_money},#{currency_string10},#{currency_name})
+	</insert>
+
+	<!-- 反写合同 ：对U8生成简易合同主表信息，strContractType：合同类型：01：销售类合同；02：应收类合同（运营类）；03：技术服务类合同-->
+	<insert id="insertCMContractBAs35" parameterType="com.yr.lize.pojo.CurrencyApply">
+		INSERT INTO CM_Contract_B
+		(GUID,strContractID,strContractGrp,strContractType,strContractKind,strContractName,strBisectionUnit,strContractOrderDate,strContractStartDate,
+		strContractEndDate,strCurrency,strSetupDate,strSetupPerson,strWay,strDeptID,dblTotalCurrency,strSource,cDefine16,strPersonID)
+		VALUES
+		(newid(),#{currency_string6} ,#{currency_string3},
+		#{currency_string3},#{currency_string4},#{currency_string5}+'运营合同',#{currency_string11}, #{currency_string15} ,
+		#{currency_string16}, #{currency_string17},'人民币',CONVERT(varchar(10), GETDATE(), 120),#{currency_string7},'收',#{currency_string18},#{currency_money6},'C',#{currency_money5},#{currency_name})
+	</insert>
+
+	<!-- 反写合同 ：对U8生成简易合同子表信息-->
+	<insert id="insertCMContractItemB" parameterType="HashMap">
+		INSERT INTO CM_Contract_Item_B
+		(GUID,intFlag,strCode,strName,dblQuantity,strMeasureUnit,
+		RowGUID,strContractID,iQuoids,iAppIds,cInvDefine11,cInvDefine12,cInvDefine13,cInvDefine14,intEnd,
+		cbsysbarcode,strXMDL,strCorrSource,dblSum,dblUntaxPrice,dblUntaxPriceRMB,dblPrice,dblPriceRMB,dblUntaxSum,
+		dblUntaxSumRMB,dblSumRMB,dtStartDate,dtEndDate,strInvoiceID)
+		VALUES
+		((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{GUID}),'0',#{strCode},#{strName},#{dblQuantity},#{strMeasureUnit},
+		newid(),#{strContractID},'0','0','0','0','0','0','1',
+		#{cbsysbarcode},#{strXMDL},'存货',#{currency_int7},#{currency_int7},#{currency_int7},#{currency_int7},#{currency_int7},#{currency_int7},
+		#{currency_int7},#{currency_int7},#{dtStartDate},#{dtEndDate},#{strCode})
+	</insert>
+
+	<insert id="insertCMContractItemB35" parameterType="HashMap">
+		INSERT INTO CM_Contract_Item_B
+		(GUID,intFlag,strCode,strName,dblQuantity,strMeasureUnit,RowGUID,strContractID,
+		iQuoids,iAppIds,cInvDefine11,cInvDefine12,cInvDefine13,cInvDefine14,intEnd,
+		cbsysbarcode,strXMDL,strCorrSource,dblSum,dblUntaxPrice,dblUntaxPriceRMB,dblPrice,dblPriceRMB,dblUntaxSum,
+		dblUntaxSumRMB,dblSumRMB,dtStartDate,dtEndDate,strCorrItemID,cItem_Class,cItemCCode,cItemName)
+		VALUES
+		((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{GUID}),'0',#{strCode},#{strName},#{dblQuantity},#{strMeasureUnit},
+		newid(),#{strContractID},'0','0','0','0','0','0','1',
+		#{cbsysbarcode},#{strXMDL},'项目',#{currency_int7},#{currency_int7},#{currency_int7},
+		#{currency_int7},#{currency_int7},#{currency_int7},#{currency_int7},#{currency_int7},#{dtStartDate},#{dtEndDate},#{strCorrItemID},#{cItem_Class},#{cItemCCode},#{strName})
+	</insert>
+
+    <insert id="insertCMContractCaluseB" parameterType="com.yr.lize.pojo.CurrencyApply">
+        INSERT INTO CM_Contract_Caluse_B
+        (GUID,strName,strMemo,strContractID,RowGUID,strCaluseClass,cDefine26)
+        VALUES
+        ((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{currency_string6}),#{currency_string8},#{currency_string9},#{currency_string6},newid(),'',#{currency_money5})
+    </insert>
+
+	<insert id="insertOtherCMContractCaluseB" parameterType="HashMap">
+		INSERT INTO CM_Contract_Caluse_B
+		(GUID,strName,strMemo,strContractID,RowGUID,strCaluseClass,cDefine26)
+		VALUES
+		((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{strContractID}),#{strName},#{strMemo},#{strContractID},newid(),'',#{currency_money5})
+	</insert>
+
+    <insert id="insertCMList" parameterType="com.yr.lize.pojo.CurrencyApply">
+        INSERT INTO CM_List
+        (GUID,strContractID,strContractName,strState,dtDate)
+        VALUES
+        ((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{currency_string6}),#{currency_string6},#{currency_string14},'A',CONVERT(varchar(100), GETDATE(), 120))
+    </insert>
+
+   <insert id="insertCMContractMain" parameterType="com.yr.lize.pojo.CurrencyApply">
+        INSERT INTO CM_Contract_Main
+        (strContractID,strRel,strSource,
+        strSpare1,strSpare2,strSpare3,dblPreAPARCurrency,
+        dblPreAPARCurrencyRMB,intDetail,intMustDetail,intKL)
+        VALUES
+        (#{currency_string6},'0:','1','1','日常合同默认模板组','1',0,0,0,0,0)
+    </insert>
+	<insert id="insertCMContractMain36" parameterType="com.yr.lize.pojo.CurrencyApply">
+		INSERT INTO CM_Contract_Main
+		(strContractID,strRel,strSource,
+		strSpare1,strSpare2,strSpare3,dblPreAPARCurrency,
+		dblPreAPARCurrencyRMB,intDetail,intMustDetail,intKL)
+		VALUES
+		(#{currency_string6},'0:','0','1','日常合同默认模板组','1',0,0,0,0,0)
+	</insert>
+	<!--反写合同：合同大事记添加配件特殊约定，检测比对约定，特殊约定-->
+	<insert id="insertCMContractMemo" parameterType="HashMap">
+		INSERT INTO CM_Contract_Memo
+		(GUID,strMemorabiliaID,strMemorabilia,strContractID)
+		VALUES
+		(newid(),#{strMemorabiliaID},#{strMemorabilia},#{strContractID})
+	</insert>
+
+	<!--反写合同：合同大事记添加收款计划-->
+	<insert id="insertCMContractPay" parameterType="HashMap">
+		INSERT INTO CM_Contract_Pay
+		(GUID,dtPayDate,dblPayRatio,dblPayCurrency,strSettleStyleID,strPayFactor,strExp,lngRowID,strContractID,iItemPercent,dblPayCurrencyBenBi,
+		cDefine26,cDefine27,cDefine34,cDefine35)
+		VALUES
+		((SELECT GUID FROM CM_Contract_B WHERE strContractID = #{GUID}),#{dtPayDate},#{dblPayRatio},#{dblPayCurrency},
+		#{strSettleStyleID},#{strPayFactor},#{strExp},0,#{GUID},0,#{dblPayCurrency},0,0,0,0)
+	</insert>
+
+	<insert id="insertfitemss04" parameterType="HashMap">
+		INSERT INTO  fitemss04
+		(citemcode,citemname,bclose,citemccode)
+		VALUES
+		(#{strCorrItemID},#{program},0,#{cItemCCode})
+	</insert>
+
+	<update id="updateCMContract" parameterType="com.yr.lize.pojo.CurrencyApply">
+		update CM_Contract_B SET dblTotalQuantity = #{currency_int3} WHERE strContractID = #{currency_string6}
+	</update>
+
+
+	<update id="updateCMContractMoney" parameterType="java.util.HashMap">
+		update CM_Contract_B SET cDefine3 = #{money} WHERE strContractID = #{strContractID}
+	</update>
+
+	<!-- 丽泽销售出库：对U8生成发货单-->
+	<insert id="insertDispatchList" parameterType="HashMap">
+		INSERT INTO DispatchList
+		(DLID,cDLCode,cVouchType,cSTCode,cDepCode,cPersonCode,SBVID,cSOCode,cShipAddress,cexch_name,cVerifier,cMaker,iSale,cCusName,iVTid,cBusType,cSysBarCode,
+		dDate,cDefine8,cCusCode,bneedbill,bsaleoutcreatebill,iflowid)
+		VALUES
+		(#{currency_string10},#{currency_string13},'05','1','06',#{currency_name},'0',#{currency_string6},#{currency_string11},'人民币',#{currency_string9},#{currency_string9},'0',
+		#{currency_string11},'71','普通销售',#{currency_string8},CONVERT(varchar(100), GETDATE(), 120),#{currency_string9},#{currency_string4},'1',1,1)
+	</insert>
+
+	<!-- 丽泽销售出库：对U8生成发货单子表-->
+	<insert id="insertDispatchLists" parameterType="HashMap">
+		INSERT INTO DispatchLists
+		(DLID,cWhCode,cInvCode,iQuantity,iSOsID,iDLsID,
+		KL,KL2,cInvName,cSoCode,cordercode,cbSysBarCode,bsaleprice,iQuotedPrice,iUnitPrice,iTaxUnitPrice,iMoney,iTax,iSum,cContractID  )
+		VALUES
+		(#{DLID},'01',#{cInvCode},#{fQuantity},#{iSOsID},#{iDLsID},
+		100,100,#{cInvName},#{cSoCode},#{cSoCode},#{cbSysBarCode},1,#{fTaxPrice},#{fUnitPrice},#{fTaxPrice},#{fMoney},#{iTax},#{iSum},#{cContractID})
+	</insert>
+
+	<!-- //实时获取商品名称 存货名称 存货编码 规格型号 仓库编码 计量单位名称 -->
+	<select id="selectInvName" resultType="HashMap">
+		SELECT
+		Inventory.iTaxRate 税率,Inventory.cInvName 存货名称,Inventory.cInvCode
+		存货编码,CurrentStock.iQuantity AS 可用量,
+		CurrentStock.fStopQuantity 冻结数量
+		,Inventory.cInvStd 规格,ComputationUnit.cComUnitName 单位名称
+		,Inventory.iInvLSCost 最低售价
+		FROM
+		CurrentStock
+		FULL JOIN Inventory ON Inventory.cInvCode =
+		CurrentStock.cInvCode
+		LEFT JOIN ComputationUnit ON
+		ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		WHERE
+		Inventory.cInvName LIKE '%${param1}%'
+		<if test="param2 != null and param2 != ''">
+			AND Inventory.cInvCCode NOT LIKE '${param2}%'
+		</if>
+	</select>
+
+	<select id="selectInvName1" resultType="HashMap">
+		SELECT
+		Inventory.iTaxRate 税率,Inventory.cInvName 存货名称,Inventory.cInvCode
+		存货编码,CurrentStock.iQuantity AS 可用量,
+		CurrentStock.fStopQuantity 冻结数量
+		,Inventory.cInvStd 规格,ComputationUnit.cComUnitName 单位名称,
+		Position.cPosName 货位编码
+		FROM
+		CurrentStock
+		FULL JOIN Inventory ON Inventory.cInvCode =
+		CurrentStock.cInvCode
+		LEFT JOIN ComputationUnit ON
+		ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		LEFT JOIN InvPosition ON
+		Inventory.cInvCode = InvPosition.cInvcode
+		LEFT JOIN Position ON
+		InvPosition.cPosCode = Position.cPosCode
+		WHERE
+		Inventory.cInvName LIKE '%${param1}%'
+	</select>
+
+	<!-- //由存货名称带出存货名称 存货编码 规格型号 仓库编码 计量单位名称 -->
+	<select id="selectTarget" resultType="HashMap">
+		SELECT
+		Inventory.iTaxRate,
+		Inventory.cInvName,
+		Inventory.cInvCode,
+		Inventory.cInvStd,
+		CurrentStock.cWhCode,
+		Warehouse.cWhName,
+		ComputationUnit.cComUnitName
+		FROM
+		Inventory
+		LEFT JOIN Warehouse ON Warehouse.cWhCode = CurrentStock.cWhCode
+		LEFT JOIN ComputationUnit ON ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		LEFT JOIN CurrentStock ON CurrentStock.cInvCode = Inventory.cInvCode
+		WHERE
+		Inventory.cInvName = #{param}
+	</select>
+	<!-- //根据存货编码查找最近日期的该物品单价 -->
+	<select id="selectCost" resultType="HashMap">
+		SELECT
+		rdrecords01.iOriTaxCost
+		FROM
+		rdrecords01
+		WHERE
+		dSDate = (
+		SELECT
+		MAX (rdrecords01.dSDate)
+		FROM
+		rdrecords01
+		WHERE
+		rdrecords01.cInvCode = #{param}
+		)
+		AND
+		rdrecords01.cInvCode = #{param}
+	</select>
+
+	<!-- 根据存货编码获取u8设置参考成本 -->
+	<select id="selectInvSPrice" resultType="HashMap">
+		SELECT
+		iInvSPrice,iInvLSCost
+		FROM
+		Inventory
+		WHERE
+		cInvCode = #{param}
+	</select>
+
+	<!-- //根据仓库编码和存货编码获取仓库名称 仓库编码 可用量 货位编码 -->
+	<select id="selectWH" resultType="HashMap">
+		SELECT
+		CurrentStock.cInvCode,
+		CurrentStock.iQuantity,
+		Warehouse.cWhName,
+		Warehouse.cWhCode
+		FROM
+		CurrentStock
+		LEFT JOIN Warehouse ON Warehouse.cWhCode = (select
+		CurrentStock.)
+		WHERE
+		AND CurrentStock.cInvCode = #{param}
+
+	</select>
+	<!-- //根据货位编码和存货编码带出 货位名称 货位编码 货位商品数量 -->
+	<select id="selectPosition" resultType="HashMap">
+		SELECT
+		InvPositionSum.iQuantity,货位档案.cPosName,货位档案.cPosCode
+		FROM
+		InvPositionSum
+		LEFT JOIN Position AS 货位档案 ON 货位档案.cPosCode =
+		InvPositionSum.cPosCode
+		WHERE
+		InvPositionSum.cWhCode= #{param2.cWhCode}
+		AND InvPositionSum.cInvCode =#{param1.cInvCode}
+	</select>
+
+	<!-- //获取U8当前的客户合同中收款总金额 -->
+	<select id="selectReceivables" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_Pay WHERE strContractID = #{param}
+	</select>
+	<!-- //获取其他出库单最大单号 -->
+	<select id="selectNumber" resultType="Integer">
+		SELECT MAX(cCode)+1 FROM
+		RdRecord09
+	</select>
+	<!-- //获取其他出库单最大单号 -->
+	<select id="selectStrContractID9" resultType="String">
+		SELECT MAX(strContractID)+1000000001 FROM
+		CM_Contract_B
+	</select>
+	<!-- //修改库存冻结量 -->
+	<update id="updateCurrentStockfStopQuantity">
+		UPDATE CurrentStock SET
+		<if test="param4 == 1">
+			fStopQuantity = fStopQuantity+#{param3}
+		</if>
+		<if test="param4 != 1">
+			fStopQuantity = fStopQuantity-#{param3}
+		</if>
+		WHERE
+		CurrentStock.cWhCode = #{param1}
+		AND cInvCode = #{param2}
+	</update>
+	<!-- //修改流水号 -->
+	<update id="updateSerialNumber">
+		UPDATE VoucherHistory SET cNumber = cNumber+1
+		WHERE
+		AutoId = #{param1} AND CardNumber =#{param2}
+	</update>
+
+	<!-- 添加其他出库单 -->
+	<insert id="addOtheR"
+		parameterType="com.yr.lize.pojo.CurrencyApply" useGeneratedKeys="true"
+		keyProperty="currency_string6">
+		INSERT INTO RdRecord09
+		(ID, bRdFlag, cVouchType, cBusType,cRdCode,cDepCode,
+		cSource, cWhCode, dDate, cCode,
+		cCusCode, cMemo, cMaker, VT_ID,
+		cModifyPerson ,csysbarcode
+		,cPersonCode)
+		VALUES
+		(#{currency_int5} ,0,'09' ,'其他出库' ,'21','06',
+		'库存' ,'01' ,GETDATE() ,#{currency_string6}
+		,#{currency_string4},#{currency_string7} ,#{currency_string11} ,85
+		,'N','||st09|'+#{currency_string6},
+		#{currency_string5})
+
+	</insert>
+
+	<!-- 添加其他出库单详情 -->
+	<insert id="addOtheroutlets" parameterType="HashMap">
+		INSERT INTO
+		rdrecords09
+		(AutoID ,ID ,cInvCode ,iQuantity ,cPosition
+		,cItemCode
+		,cName,cItemCName,cItem_class
+		,iExpiratDateCalcu ,isotype ,irowno
+		,cbsysbarcode,strContractId)
+		VALUES
+		(#{AutoID} ,#{ID}, #{cInvCode},
+		#{iQuantity},
+		#{cPosition}, #{cItemCode}, #{cName}, '存货核算', 'ch'
+		, 0,
+		0, 1,
+		#{cbsysbarcode},#{strContractId})
+	</insert>
+
+	<!-- 增加其他出库单子表关联表 -->
+	<insert id="addOtheroutletRelation" parameterType="HashMap">
+		insert into
+		rdrecords09sub
+		(AutoID,ID,iBG_Ctrl,iBGSTSum)
+		values
+		(#{AutoID},#{ID},0,0.0000)
+	</insert>
+
+	<!-- 添加采购请购单 -->
+	<insert id="addBuy"
+		parameterType="com.yr.lize.pojo.CurrencyApply" useGeneratedKeys="true"
+		keyProperty="currency_string6">
+		INSERT INTO PU_AppVouch
+		(ID, cCode , dDate ,
+		cDepCode,cPersonCode,iVTid,
+		cPTCode , cBusType ,
+		cMaker
+		,csysbarcode,IsWfControlled,iverifystateex,ireturncount,cVerifier,cDefine2,cDefine10)
+		VALUES
+		(#{currency_int5},#{currency_string6} ,GETDATE()
+		,#{currency_string11},#{currency_name},8171,
+		1 ,'普通采购' ,
+		'sc'
+		,'||st09|'+#{currency_string6},0,2,0,#{currency_string12},#{currency_string3},#{currency_string7})
+	</insert>
+
+	<!-- 添加采购请购单详情 -->
+	<insert id="addBuys" parameterType="HashMap">
+		INSERT INTO PU_AppVouchs
+		(AutoID ,ID ,cInvCode ,fQuantity
+		,fUnitPrice,dRequirDate,dArriveDate
+		,cbsysbarcode,bTaxCost,iExchRate,iPerTaxRate,fTaxPrice,fMoney,iordertype,SoType)
+		VALUES
+		(#{AutoID} ,#{ID}, #{cInvCode},
+		#{fQuantity},#{fUnitPrice},#{dRequirDate},#{dArriveDate},
+		#{cbsysbarcode},0,1.0000000000,#{iPerTaxRate},#{fTaxPrice},#{fMoney},0,0)
+	</insert>
+
+	 <!--添加材料出库单主表-->
+	 <insert id="addMaterialOut" parameterType="com.yr.lize.pojo.CurrencyApply"
+	 useGeneratedKeys="true" keyProperty="currency_string6">
+	 INSERT INTO rdrecord11
+	 (ID,bRdFlag,cVouchType,cBusType,cRdCode,cDepCode
+	 ,cSource,cWhCode,dDate,cCode
+	 ,cCusCode, cMemo, cMaker, VT_ID
+	 ,cModifyPerson ,csysbarcode
+	 ,cPersonCode
+	 )
+	 VALUES
+	 (#{currency_int5},0,'11','领料','29','06'
+	 ,'库存','01',GETDATE(),#{currency_string6}
+	 ,#{currency_string4},#{currency_string7} ,#{currency_string11} ,65
+	 ,'N','||st11|'+#{currency_string6}
+	 ,#{currency_string5}
+	 )
+	 </insert>
+
+	 <!--添加材料出库单子表详情-->
+	 <insert id="addMaterialOuts" parameterType="HashMap">
+	 INSERT INTO
+	 rdrecords11 (
+	 ID,
+	 cInvCode,iQuantity,iFlag,iMaterialFee,bLPUseFree,iOriTrackID,
+	 bCosting,bVMIUsed,iordertype,isotype,ipesotype,irowno,iposflag,bsupersede,bcanreplace,cbsysbarcode,AutoID
+	 )
+	 VALUES
+	 (
+	 #{ID},#{cInvCode},#{iQuantity},0,0,0,
+	 1,0,0,0,0,0,1,0,0,0,#{cbsysbarcode},#{AutoID}
+	 )
+	 </insert>
+
+	<!-- 查询其他出库单最大主键返回主键值 -->
+	<select id="selectOtheRID" resultType="Integer">
+		SELECT MAX(ID)+1 FROM
+		RdRecord09
+	</select>
+	<!-- 查询最大主键返回主键值 -->
+	<select id="selectOtherIDs" resultType="Integer">
+		SELECT MAX(AutoID)+1 FROM
+		rdrecords09sub
+	</select>
+	<!-- 查询最大ID返回主键值 -->
+	<select id="selectOtherMaxIDs" resultType="Integer">
+		SELECT MAX(ID)+1 FROM
+		rdrecords09sub
+	</select>
+
+	<!-- 查询其他出库单最大主键返回主键值 -->
+	<select id="selectMaterialOutID" resultType="Integer">
+		SELECT MAX(ID)+1 FROM
+		rdrecord11
+	</select>
+	<!-- 查询最大主键返回主键值 -->
+	<select id="selectMaterialOutIDs" resultType="Integer">
+		SELECT MAX(AutoID)+1 FROM
+		rdrecords11
+	</select>
+	<!-- 查询最大ID返回主键值 -->
+	<select id="selectMaterialOutMaxIDs" resultType="Integer">
+		SELECT MAX(ID)+1 FROM
+		rdrecords11
+	</select>
+	<!-- //查询流水号 -->
+	<select id="selectSerialNumber" resultType="Integer">
+		SELECT cNumber FROM
+		VoucherHistory
+		WHERE AutoId = #{param1} AND CardNumber =#{param2}
+	</select>
+	<!-- 查询采购请购单最大主键返回主键值 -->
+	<select id="selectSaleBuy" resultType="Integer">
+		SELECT MAX(ID)+1 FROM
+		PU_AppVouch
+	</select>
+	<!-- 查询采购请购单副表最大主键返回主键值 -->
+	<select id="selectSaleBuys" resultType="Integer">
+		SELECT MAX(AutoID) FROM
+		PU_AppVouchs
+	</select>
+	<!--查询最大DLID-->
+	<select id="selectDispatchListDLID" resultType="String">
+		SELECT MAX(DLID)+1 FROM
+		DispatchList
+	</select>
+
+	<!--查询最大iDLsID-->
+	<select id="selectDispatchListiDLsID" resultType="String">
+		SELECT MAX(iDLsID)+1 FROM
+		DispatchLists
+	</select>
+
+	<!-- //查询所有仓库 -->
+	<select id="selectCangKu" resultType="HashMap">
+		SELECT
+		Warehouse.cWhCode,
+		Warehouse.cWhName
+		FROM
+		Warehouse
+		WHERE
+		cWhCode = cWhCode
+	</select>
+	<!-- //根据存货名称和仓库编码带出存货名称 存货编码 规格型号 单位名称 最近商品单价 可用量 -->
+	<select id="selectTarget2" resultType="HashMap">
+		SELECT
+		Inventory.cInvName
+		存货名称,Inventory.iTaxRate 税率,Inventory.cInvCode 存货编码 , CurrentStock.iQuantity AS
+		可用量,CurrentStock.fStopQuantity 冻结数量
+		,Inventory.cInvStd
+		规格,ComputationUnit.cComUnitName 单位名称 ,Warehouse.cWhName
+		仓库名称,Warehouse.cWhCode 仓库编码
+		/*,InvPositionSum.iQuantity AS
+		货架货物数量,InvPositionSum.cPosCode 货位编码,货位档案.cPosName 货位名称*/
+		,rdrecords01.iOriTaxCost 单价 ,rdrecords01.AutoID 采购字表id
+		FROM
+		Inventory
+		LEFT
+		JOIN CurrentStock ON Inventory.cInvCode = CurrentStock.cInvCode
+		LEFT
+		JOIN ComputationUnit ON ComputationUnit.cComunitCode =
+		Inventory.cComUnitCode
+		LEFT JOIN Warehouse ON CurrentStock.cWhCode =
+		Warehouse.cWhCode
+		/*LEFT JOIN InvPositionSum ON InvPositionSum.cWhCode =
+		Warehouse.cWhCode
+		AND InvPositionSum.cInvCode = Inventory.cInvCode
+		LEFT
+		JOIN Position AS 货位档案 ON 货位档案.cPosCode = InvPositionSum.cPosCode*/
+		LEFT
+		JOIN rdrecords01 ON rdrecords01.cInvCode = Inventory.cInvCode
+		AND
+		rdrecords01.AutoID =(SELECT MAX(AutoID) FROM rdrecords01 WHERE
+		rdrecords01.cInvCode = Inventory.cInvCode)
+		WHERE #{param2} = CurrentStock.cWhCode and Inventory.cInvName LIKE '%${param1}%'
+
+	</select>
+
+	<!-- //根据存货名称和仓库编码带出存货名称 存货编码 规格型号 单位名称 最近商品单价 可用量 -->
+	<select id="selectTarget3" resultType="HashMap">
+		SELECT
+		Inventory.cInvName
+		存货名称,Inventory.iTaxRate 税率,Inventory.cInvCode 存货编码 , CurrentStock.iQuantity AS
+		可用量,CurrentStock.fStopQuantity 冻结数量
+		,Inventory.cInvStd
+		规格,ComputationUnit.cComUnitName 单位名称 ,Warehouse.cWhName
+		仓库名称,Warehouse.cWhCode 仓库编码
+		,InvPositionSum.iQuantity AS
+		货架货物数量,InvPositionSum.cPosCode 货位编码,货位档案.cPosName 货位名称
+		,rdrecords01.iOriTaxCost 单价 ,rdrecords01.AutoID 采购字表id
+		FROM
+		Inventory
+		LEFT
+		JOIN CurrentStock ON Inventory.cInvCode = CurrentStock.cInvCode
+		LEFT
+		JOIN ComputationUnit ON ComputationUnit.cComunitCode =
+		Inventory.cComUnitCode
+		LEFT JOIN Warehouse ON CurrentStock.cWhCode =
+		Warehouse.cWhCode
+		LEFT JOIN InvPositionSum ON InvPositionSum.cWhCode =
+		Warehouse.cWhCode
+		AND InvPositionSum.cInvCode = Inventory.cInvCode
+		LEFT
+		JOIN Position AS 货位档案 ON 货位档案.cPosCode = InvPositionSum.cPosCode
+		LEFT
+		JOIN rdrecords01 ON rdrecords01.cInvCode = Inventory.cInvCode
+		AND
+		rdrecords01.AutoID =(SELECT MAX(AutoID) FROM rdrecords01 WHERE
+		rdrecords01.cInvCode = Inventory.cInvCode)
+		WHERE #{param2} = CurrentStock.cWhCode and
+		Inventory.cInvName LIKE
+		'%${param1}%'
+		AND Inventory.cInvCCode NOT LIKE '99%' AND Inventory.cInvCCode NOT LIKE '01%'
+
+	</select>
+
+	<select id="selectAllContract" parameterType="string" resultType="HashMap">
+		SELECT * FROM CM_Contract_B LEFT JOIN Customer ON CM_Contract_B.strBisectionUnit = Customer.cCusCode
+		WHERE CM_Contract_B.strContractID LIKE '%${cName}%' OR CM_Contract_B.strContractName LIKE '%${cName}%'
+	</select>
+
+	<select id="selectInventory" resultType="string">
+		SELECT cInvCCode from Inventory WHERE cInvCode=#{param1}
+	</select>
+
+    <select id="selectInventoryByCcode" parameterType="string" resultType="HashMap">
+        SELECT * FROM Inventory WHERE cInvCCode LIKE '${type}%'
+    </select>
+
+	<select id="selectInvTypeByCode" parameterType="string" resultType="HashMap">
+		SELECT * FROM InventoryClass WHERE cInvCCode LIKE '${type}%'
+	</select>
+
+	<select id="selectCDepCode" resultType="HashMap">
+		SELECT cDepCode,cDepName FROM Department
+	</select>
+
+	<select id="findReceiveAmountByCContractId" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+		select SUM(iAmount) from Ap_CloseBill where cContractID = #{cContractID}
+	</select>
+
+	<select id="findReceiveAmountByCContractId1" parameterType="java.lang.String" resultType="HashMap">
+		select iAmount from Ap_CloseBill where cContractID = #{cContractID}
+	</select>
+
+	<select id="selectContractByContractId" parameterType="java.lang.String" resultType="java.lang.Float">
+		SELECT dblTotalCurrency FROM
+		CM_Contract_B
+		<where>
+			strContractID = #{strContractID}
+		</where>
+	</select>
+
+	<select id="selectAllContractByContractId" parameterType="string" resultType="HashMap">
+		SELECT * from CM_Contract_B
+		<where>
+			strContractID = #{contractNumber}
+		</where>
+	</select>
+
+	<!--<insert id="addOtheR"-->
+			<!--parameterType="com.yr.lize.pojo.CurrencyApply" useGeneratedKeys="true"-->
+			<!--keyProperty="currency_string6">-->
+		<!--INSERT INTO rdrecord11-->
+		<!--(ID, bRdFlag, cVouchType, cBusType,cRdCode,cDepCode,-->
+		<!--cSource, cWhCode, dDate, cCode,-->
+		<!--cCusCode, cMemo, cMaker, VT_ID,-->
+		<!--cModifyPerson ,csysbarcode-->
+		<!--,cPersonCode)-->
+		<!--VALUES-->
+		<!--(#{currency_int5} ,0-->
+		<!--,'09' ,'其他出库' ,'29','06','库存' ,'01' ,GETDATE() ,#{currency_string6}-->
+		<!--,#{currency_string4}-->
+		<!--,#{currency_string7} ,'sc' ,85 ,'N'-->
+		<!--,'||st09|'+#{currency_string6},#{currency_string5})-->
+
+	<!--</insert>-->
+
+	<!--&lt;!&ndash; 添加其他出库单详情 &ndash;&gt;-->
+	<!--<insert id="addOtheroutlets" parameterType="HashMap">-->
+		<!--INSERT INTO-->
+		<!--rdrecords11-->
+		<!--(AutoID ,ID ,cInvCode ,iQuantity ,cPosition-->
+		<!--,cItemCode-->
+		<!--,cName,cItemCName,cItem_class-->
+		<!--,iExpiratDateCalcu ,isotype ,irowno-->
+		<!--,cbsysbarcode)-->
+		<!--VALUES-->
+		<!--(#{AutoID} ,#{ID}, #{cInvCode},-->
+		<!--#{iQuantity},-->
+		<!--#{cPosition}, #{cItemCode}, #{cName}, '存货核算', 'ch'-->
+		<!--, 0,-->
+		<!--0, 1,-->
+		<!--#{cbsysbarcode})-->
+	<!--</insert>-->
+	<select id="selectXZContract" resultType="HashMap">
+		SELECT * from CM_Contract_B WHERE cDefine14 IS NOT NULL
+	</select>
+
+	<select id="selectCusInv" resultType="HashMap">
+		SELECT
+		Inventory.cInvName 存货名称,Inventory.cInvCode
+		存货编码,Inventory.cInvStd 规格,ComputationUnit.cComUnitName 单位名称
+		FROM
+		CurrentStock
+		FULL JOIN Inventory ON Inventory.cInvCode =
+		CurrentStock.cInvCode
+		LEFT JOIN ComputationUnit ON
+		ComputationUnit.cComunitCode = Inventory.cComUnitCode
+		WHERE Inventory.cInvCCode LIKE '99%'
+	</select>
+
+	<select id="selectDisQuantity" resultType="java.math.BigDecimal">
+		SELECT SUM(iQuantity) FROM DispatchLists
+		WHERE cContractID = #{param1} AND cInvCode = #{param2}
+	</select>
+
+	<select id="selectCitemcode" resultType="String">
+		SELECT MAX(citemcode)+1 FROM fitemss04
+	</select>
+
+	<select id="selectContractItem" resultType="HashMap">
+		SELECT  strName,dblSum FROM CM_Contract_Item_B
+		WHERE
+		strContractID = #{strContractID}
+	</select>
+
+	<select id="selectContractStatement" resultType="HashMap">
+		SELECT
+		<if test="param1.pagerows != null">TOP ${param1.pagerows}</if>
+		CCB.GUID,CCB.strContractID,CCB.strContractType,CCB.strContractName,CCB.strBisectionUnit,CCB.strContractOrderDate
+		,CCB.strContractStartDate,CCB.strContractEndDate,CCB.strPersonID,CCB.dblTotalCurrency
+		,P.cPersonName
+		,C.cCusName,C.cDCCode
+		,D.cDCName
+		,CCB.cDefine11
+		,CCB.cDefine14
+		,CCB.cDefine12
+		,CCB.cDefine13
+		,B.strCode,B.strName,B.strCorrItemID,B.dblQuantity,B.dblPrice,B.dblSum
+		FROM CM_Contract_B CCB
+		LEFT JOIN Customer C ON CCB.strBisectionUnit = C.cCusCode
+		LEFT JOIN Person P ON CCB.strPersonID = P.cPersonCode
+		LEFT JOIN DistrictClass D ON C.cDCCode = D.cDCCode
+		LEFT JOIN CM_Contract_Item_B B ON CCB.strContractID = B.strContractID
+		where CCB.iStatus = 1
+			<if test="param2.currency_string10 != null and param2.currency_string10!=''">
+				AND D.cDCCode = #{param2.currency_string10}
+			</if>
+			<if test="param2.currency_string11 != null and param2.currency_string11!=''">
+				AND p.cPersonName LIKE '%${param2.currency_string11}%'
+			</if>
+			<if test="(param2.currency_string8 != '' and param2.currency_string8 != null) or
+								(param2.currency_string9 != '' and param2.currency_string9 != null)">
+				 AND CCB.strContractID in (
+					select cContractID from Ap_CloseBill where 1=1
+					<if test="param2.currency_string8 != '' and param2.currency_string8 != null">
+						and CONVERT(varchar,dVouchDate,120) >= #{param2.currency_string8}
+					</if>
+					<if test="param2.currency_string9 != '' and param2.currency_string9 != null">
+						and CONVERT(varchar,dVouchDate,120) &lt;= #{param2.currency_string9}
+					</if>
+				)
+			</if>
+			<if test="param2.currency_string != null and param2.currency_string!=''">
+				AND CCB.strContractID LIKE '%${param2.currency_string}%'
+			</if>
+			<if test="param2.currency_string2 != null and param2.currency_string2!=''">
+				AND CCB.strBisectionUnit = #{param2.currency_string2}
+			</if>
+			<if test="param2.currency_string3 != null and param2.currency_string3!=''">
+				AND CCB.strContractOrderDate >= #{param2.currency_string3}
+			</if>
+			<if test="param2.currency_string7 != null and param2.currency_string7!=''">
+				AND CCB.strContractOrderDate &lt;= #{param2.currency_string7}
+			</if>
+
+			<choose>
+				<when test='param2.currency_string4 != null and param2.currency_string4!="" and
+				 								param2.currency_string5 != null and param2.currency_string5!=""'>
+					AND (#{param2.currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+					or  #{param2.currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate)
+				</when>
+
+				<when test='param2.currency_string4 != null and param2.currency_string4!=""'>
+					AND #{param2.currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+				</when>
+
+				<when test='param2.currency_string5 != null and param2.currency_string5!=""'>
+					AND #{param2.currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate
+				</when>
+			</choose>
+
+
+			<if test="param2.currency_string6 != null and param2.currency_string6!=''">
+				AND CCB.strContractType = #{param2.currency_string6}
+			</if>
+
+			<if test="param1.start != null">
+				AND CCB.strContractID NOT IN
+				(SELECT TOP ${param1.start} CCB.strContractID FROM CM_Contract_B CCB
+				LEFT JOIN Customer C ON CCB.strBisectionUnit = C.cCusCode
+				LEFT JOIN Person P ON CCB.strPersonID = P.cPersonCode
+				LEFT JOIN DistrictClass D ON C.cDCCode = D.cDCCode
+				LEFT JOIN CM_Contract_Item_B B ON CCB.strContractID = B.strContractID
+				where CCB.iStatus = 1
+				<if test="param2.currency_string10 != null and param2.currency_string10!=''">
+					AND D.cDCCode = #{param2.currency_string10}
+				</if>
+				<if test="param2.currency_string11 != null and param2.currency_string11!=''">
+					AND p.cPersonName LIKE '%${param2.currency_string11}%'
+				</if>
+				<if test="(param2.currency_string8 != '' and param2.currency_string8 != null) or (param2.currency_string9 != '' and param2.currency_string9 != null)">
+					AND CCB.strContractID in (
+					select cContractID from Ap_CloseBill where 1=1
+					<if test="param2.currency_string8 != '' and param2.currency_string8 != null">
+						and CONVERT(varchar,dVouchDate,120) >= #{param2.currency_string8}
+					</if>
+					<if test="param2.currency_string9 != '' and param2.currency_string9 != null">
+						and CONVERT(varchar,dVouchDate,120) &lt;= #{param2.currency_string9}
+					</if>
+					)
+				</if>
+					<if test="param2.currency_string != null and param2.currency_string!=''">
+						AND CCB.strContractID LIKE '%${param2.currency_string}%'
+					</if>
+					<if test="param2.currency_string2 != null and param2.currency_string2!=''">
+						AND CCB.strBisectionUnit = #{param2.currency_string2}
+					</if>
+					<if test="param2.currency_string3 != null and param2.currency_string3!=''">
+						AND CCB.strContractOrderDate >= #{param2.currency_string3}
+					</if>
+					<if test="param2.currency_string7 != null and param2.currency_string7!=''">
+						AND CCB.strContractOrderDate &lt;= #{param2.currency_string7}
+					</if>
+
+					<choose>
+						<when test='param2.currency_string4 != null and param2.currency_string4!="" and
+				 								param2.currency_string5 != null and param2.currency_string5!=""'>
+							AND (#{param2.currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+							or #{param2.currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate)
+						</when>
+
+						<when test='param2.currency_string4 != null and param2.currency_string4!=""'>
+							AND #{param2.currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+						</when>
+
+						<when test='param2.currency_string5 != null and param2.currency_string5!=""'>
+							AND #{param2.currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate
+						</when>
+					</choose>
+					<if test="param2.currency_string6 != null and param2.currency_string6!=''">
+						AND CCB.strContractType = #{param2.currency_string6}
+					</if>
+				ORDER BY CCB.strContractID DESC)
+			</if>
+			ORDER BY CCB.strContractID DESC
+	</select>
+
+	<select id="getContractStatementRows" parameterType="com.yr.lize.pojo.CurrencyApply" resultType="Integer">
+		SELECT COUNT(*)
+		FROM CM_Contract_B CCB
+		LEFT JOIN Customer C ON CCB.strBisectionUnit = C.cCusCode
+		LEFT JOIN Person P ON CCB.strPersonID = P.cPersonCode
+		LEFT JOIN DistrictClass D ON C.cDCCode = D.cDCCode
+		LEFT JOIN CM_Contract_Item_B B ON CCB.strContractID = B.strContractID
+		<where>
+			CCB.iStatus = 1
+			<if test="currency_string10 != null and currency_string10!=''">
+				AND D.cDCCode = #{currency_string10}
+			</if>
+			<if test="currency_string11 != null and currency_string11!=''">
+				AND p.cPersonName LIKE '%${currency_string11}%'
+			</if>
+			<if test="(currency_string8 != '' and currency_string8 != null) or
+								(currency_string9 != '' and currency_string9 != null)">
+				AND CCB.strContractID in (
+				select cContractID from Ap_CloseBill where 1=1
+				<if test="currency_string8 != '' and currency_string8 != null">
+					and CONVERT(varchar,dVouchDate,120) >= #{currency_string8}
+				</if>
+				<if test="currency_string9 != '' and currency_string9 != null">
+					and CONVERT(varchar,dVouchDate,120) &lt;= #{currency_string9}
+				</if>
+				)
+			</if>
+			<if test="currency_string != null and currency_string!=''">
+				AND CCB.strContractID LIKE '%${currency_string}%'
+			</if>
+			<if test="currency_string2 != null and currency_string2!=''">
+				AND CCB.strBisectionUnit = #{currency_string2}
+			</if>
+			<if test="currency_string3 != null and currency_string3!=''">
+				AND CCB.strContractOrderDate >= #{currency_string3}
+			</if>
+			<if test="currency_string7 != null and currency_string7!=''">
+				AND CCB.strContractOrderDate &lt;= #{currency_string7}
+			</if>
+
+			<choose>
+				<when test='currency_string4 != null and currency_string4!="" and
+				 								currency_string5 != null and currency_string5!=""'>
+					AND (#{currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+					or  #{currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate)
+				</when>
+
+				<when test='currency_string4 != null and currency_string4!=""'>
+					AND #{currency_string4} between CCB.strContractStartDate and CCB.strContractEndDate
+				</when>
+
+				<when test='currency_string5 != null and currency_string5!=""'>
+					AND #{currency_string5} between CCB.strContractStartDate and CCB.strContractEndDate
+				</when>
+			</choose>
+
+
+			<if test="currency_string6 != null and currency_string6!=''">
+				AND CCB.strContractType = #{currency_string6}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectItem" parameterType="string" resultType="HashMap">
+		SELECT strCode,strName,dblQuantity,strMeasureUnit,dblTaxRatio,dblUntaxPrice,dblPrice,dblUntaxSum,dblSum
+		FROM CM_Contract_Item_B
+		WHERE
+		strContractID = #{strContractID}
+	</select>
+
+	<select id="selectContractMemo" resultType="HashMap">
+		SELECT strMemorabiliaID,strMemorabilia
+		FROM CM_Contract_Memo WHERE strContractID = #{param}
+	</select>
+
+	<select id="selectReceiveByCContractId" resultType="HashMap">
+		select dVouchDate,dcreatesystime,iAmount,iAmount_f,iRAmount,iRAmount_f
+		from Ap_CloseBill where cContractID = #{param}
+	</select>
+
+	<select id="selectSODetails" resultType="HashMap">
+		SELECT * FROM SO_SODetails WHERE cContractID = #{param}
+	</select>
+
+	<update id="updateSODetails">
+		UPDATE SO_SODetails SET iFHQuantity = #{param2.iFHQuantity},iFHMoney = #{param2.iFHMoney}
+		WHERE iSOsID = #{param1}
+	</update>
+
+	<select id="selectRdrecord32Info" resultType="HashMap" parameterType="java.lang.String">
+		SELECT * FROM rdrecord32
+			WHERE cBusCode in (
+						SELECT cDLCode FROM DispatchList
+						WHERE cSOCode in (
+							SELECT cSOCode FROM  SO_SODetails WHERE cContractID = #{cContractID} GROUP BY cSOCode)
+							)
+	</select>
+
+	<select id="selectOutOrder" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT a.cCode as 出库单号,b.cCusName as 客户,c.cWhName as 仓库
+			FROM RdRecord09 a,Customer b,Warehouse c
+				WHERE CONVERT(varchar(100), a.dnverifytime, 23) = CONVERT(varchar(100), #{outOrderDate}, 23)
+				and a.cCusCode = b.cCusCode AND a.cWhCode = c.cWhCode
+	</select>
+
+	<select id="selectInOrder" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT a.cCode as 入库单号,b.cVenName as 供应商,c.cWhName as 仓库
+			FROM RdRecord01 a,Vendor b,Warehouse c
+				WHERE CONVERT(varchar(100), a.dnverifytime, 23) = CONVERT(varchar(100), #{outOrderDate}, 23)
+				and a.cVenCode = b.cVenCode AND a.cWhCode = c.cWhCode
+	</select>
+
+	<select id="selectInInv" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT a.cInvCode AS 配件编码,c.cInvName AS 配件名称,a.iQuantity AS 配件数量
+		FROM rdrecords01 a
+		LEFT JOIN RdRecord01 b ON a.ID = b.ID
+		LEFT JOIN Inventory c ON a.cInvCode = c.cInvCode
+		WHERE b.cCode = #{cCode}
+	</select>
+
+	<select id="selectOutInv" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT a.cInvCode AS 配件编码,c.cInvName AS 配件名称,a.iQuantity AS 配件数量
+		FROM rdrecords09 a
+		LEFT JOIN RdRecord09 b ON a.ID = b.ID
+		LEFT JOIN Inventory c ON a.cInvCode = c.cInvCode
+		WHERE b.cCode = #{cCode}
+	</select>
+</mapper>

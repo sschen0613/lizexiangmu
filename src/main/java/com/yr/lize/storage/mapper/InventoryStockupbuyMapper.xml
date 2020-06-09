@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.storage.mapper.InventoryStockupbuyMapper">
+<!--//备货请购 -->
+	<!-- 添加主表记录 -->
+
+	<insert id="insert" parameterType="Object">
+		insert into
+		lize.InventoryStockupbuy
+		(buy_number, proposer, proposer_id,
+		proposer_department, proposer_date,expectedDelivery_date)
+		values
+		(#{buy_number}, #{proposer}, #{proposer_id},
+		#{proposer_department},
+		#{proposer_date}, #{expectedDelivery_date});
+	</insert>
+	<!-- 添加附表信息 -->
+	<insert id="inserttable" parameterType="Object">
+		insert into lize.inventory_lizeMaterialsouttable
+		(inventory_id,product_name,specifications_models,unit,
+		buy_quantity,inventory_quantity,stockup_id)
+		values
+		(#{inventory_id},#{product_name},#{specifications_models},#{unit},#{buy_quantity},
+		#{inventory_quantity},#{stockup_id});
+	</insert>
+
+
+	<!--查询商品名称-->
+	<select id="selectInventoryName" resultType="HashMap">
+		SELECT product_name FROM inventory_stockupbuytable
+	</select>
+
+ 
+ 
+
+</mapper>

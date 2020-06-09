@@ -1,0 +1,311 @@
+@charset "UTF-8";
+/* 主界面样式-丽泽 */
+/* 顶部 */
+.header_revise{
+	height:60px;
+	background-color:#fdfdfd !important;
+	border-bottom:1px solid #eee;
+	box-shadow: 0 0 3px 1px #eee;
+}
+.logo_revise{
+	padding-left:50px;
+	width:auto !important;
+}
+.logo_revise>span{
+	display:inline-block;vertical-align:middle;
+	margin-right:10px;
+	width:25px;height:25px;
+	background-image:url(../img/logo.png);
+	background-size:100% 100%;
+}
+.logo_revise>h2{
+	display:inline-block; vertical-align:middle;
+	font-size:20px !important;
+	color:#666 !important;
+/* 	text-shadow: 1px 1px 4px #eee; */
+}
+/* 顶部导航栏 */
+ul.topNav_revise{
+	margin-right:10px;
+}
+ul.topNav_revise>li{}
+ul.topNav_revise>li>a{
+/* 	position:relative; */
+	font-size:14px;
+	color:#666 !important;
+	padding:0 30px 0 10px !important;
+}
+/* ul.topNav_revise>li>a:after{ */
+/* 	display:none; */
+/* 	content:''; */
+/* 	position:absolute;bottom:0;left:0;z-index:1000; */
+/* 	width:100%;height:4px; */
+/* 	background-color:#ddd; */
+/* } */
+ul.topNav_revise>li:nth-child(3)>a{padding:0 20px !important;}
+ul.topNav_revise>li>a>i.navicon{
+	color:#666 !important;
+	font-size:18px;
+	font-weight:bold;
+	padding:0 20px 0 10px;
+}
+/* 下拉列表 */
+.staffName_revise{
+	left:-1px !important;
+}
+.staffName_revise:before,.message_revise:before{
+	content:'';
+	width:0;height:0;
+	position:absolute;left:50%;top:-9px;transform:translateX(-50%);z-index:100;
+	border:10px solid white;
+	border-top:none;
+	border-left-color: transparent;
+    border-right-color: transparent;
+}
+.staffName_revise:after,.message_revise:after{
+	content:'';
+	width:0;height:0;
+	position:absolute;left:50%;top:-10px;transform:translateX(-50%);z-index:10;
+	border:10px solid #d2d2d2;
+	border-top:none;
+	border-left-color: transparent;
+    border-right-color: transparent;
+}
+.message_revise{
+	left:-30px !important;
+}
+.message_revise a{
+	padding-right:45px !important;
+}
+/* 	消息徽章 */
+.layui-badge{
+	right:20px;
+	height:15px;line-height:15px;
+	padding: 0 3px !important;
+}
+/* 顶部小三角 */
+ul.topNav_revise>li>a>span.layui-nav-mored{
+	border-color:transparent transparent #009688 !important;
+/* 	border-top-color:transparent !important; */
+}
+ul.topNav_revise>li>a>span.layui-nav-more{
+	right:10px;
+	border-top-color:#666;
+}
+/* 鼠标滑过 */
+ul.topNav_revise>li:hover>a:after{
+/* 	display:block; */
+}
+ul.topNav_revise>li:hover>a, ul.topNav_revise>li:hover>a>i.navicon:before{
+	color:#009688 !important;
+}
+
+/* 左侧菜单栏 */
+/* 更改左侧菜单栏宽度 */
+.layui-layout-admin .layui-side{width:230px;}
+.layui-side-scroll{width:250px;}
+.layui-nav-tree{width:230px;}
+.layui-body{left:230px;}
+.layui-layout-admin .layui-footer{left:230px;}
+
+.side_revise{
+/* 	border-right:1px solid #eee; */
+	box-shadow:0 0 10px 0 #ccc;
+	background-color:#f5f7f9;
+}
+/* 菜单栏隐藏显示按钮 */
+.menu-slide{
+	position:absolute;bottom:0;left:0;
+	display:block;
+	width:50px;height:44px;
+	text-align:center;
+	cursor:pointer;
+}
+.menu-slide>span{
+	line-height:44px;
+	font-size:25px;
+	font-weight:middle;
+	color:#666;
+}
+/* 一级菜单 */
+ul.menu_revise{
+	background-color:#f5f7f9;
+/* 	box-shadow:0 0 2px 1px #e8e3e8; */
+}
+ul.menu_revise>li{
+/* 	margin-top:1px; */
+/* 	border-bottom:1px solid #e8e3e8; */
+/* 	box-shadow:0 0 1px 0 #e8e3e8; */
+}
+ul.menu_revise>li>a{}
+ul.menu_revise>li>a>span.menuname{
+	color:#333;
+}
+
+/* 图标 */
+/* 彩色图标基础样式 */
+.alSvgIcon {
+    width: 1em; 
+    height: 1em;
+    fill: currentColor;
+    overflow: hidden;
+}
+/* 菜单栏标签样式 */
+.menuicon{}
+.menuicon>svg{
+	font-size: 16px;
+}
+ul.menu_revise>li>a>.menuicon{padding-right:10px;}
+/* 		小三角 */
+ul.menu_revise>li>a>span.layui-nav-more{
+	border-top-color:#666 !important;
+	margin-right: 5px;
+}
+ul.menu_revise>li.layui-nav-itemed>a>span.layui-nav-more{
+	border-color:transparent !important;
+	border-bottom-color:#666 !important;
+}
+
+/* 鼠标滑过第一级菜单 */
+ul.menu_revise>li:hover{
+	background-color:#f5f7f9 !important;
+}
+ul.menu_revise>li:hover>a{
+	background-color:#f5f7f9 !important;
+}
+ul.menu_revise>li:hover>a>span.menuname{
+	color:#3297fb;
+}
+
+/* 二级菜单 */
+ul.menu_revise>li>dl.layui-nav-child{
+	background-color:white !important;
+}
+ul.menu_revise>li>dl>dd{}
+ul.menu_revise>li>dl>dd>a{}
+ul.menu_revise>li>dl>dd>a>span.menuname{
+	font-size:12px;
+	color:#666;
+}
+/* 二级菜单中选中的项 */
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this{
+	background-color:#e1e6f7 !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a{
+	background-color:#e1e6f7 !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a>span.menuname{
+	color:black !important;
+}
+ul.menu_revise>li>dl.layui-nav-child>dd.layui-this>a:hover{
+	background-color:#e1e6f7 !important;
+}
+/* 有三级菜单的二级菜单项 */
+ul.menu_revise>li>dl>dd.third-menu{
+	border-bottom:1px solid #ddd;
+}
+ul.menu_revise>li>dl>dd.third-menu>a{
+	background-color:#f5f7f9;
+	box-shadow:0 1px 2px 1px #eee;
+}
+/* 		小三角 */
+ul.menu_revise>li>dl>dd.layui-nav-itemed>a>span.layui-nav-more{
+	border-color:transparent !important;
+	border-bottom-color:#ccc !important;
+}
+ul.menu_revise>li>dl>dd>a>span.layui-nav-more{
+	border-top-color:#aaa !important;
+}
+/* 鼠标滑过有三级菜单的二级菜单项 */
+ul.menu_revise>li>dl>dd.third-menu:hover{
+	background-color:#f5f7f9 !important;
+}
+ul.menu_revise>li>dl>dd.third-menu:hover>a{
+	background-color:#f5f7f9 !important;
+}
+ul.menu_revise>li>dl>dd.third-menu:hover>a>span.menuname{
+	color:#3297fb;
+}
+/* 三级菜单 */
+ul.menu_revise>li>dl>dd>dl.layui-nav-child{
+	background-color:white !important;
+}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd{}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd>a{}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd>a>span.menuname{
+	font-size:12px;
+	color:#666;
+}
+/* 三级菜单中选中的项 */
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd.layui-this{
+	background-color:#e1e6f7 !important;
+}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd.layui-this>a{
+	background-color:#e1e6f7 !important;
+}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd.layui-this>a>span.menuname{
+	color:black !important;
+}
+ul.menu_revise>li>dl>dd>dl.layui-nav-child>dd.layui-this>a:hover{
+	background-color:#e1e6f7 !important;
+}
+/* 右侧主体内容区域 */
+/* 选项卡 */
+.right_revise{
+	/*border:2px solid green;*/
+	overflow: hidden;
+    overflow-y: hidden; 
+}
+/*选项卡*/
+.tab_revise{
+	display:flex;
+	flex-direction:column;
+	margin:0;padding-top:10px;
+	height:100%;
+	box-sizing: border-box;
+}
+.tab_revise>.layui-tab-title{
+	padding-left:10px;
+	height:33px;
+}
+.tab_revise>.layui-tab-title>li{
+	line-height:33px;
+	font-size:12px;
+}
+.tab_revise>.layui-tab-title>li.layui-this:after{
+	height:34px;
+}
+.tab_revise>.layui-tab-title>li>i{
+	font-size:12px;
+}
+.tab_revise>.layui-tab-content{
+	flex-grow:1;
+	padding:0;
+/* 	padding-left: 10px; */
+/* 	border:1px solid blue; */
+	position:relative;	/*!!!*/
+}
+.tab_revise>.layui-tab-content>.layui-tab-item{
+	width:100%;height:100%;
+	position:absolute; /*!!! 这样才可以设置height=100%*/
+}
+/* 选项卡清除按钮 */
+.delete-tabs{
+	margin-left:10px;
+}
+
+/*iframe页面*/
+.content_revise{
+/* 	border:1px solid red; */
+	width: 100%; height: 100%;
+	margin:0;padding:0;
+	box-sizing: border-box;
+	overflow-y:auto;
+}
+
+/* 底部 */
+.footer_revise{
+	background-color:#eee;
+	font-size:12px;
+	color:#333;
+}

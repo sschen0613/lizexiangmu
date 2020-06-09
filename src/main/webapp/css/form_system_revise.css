@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+/* 审批管理>设置>默认审批人 */
+.form-approval-persion{
+	padding:10px 0 0 10px;
+}
+.form-approval-persion>.layui-form-item>.layui-inline{
+	margin:5px 0;
+	height:auto;
+}
+.form-approval-persion>.layui-form-item>.layui-inline>.layui-input-inline{
+	height:auto;
+	min-height:0;
+}
+.form-approval-persion>.layui-form-item>.layui-inline>.layui-input-inline input, .form-approval-persion>.layui-form-item>.layui-inline>.layui-input-block input{
+	font: 400 12px Arial;
+}
+.form-approval-persion input,select,label{
+	height:30px;
+}
+.layui-form-label{
+	padding:0 10px;
+	line-height:30px;
+	width:auto;
+	font-size:12px;
+}
+.form-approval-persion select{}
+.form-approval-persion .layui-form-select>.layui-select-title>input{
+	height:30px;
+}
+.form-approval-persion .layui-form-select>.layui-anim.layui-anim-upbit{
+	top:32px;
+}
+/* 改变表单元素大小 */
+.layui-form-radio *{
+	font-size:12px;
+}
+.layui-form-select dl{
+	max-height: 250px;
+}
+.layui-form-select dl dd{
+	line-height: 30px;
+	font-size: 12px;
+}

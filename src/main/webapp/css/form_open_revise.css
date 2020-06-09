@@ -1,0 +1,192 @@
+body{
+/*	padding:10px; */
+}
+input{
+	border:0;
+}
+th{
+	background-color:#f2f2f2;
+}
+th>input{
+	background-color:#f2f2f2;
+}
+td>input{
+	width:100%;height:100%;
+}
+.h-open{
+	text-align: center;
+	padding:10px 0;
+}
+.form-open{
+	margin:0 10px;
+}
+.table-open{
+	margin:0;
+}
+.table-h{
+	height:50px;
+	font-size:18px !important;
+	text-align:center !important;
+}
+.button-div{
+	margin:30px 0;
+}
+.button-div>div{
+	text-align: center;
+	margin-left: 0;
+}
+.button-div>div>button{
+	padding:0 100px;
+}
+.layui-btn+.layui-btn{
+	margin-left:200px;
+}
+/*时间选择框 时间范围*/
+.time-ranges{
+	display:flex !important;
+}
+.time-ranges>input{
+	width:45%;
+}
+/* 添加明细按钮 */
+.addDetails{
+	background-color:white;
+	text-align:center;
+	cursor:pointer;
+}
+.addDetails>span{
+	font-size:24px;
+	font-weight:300;
+	color:#666;
+}
+/* 改变表单字体大小 */
+.layui-table td{
+	padding: 7px 5px;
+	font-size:12px;
+}
+/* 改变表单元素大小 */
+.layui-form-radio *{
+	font-size:12px;
+}
+.layui-form-select>.layui-select-title>input{
+	height:30px;
+}
+.layui-form-select dl{
+/* 	top:32px; ???*/
+	max-height: 250px;
+}
+.layui-form-select dl dd{
+	line-height: 30px;
+	font-size: 12px;
+}
+..layui-form-selectup dl{
+/* 	bottom:32px; ???*/
+}
+/* 改变日期控件大小 */
+.layui-laydate{
+	font-size:12px !important;
+	width:auto !important;
+}
+.layui-laydate-main{width:auto !important;}
+.layui-laydate-header{
+	line-height:25px !important;
+}
+.layui-laydate-header i{font-size: 16px !important;}
+.layui-laydate-header i.laydate-prev-y{left:5px !important;}
+.layui-laydate-header i.laydate-prev-m{left:35px !important;}
+.laydate-set-ym{width:auto !important;}
+.layui-laydate-header i.laydate-next-m{right:35px !important;}
+.layui-laydate-header i.laydate-next-y{right:5px !important;}
+.layui-laydate-content{
+	padding:0 !important;
+}
+.layui-laydate-content>table{
+	width:100% !important;
+}
+.layui-laydate-content td, .layui-laydate-content th {
+	width:30px !important;
+	height:26px !important;
+	padding:0 !important;
+}
+.layui-laydate-list.laydate-year-list>li{
+	height:27px !important;
+	line-height:27px !important;
+}
+.layui-laydate-list.laydate-month-list>li{
+	    margin: 10px 0 !important;
+}
+.layui-laydate-list.laydate-time-list>li>ol{
+	height:133px !important;
+}
+.layui-laydate-list.laydate-time-list>li>ol>li{
+	height: 25px !important;
+	line-height: 25px !important;
+    width: 62px !important;
+    padding-left: 10px !important;
+}
+.layui-laydate-footer{
+	height: 40px !important;
+	padding: 5px 10px !important;
+}
+.laydate-footer-btns{
+	top:8px !important;
+}
+.laydate-footer-btns span{
+	height: 24px !important;
+    line-height: 24px !important;
+}
+
+/* 注释 */
+.form-notes{
+	float:right;
+	text-align:left;
+	padding:10px 10px 10px 0;
+	box-sizing: border-box;
+}
+.form-notes>i{
+	display:block;
+	padding:5px 0;
+	font-size:12px;
+	font-style:oblique;
+	color:#666;
+}
+
+/* layui input框重置 */
+.layui-input{
+	height:30px;
+}
+
+/* 明细信息中的单选框布局 */
+.radio{}
+.radio>input{}
+.radio>div{
+	display:flex;
+	margin:0;
+}
+.radio>div>i{
+	font-size: 18px;
+}
+.radio>div>div{
+	white-space:nowrap;
+}
+
+/* 明细信息中的明细 	检测项目*/
+td.items{
+	box-sizing:border-box;
+}
+td.items>.items-details{
+	display:flex;
+	align-items:center;
+	height:20px;
+}
+td.items>.items-details>input{}
+td.items>.items-details>span{
+	padding:0 5px;
+	font-size:14px;
+	font-weight:bold;
+	color:#3297fb;
+	cursor:pointer;
+}
+
+
+

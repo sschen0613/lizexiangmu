@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemDepartmentMapper">
+  	
+  	<!-- 查询所有部门 -->
+  	<select id="getdepartment" resultType="HashMap">
+  		select
+  		<if test="param1.pagerows != null">TOP ${param1.pagerows}</if>
+  		a.department_id AS did, a.department_name AS dname, a.ding_depmid AS dingdepmid,b.ding_depmid AS dingdpid,
+  		a.Superior_id AS sid, a.company_id AS cid ,b.department_name , system_company.company_name FROM  system_department AS a
+  		LEFT JOIN system_department AS b ON a.Superior_id =  b.ding_depmid
+  		LEFT JOIN system_company ON system_company.company_id = a.company_id
+		<where>
+			a.delete_id = 1
+			<if test="param2.department_Name != null and param2.department_Name != ''">and a.department_name like '%${param2.department_Name}%'</if>
+			<if test="param2.company_Id != null">and a.company_id=#{param2.company_Id}</if>
+			<if test="param2.superior_Id != null">and a.superior_Id=#{param2.superior_Id}</if>
+			<if test="param1.start != null">and a.department_id NOT IN (SELECT top ${param1.start} a.department_id 
+			FROM  system_department AS a
+			LEFT JOIN system_department AS b ON a.Superior_id =  b.ding_depmid
+  			LEFT JOIN system_company ON system_company.company_id = a.company_id 
+				<where>
+					a.delete_id = 1
+					<if test="param2.department_Name != null and param2.department_Name != ''">and a.department_name like '%${param2.department_Name}%'</if>
+					<if test="param2.company_Id != null">and a.company_id=#{param2.company_Id}</if>
+					<if test="param2.superior_Id != null">and a.superior_Id=#{param2.superior_Id}</if>
+				</where>
+			ORDER BY a.department_id)ORDER BY a.department_id,a.Superior_id</if>
+		</where> 
+  		
+  	</select>
+  		
+  		<!-- 查询所有部门数量 -->
+  	<select id="getRows" parameterType="com.yr.lize.pojo.SystemDepartment" resultType="Integer">
+		SELECT COUNT(*) AS count FROM system_department
+			<where>
+				delete_id = 1
+				<if test="department_Name != null and department_Name != ''">and department_name like '%${department_Name}%'</if>
+				<if test="company_Id != null">and company_id=#{company_Id}</if>
+				<if test="superior_Id != null">and superior_id=#{superior_Id}</if>
+			</where>
+	</select> 
+	
+	<!-- 删除部门 -->
+  	<delete id="deleteDepartment">
+  		delete from system_Department where department_id =#{param1}
+  	</delete>
+  	<!-- 修改部门 -->
+  	<update id="updateDepartment">
+  		update system_department
+  			<set>
+  				<if test="department_Name != ''">department_name =#{department_Name},</if>
+  				<if test="superior_Id != null">superior_id =#{superior_Id},</if>
+  				<if test="company_Id != null">company_Id =#{company_Id},</if>
+  				<if test="ding_depmid != null">ding_depmid =#{ding_depmid}</if>
+  			</set>
+  			where department_id =#{department_Id}
+  	</update>
+  	<!-- 查询分公司下的部门 -->
+  	<select id="selectCompanyId" resultType="com.yr.lize.pojo.SystemDepartment">
+  		select * from system_department where company_id =#{param1}
+  	</select>
+  	<!-- 添加部门 -->
+  	<insert id="addDepartment" parameterType="com.yr.lize.pojo.SystemDepartment">
+  		insert into system_department (department_name,superior_id,company_Id,ding_depmid)
+  		values (#{department_Name},#{superior_Id},#{company_Id},#{ding_depmid})
+  	</insert>
+  	<!-- 导入Excel数据 -->
+  	<insert id="insertExcelDpmt" parameterType="java.util.List">
+  		INSERT INTO system_department (department_name,superior_id,company_Id)
+  		VALUES
+  		<foreach collection="list" item="departments" index="index" separator=",">
+  			(#{departments.department_Name}, #{departments.superior_Id}, #{departments.company_Id})
+  		</foreach>
+  	</insert>
+  	<!-- 修改删除标识 -->
+  	<update id="updateDelete">
+  		update system_department set delete_id =2 where department_id =#{param1}
+  	</update>
+  	<!-- 查询部门是否已存在 -->
+  	<select id="selectDingDepartmentId" resultType="com.yr.lize.pojo.SystemDepartment">
+  		select * from system_department where ding_depmid=#{param1}
+  	</select>
+
+	<select id="selectDingAllDepartment" resultType="com.yr.lize.pojo.SystemDepartment">
+		select * from system_department
+	</select>
+
+</mapper>

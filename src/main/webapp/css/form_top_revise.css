@@ -1,0 +1,122 @@
+form.form-top{
+	margin:10px 5px 0 10px;
+}
+form.form-top>.layui-form-item{
+	display:flex;
+	justify-content:flex-start;
+	flex-wrap:nowrap;
+	margin:0;
+}
+form.form-top>.layui-form-item>.layui-inline{
+	margin:0;
+	height:auto;
+/* 	border:1px solid red; */
+}
+form.form-top>.layui-form-item>.layui-inline:last-child{
+	border:1px solid #e6e6e6;
+	border-left:0;
+}
+form.form-top>.layui-form-item>.layui-inline>.layui-input-inline, form.form-top>.layui-form-item>.layui-inline>.layui-input-block{
+	margin:0;
+	width:auto;
+	min-width:130px;
+	max-width:200px;
+	border:1px solid #e6e6e6;
+	border-right:0;
+}
+form.form-top>.layui-form-item>.layui-inline>.layui-input-block{
+	height:auto;
+	min-height:0;
+}
+form.form-top>.layui-form-item>.layui-inline>.layui-input-inline input, form.form-top>.layui-form-item>.layui-inline>.layui-input-block input{
+	border:0;
+	font: 400 12px Arial;
+}
+.label-revise,.input-revise,.select-revise,.button-revise{
+	height:30px;
+/* 	box-sizing:border-box; */
+}
+.label-revise{
+	display:none;
+	padding:0 10px;
+	width:auto;
+	line-height:30px;
+	font-size:12px;
+}
+.input-revise{}
+.date-revise{}
+.select-revise{}
+.select-revise>.layui-form-select>.layui-select-title>input{
+	height:30px;
+}
+.select-revise>.layui-form-select>.layui-anim.layui-anim-upbit{
+	top:32px;
+}
+.button-revise{
+	border-radius:0;
+	padding:0 20px;
+}
+/* 改变表单元素大小 */
+.layui-form-radio *{
+	font-size:12px;
+}
+.layui-form-select dl{
+	max-height: 250px;
+}
+.layui-form-select dl dd{
+	line-height: 30px;
+	font-size: 12px;
+}
+/* 改变日期控件大小 */
+.layui-laydate{
+	font-size:12px !important;
+	width:auto !important;
+}
+.layui-laydate-main{width:auto !important;}
+.layui-laydate-header{
+	line-height:25px !important;
+}
+.layui-laydate-header i{font-size: 16px !important;}
+.layui-laydate-header i.laydate-prev-y{left:5px !important;}
+.layui-laydate-header i.laydate-prev-m{left:35px !important;}
+.laydate-set-ym{width:auto !important;}
+.layui-laydate-header i.laydate-next-m{right:35px !important;}
+.layui-laydate-header i.laydate-next-y{right:5px !important;}
+.layui-laydate-content{
+	padding:0 !important;
+}
+.layui-laydate-content>table{
+	width:100% !important;
+}
+.layui-laydate-content td, .layui-laydate-content th {
+	width:30px !important;
+	height:26px !important;
+	padding:0 !important;
+}
+.layui-laydate-list.laydate-year-list>li{
+	height:27px !important;
+	line-height:27px !important;
+}
+.layui-laydate-list.laydate-month-list>li{
+	    margin: 10px 0 !important;
+}
+.layui-laydate-list.laydate-time-list>li>ol{
+	height:133px !important;
+}
+.layui-laydate-list.laydate-time-list>li>ol>li{
+	height: 25px !important;
+	line-height: 25px !important;
+    width: 62px !important;
+    padding-left: 10px !important;
+}
+.layui-laydate-footer{
+	height: 40px !important;
+	padding: 5px 10px !important;
+}
+.laydate-footer-btns{
+	top:8px !important;
+}
+.laydate-footer-btns span{
+	height: 24px !important;
+    line-height: 24px !important;
+}

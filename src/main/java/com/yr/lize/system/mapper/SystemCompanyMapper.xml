@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemCompanyMapper">
+ 	
+ 	<!-- 获取所有公司信息 -->
+ 	<select id="getCompany" resultType="HashMap">
+ 		SELECT 
+ 		<if test="param1.pagerows != null">TOP ${param1.pagerows}</if> 
+ 		a.company_id, a.company_name
+		,a.company_Situation AS csituation, a.company_manager AS cmanager
+		,a.company_phone AS cphone, a.company_address AS caddress
+		,b.company_name AS cname, a.company_code
+ 		FROM system_company AS a
+ 		LEFT JOIN system_company AS b ON b.company_id = a.company_superior
+ 		<where>
+ 			a.delete_id=1 			
+	 		<if test="param2.company_Name != '' and param2.company_Name != null">and a.company_Name like '%${param2.company_Name}%'</if>
+	 		<if test="param1.start != null">and a.company_id NOT IN (SELECT top ${param1.start} company_id FROM system_company 
+	 			<where>
+	 				delete_id=1 
+	 				<if test="param2.company_Name != '' and param2.company_Name != null">and company_Name like '%${param2.company_Name}%'</if>
+	 			</where>
+	 		ORDER BY company_id)
+	 		ORDER BY a.company_id</if>
+ 		</where> 
+ 	</select>
+ 	<!-- 查询公司信息条数 分页查询用 -->
+ 	<select id="getRows" parameterType="com.yr.lize.pojo.SystemCompany" resultType="Integer">
+ 		SELECT count(*) as count FROM system_company
+ 			<where>
+ 				delete_id=1
+ 				<if test="company_Name != '' and company_Name != null">and company_Name like '%${company_Name}%'</if>
+ 			</where>
+ 	</select>
+ 	<!-- 删除分公司 -->
+ 	<delete id="deleteCompany">
+ 		delete from system_company where company_Id=#{param1}
+ 	</delete>
+ 	<!-- 修改分公司信息 -->
+ 	<update id="updateCompany" parameterType="com.yr.lize.pojo.SystemCompany">
+ 		update system_company
+ 			<set>
+ 				<if test="company_Name != ''">company_name=#{company_Name},</if>
+ 				<if test="company_Situation != ''">company_Situation =#{company_Situation},</if>
+ 				<if test="company_Manager != ''">company_manager =#{company_Manager},</if>
+ 				<if test="company_Phone != ''">company_phone =#{company_Phone},</if>
+ 				<if test="company_Address != ''">company_address =#{company_Address}</if>
+ 				<if test="company_Code != ''">company_Code =#{company_Code}</if>
+ 			</set>
+ 			<where>
+ 			  	company_id =#{company_Id}
+ 			</where>
+ 	</update>
+ 	<!-- 添加分公司 -->
+ 	<insert id="addCompany" useGeneratedKeys="true" keyProperty="company_Id" parameterType="com.yr.lize.pojo.SystemCompany">
+ 		insert into system_company (company_name,company_Situation,company_manager,company_phone,company_address, company_Code) 
+ 		values (#{company_Name},#{company_Situation},#{company_Manager},#{company_Phone},#{company_Address},#{company_Code})
+ 	</insert>
+ 	<update id="updateDelete">
+ 		update system_company set delete_id =2 where company_id =#{param1}
+ 	</update>
+ 	<!-- //修改审批条件金额 -->
+ 	<update id="updateApprovalMoney">
+ 		update approval_condition set condition =#{param2} where company_id=#{param1} 
+ 		AND approval_id = #{param3}
+ 	</update>
+ 	<!-- //根据id查询公司 -->
+ 	<select id="selectCompanyById" resultType="com.yr.lize.pojo.SystemCompany">
+ 		select * from system_company where company_id =#{param1}
+ 	</select>
+ 	<!-- 添加公司所有审批流条件 -->
+ 	<insert id="addApprovalCondition">
+ 		INSERT INTO approval_condition
+ 		(approval_id, company_id)
+ 		VALUES
+ 		<foreach item="item" index="index" collection="param2" separator=",">
+ 		(#{item}, #{param1})
+ 		</foreach>
+ 	</insert>
+ 	<!-- 获取审批条件 -->
+ 	<select id="selectApprovalCondition" resultType="Integer">
+ 		select condition from approval_condition where company_id =#{param1} AND approval_id =#{param2}
+ 	</select>
+ 	  	<!-- 修改编号 -->
+  	<update id="updateCode">
+  		update code set number = number+1 where id = #{param1}
+  	</update>
+  	<!-- 查询模块流水号 -->
+  	<select id="selectCode" resultType="com.yr.lize.pojo.SystemCode">
+  		SELECT * FROM code where id = #{param1}
+  	</select>
+
+	<insert id="addCondition">
+		INSERT INTO approval_condition
+		(approval_id, company_id, condition)
+		VALUES
+		(#{param3},#{param1},#{param2})
+	</insert>
+</mapper>

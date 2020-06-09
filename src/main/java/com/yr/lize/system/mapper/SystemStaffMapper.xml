@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemStaffMapper">
+	
+	
+	<!-- 用户登录 -->
+	<select id="login" parameterType="com.yr.lize.pojo.SystemStaff" resultType="com.yr.lize.pojo.SystemStaff">
+		select * from system_staff where staff_number =#{staff_Number} and staff_password =#{staff_Password} and delete_id = 1
+	</select>
+
+   <!-- 获取当前登录用户菜单 -->
+	<select id="getMenu" parameterType="com.yr.lize.pojo.SystemStaff" resultType="com.yr.lize.pojo.PowerMenu">
+		SELECT * FROM  power_menu  
+		LEFT JOIN power_menuallot ON power_menu.menu_id = power_menuallot.menu_id
+		LEFT JOIN system_position on power_menuallot.position_id = system_position.position_id
+		LEFT JOIN system_staff ON system_position.position_id = system_staff.position_id
+		WHERE system_staff.staff_Id = #{staff_Id}
+		<if test="staff_Superior != null">AND power_menu.menu_type IN (0,#{staff_Superior})</if>
+		ORDER BY power_menu.menu_priority
+	</select>
+	
+	<!-- 根据当前用户查询员工 -->
+	<!-- select * from 表1 as 别名 ,表2 as 别名2 -->
+	<select id="selectStaff" resultType="HashMap">
+		SELECT 
+		<if test="param1.pagerows != null">TOP ${param1.pagerows}</if>
+		 a.staff_id AS stid, a.staff_number AS stnumber, a.dingding_staffid,system_position.position_id
+		,a.staff_name AS stname, a.staff_sex AS stsex, a.staff_age AS stage, system_company.company_id
+		,a.staff_phone, a.staff_email, a.staff_birthday, a.join_date, a.staff_identity,a.staff_idture
+		,system_department.department_name, system_company.company_name, system_position.position_name
+		,staff_state.state_name, b.staff_name, a.staff_address, system_department.ding_depmid ,a.staff_state
+		FROM system_staff AS a 
+			LEFT JOIN system_staff AS b ON a.staff_superior = b.staff_id 
+			LEFT JOIN system_department ON a.department_id = system_department.ding_depmid
+			LEFT JOIN system_company ON a.company_id = system_company.company_id
+			LEFT JOIN system_position ON a.position_id = system_position.position_id
+			LEFT JOIN staff_state ON staff_state.staffstate_id = a.staff_state
+			<where>
+				a.delete_id = 1
+				<if test="param2.staff_Name != '' and param2.staff_Name != null">and a.staff_name like '%${param2.staff_Name}%'</if>
+				<if test="param2.company_Id != null and param2.staff_Role == 1">and a.company_Id =#{param2.company_Id}</if>
+				<if test="param2.position_Id != null">and a.position_Id =#{param2.position_Id}</if>
+				<if test="param2.department_Id != null and param2.department_Id != '' and param2.staff_Role == 1">and a.department_Id =#{param2.department_Id}</if>
+				<if test="param2.staff_State != null">and a.staff_state =#{param2.staff_State}</if>
+				<if test="param2.staff_Role == 2">and a.department_Id = #{param2.department_Id}</if>
+				<if test="param2.staff_Role == 4">and a.company_Id =#{param2.company_Id}</if>
+				<if test="param1.start != null">and a.staff_id NOT IN (SELECT top ${param1.start}  a.staff_id FROM system_staff AS a 
+					LEFT JOIN system_staff AS b ON a.staff_superior = b.staff_id 
+					LEFT JOIN system_department ON a.department_id = system_department.ding_depmid 
+					LEFT JOIN system_company ON a.company_id = system_company.company_id 
+					LEFT JOIN system_position ON a.position_id = system_position.position_id 
+					LEFT JOIN staff_state ON staff_state.staffstate_id = a.staff_state 
+					
+				<where>
+					a.delete_id = 1
+					<if test="param2.staff_Name != '' and param2.staff_Name != null">and a.staff_name like '%${param2.staff_Name}%'</if>
+					<if test="param2.company_Id != null and param2.staff_Role == 1">and a.company_Id =#{param2.company_Id}</if>
+					<if test="param2.position_Id != null">and a.position_Id =#{param2.position_Id}</if>
+					<if test="param2.department_Id != null and param2.staff_Role == 1">and a.department_Id =#{param2.department_Id}</if>
+					<if test="param2.staff_State != null">and a.staff_state =#{param2.staff_State}</if>
+					<if test="param2.staff_Role == 2">and a.department_Id = #{param2.department_Id}</if>
+					<if test="param2.staff_Role == 4">and a.company_Id =#{param2.company_Id}</if>
+				</where>
+					
+				  ORDER BY a.staff_id)
+				 ORDER BY a.staff_id</if>
+			</where>
+			
+			 
+	
+	</select>
+	<!-- 根据当前用户查询员工数量 -->
+	<select id="getRows" resultType="Integer">
+		select count(*) as count from system_staff 
+			<where>
+				delete_id = 1
+				<if test="staff_Name != '' and staff_Name != null">and staff_name like '%${staff_Name}%'</if>
+				<if test="company_Id != null ">and company_Id =#{company_Id}</if>
+				<if test="position_Id != null">and position_Id =#{position_Id}</if>
+				<if test="department_Id != null and staff_Role == 1">and department_Id =#{department_Id}</if>
+				<if test="staff_State != null">and staff_state =#{staff_State}</if>
+				<if test="staff_Role != 1">and department_Id = #{department_Id}</if>
+			</where>
+	</select>
+	<!-- 查询账号是否已存在 -->
+	<select id="selectById" parameterType="com.yr.lize.pojo.SystemStaff" resultType="com.yr.lize.pojo.SystemStaff">
+		select * from system_staff where staff_number=#{staff_Number} AND delete_id = 1
+	</select>
+	<!-- 添加员工 -->
+	<!-- useGeneratedKeys="true" keyProperty="pictuu"
+	在插入数据表时,将自动生成的主键,作为参数的对象pid属性
+ -->
+	<insert id="addStaff" parameterType="com.yr.lize.pojo.SystemStaff" useGeneratedKeys="true" keyProperty="staff_id">
+		 insert into system_staff (staff_Number, staff_password, staff_name, staff_sex, staff_age
+		 ,department_id, company_id, position_id, staff_birthday, staff_phone, staff_email
+		 ,join_date, staff_identity, staff_superior, staff_state, staff_address,dingding_staffid,staff_idture)
+  		values (#{staff_Number}, #{staff_Password}, #{staff_Name}, #{staff_Sex}, #{staff_Age}
+		 ,#{department_Id}, #{company_Id}, #{position_Id}, #{staff_Birthday}, #{staff_Phone}, #{staff_Email}
+		 ,#{join_Date}, #{staff_Identity}, #{staff_Superior}, #{staff_State}, #{staff_Address},#{dingding_staffid},#{staff_Idture})
+	</insert>
+	<!-- 修改员工信息 -->
+	<update id="updateStaff" parameterType="com.yr.lize.pojo.SystemStaff">
+		update system_staff
+		<set>
+			<if test="staff_Number != '' and staff_Number != null">staff_number =#{staff_Number},</if>
+			<if test="staff_Password != '' and staff_Password != null">staff_Password =#{staff_Password},</if>
+			<if test="staff_Name != '' and staff_Name != null">staff_name=#{staff_Name},</if>
+			<if test="staff_Sex != null">staff_sex=#{staff_Sex},</if>
+			<if test="staff_Age != null">staff_age=#{staff_Age},</if>
+			<if test="department_Id != null">department_id=#{department_Id},</if>
+			<if test="company_Id != null">company_id=#{company_Id},</if>
+			<if test="position_Id != null">position_id=#{position_Id},</if>
+			<if test="staff_Birthday != null">staff_birthday=#{staff_Birthday},</if>
+			<if test="staff_Phone != '' and staff_Phone != null">staff_phone=#{staff_Phone},</if>
+			<if test="staff_Email != '' and staff_Email != null">staff_email=#{staff_Email},</if>
+			<if test="join_Date != null">join_date=#{join_Date},</if>
+			<if test="staff_Identity != '' and staff_Identity != null">staff_identity=#{staff_Identity},</if>
+			<if test="staff_Address != '' and staff_Address != null">staff_address=#{staff_Address},</if>
+			<if test="staff_State != null">staff_state=#{staff_State},</if>
+			<if test="staff_Superior != null">staff_superior=#{staff_Superior},</if>
+			<if test="dingding_staffid != null">dingding_staffid =#{dingding_staffid}</if>
+			<if test="staff_Idture != null">staff_idture =#{staff_Idture}</if>
+		</set>
+		where staff_id=#{staff_Id}
+	</update>
+	<!-- 修改密码 -->
+	<update id="updatePassword" parameterType="com.yr.lize.pojo.SystemStaff">
+		update system_staff set staff_password=#{staff_Password} where staff_id=#{staff_Id}
+	</update>
+	<!-- 查询所有员工入职状态 -->
+	<select id="getStaffState" resultType="com.yr.lize.pojo.StaffState">
+		select * from staff_state
+	</select>
+	<!-- 删除员工 -->
+	<delete id="deleteStaff">
+		delete from system_staff where staff_id = #{param1}
+	</delete>
+	<!-- 查询部门下的所有员工 -->
+	<select id="selectDepartmentId" resultType="com.yr.lize.pojo.StaffState">
+		select * from system_staff where department_id =#{param1}
+	</select>
+	<!-- //修改员工删除标识 -->
+	<update id="updateDelete">
+		update system_staff set delete_id =2 where staff_id =#{param1}
+	</update>
+	<!-- 批量删除 -->	
+	<update id="updateDeletes">
+		 <foreach item="item" index="index" collection="staffids">
+		 	 update system_staff
+            <set>
+                delete_id =2
+            </set>
+            	where staff_id=#{item}
+		 </foreach>
+	</update>
+	<!-- //查询有档案调阅审批权限的人 -->
+	<select id="selectArchivesStaff" resultType="HashMap">
+		SELECT * FROM system_staff 
+		WHERE 
+		position_id IN (SELECT position_id FROM system_position WHERE position_id IN (SELECT position_id FROM power_menuallot WHERE menu_id = 14))
+	</select>
+		<!-- //查询有档案销毁审批权限的人 -->
+	<select id="selectArchivesDestructionStaff" resultType="HashMap">
+		SELECT * FROM system_staff 
+		WHERE 
+		position_id IN (SELECT position_id FROM system_position WHERE position_id IN (SELECT position_id FROM power_menuallot WHERE menu_id = 19))
+	</select>
+	<!-- 查询是否存在对应shuj -->
+	<select id="selectDingStaffIdAndDepartmentId" resultType="com.yr.lize.pojo.SystemStaff">
+		SELECT * FROM system_staff WHERE dingding_staffid =#{param}
+	</select>
+	<!-- 根据id查询员工 -->
+	<select id="selectStaffById" resultType="com.yr.lize.pojo.SystemStaff">
+		select * from system_staff where staff_id =#{param1}
+	</select>
+	<!-- 根据钉钉id查询员工 -->
+	<select id="selectStaffByDingdingStaffId" resultType="com.yr.lize.pojo.SystemStaff">
+		select top 1 * from system_staff where dingding_staffid =#{param1}
+	</select>
+	<!-- 根据钉钉id与部门查询员工 -->
+	<select id="selectStaffByDingdingStaffIdAndDepartmentId" resultType="com.yr.lize.pojo.SystemStaff">
+		select top 1 * from system_staff where dingding_staffid = #{dingding_staffid} AND department_id = #{department_id}
+	</select>
+	<select id="selectStaffByDingdingId" resultType="com.yr.lize.pojo.SystemStaff">
+		SELECT top 1 * FROM system_staff
+		where dingding_staffid = #{param} AND staff_number IS NOT NULL AND staff_password IS NOT NULL
+		AND delete_id = 1
+	</select>
+	<select id="selectStaffByIdTure" resultType="com.yr.lize.pojo.SystemStaff">
+		SELECT top 1 * FROM system_staff
+		where staff_idture = #{param} AND staff_number IS NOT NULL AND staff_password IS NOT NULL
+		AND delete_id = 1
+	</select>
+</mapper>

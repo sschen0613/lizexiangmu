@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yr.lize.storage.mapper.InventoryBobuyMapper">
+<!-- //配件请购 -->
+	<insert id="insert" parameterType="Object">
+		insert into
+		lize.inventory_lizeMaterialsout
+		( proposer, proposer_id,
+		proposer_department, proposer_date,area,
+		customer_name,out_type,salesContract_id,payment_agreement,beginning_endingtime,
+		expectedDelivery_date,contract_amount,actual_receipt,outstanding_receipt,buy_number)
+		values
+		( #{proposer}, #{proposer_id},
+		#{proposer_department}, #{proposer_date}, #{area}
+		, #{customer_name},
+		#{out_type}, #{salesContract_id}, #{payment_agreement},
+		#{beginning_endingtime}, #{expectedDelivery_date}
+		, #{contract_amount},
+		#{actual_receipt}, #{outstanding_receipt}, #{buy_number});
+	</insert>
+	<!-- 添加附表信息 -->
+	<insert id="inserttable" parameterType="Object">
+		insert into
+		lize.inventory_lizeMaterialsouttable
+		(inventory_id,product_name,start_time,over_time,inventory_number,
+		inventory_name,specifications_models,unit,buy_quantity,inventory_quantity,offer,BO_id)
+		values
+		(#{inventory_id},#{product_name},#{start_time},#{over_time},#{inventory_number},
+		#{inventory_name},#{specifications_models},#{unit},#{buy_quantity},#{inventory_quantity},#{offer},#{BO_id});
+	</insert>
+
+</mapper>

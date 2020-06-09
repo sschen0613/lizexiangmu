@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemAreaMapper">
+	<!-- //查询角色已管理区域信息 -->
+	<select id="getAlready" resultType="HashMap">
+		SELECT DistrictClass.cDCName, regional_manager.cDCCode, regional_manager.id 
+        FROM regional_manager 
+        LEFT JOIN DistrictClass ON DistrictClass.cDCCode = regional_manager.cDCCode 
+        WHERE regional_manager.staff_id = #{param}
+	</select>
+	<!-- //查询角色未管理区域信息 -->
+	<select id="getNotyet" resultType="HashMap">
+		SELECT *
+		FROM DistrictClass 
+		WHERE DistrictClass.cDCCode 
+		NOT IN ( SELECT DistrictClass.cDCCode FROM regional_manager 
+		LEFT JOIN DistrictClass ON DistrictClass.cDCCode = regional_manager.cDCCode 
+		WHERE regional_manager.staff_id = #{param} ) 
+		</select>
+<!-- 		//根据区域名称模糊查询所有区域 -->
+<select id="selectArea" resultType="HashMap">
+select DistrictClass.cDCName,
+       DistrictClass.cDCCode
+       from
+       DistrictClass
+       where DistrictClass.cDCName like %${param}%
+
+</select>
+
+
+		<!-- //添加未管理区域 -->
+		<insert id="insertNoArea">
+			INSERT INTO regional_manager
+			(staff_id,cDCCode)
+			VALUES
+			(#{param2},#{param1})
+		</insert>
+
+		<!-- //删除角色信息 -->
+		<delete id="deletePerson">
+			DELETE
+			FROM
+			regional_manager
+			WHERE
+			regional_manager.staff_id = #{param}
+		</delete>
+		
+		<!-- //删除角色已管理区域信息 -->
+		<delete id="daleteArea">
+			DELETE
+			FROM
+			regional_manager
+			WHERE
+			regional_manager.id = #{param}
+			
+		</delete>
+
+</mapper>

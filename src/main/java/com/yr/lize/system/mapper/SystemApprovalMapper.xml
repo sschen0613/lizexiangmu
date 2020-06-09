@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yr.lize.system.mapper.SystemApprovalMapper">
+	<!-- //查询所有审批管理 -->
+	<select id="getApprovalList" resultType="HashMap">
+		select * from approval_manage
+	</select>
+	<!-- //查询当前审批角色 -->
+	<select id="selectApprovalRole" resultType="HashMap">
+		select * from approver_role where approval_id =#{param1}		
+	</select>
+	<!-- //添加审批角色 -->
+	<insert id="addDingRole" parameterType="com.yr.lize.pojo.ApproverRole">
+		insert into approver_role (approver_id, approver_name, approval_id, role_type, company_id, approver_condition) 
+		values (#{approver_id},#{approver_name},#{approval_id},#{role_type}, #{company_id }, #{approver_condition})
+	</insert>
+	<insert id="addFacilitiesApproval" parameterType="com.yr.lize.pojo.ApproverRole">
+		insert into approver_role (approver_id, approver_name, approval_id, role_type, company_id, approver_condition) 
+		values (#{approver_id},#{approver_name},#{approval_id},#{role_type}, #{company_id}, #{approver_condition})
+	</insert>
+	<!-- //删除审批角色 -->
+	<delete id="deleteDingRole" parameterType="com.yr.lize.pojo.ApproverRole">
+		delete from approver_role where approver_role_id =#{approver_role_id}
+	</delete>
+	<!-- //设置审批流程 -->
+	<update id="updateApprovalStaff" parameterType="com.yr.lize.pojo.ApproverRole">
+		update approver_role set role_state =#{role_state} where approver_role_id=#{approver_role_id}
+	</update>
+	<!-- 查询角色组对应审批是否已存在 -->
+	<select id="getApprovalRole" parameterType="com.yr.lize.pojo.ApproverRole" resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where approval_id =#{approval_id} and approver_id = #{approver_id}
+	</select>
+	<!-- 查询审批人是否存在 -->
+	<select id="selectFacilitiesApproval" parameterType="com.yr.lize.pojo.ApproverRole" resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where approval_id =#{approval_id} 
+		<if test="approver_id != null">and approver_id = #{approver_id}</if> and company_id =#{company_id}
+		<if test="approver_condition != null">and approver_condition =#{approver_condition}</if>
+		<if test="approver_condition == null">and approver_condition IS NULL</if>
+		<if test="role_type != null">and role_type =#{role_type}</if>
+	</select>
+	<!-- 添加抄送人 -->
+	<insert id="addCopyPerson" parameterType="com.yr.lize.pojo.ApproverCopy">
+		insert into approver_copy (copy_person, copy_name, approval_id,company_id) values (#{copy_person}, #{copy_name}, #{approval_id},#{company_id})
+	</insert>
+	<!-- 查询所有抄送人 -->
+	<select id="selectCopyPerson" resultType="com.yr.lize.pojo.ApproverCopy">
+		select * from approver_copy where approval_id =#{param1} and company_id =#{param2}
+	</select>
+	<!-- 移除抄送人 -->
+	<delete id="deleteCopyPerson">
+		delete from approver_copy where id =#{param1}
+	</delete>
+	<!-- 查询抄送人是否已存在 -->
+	<select id="selectCopyPersonId" resultType="com.yr.lize.pojo.ApproverCopy">
+		select * from approver_copy where copy_person =#{param2} and approval_id =#{param1} and company_id=#{param3} 
+	</select>
+	<!-- 查询审批主管是否已存在 -->
+	<select id="getApprovalAdmin" resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where role_type =#{param1}
+	</select>
+		<!-- //添加审批主管 -->
+	<insert id="addApprovalAdmin" parameterType="com.yr.lize.pojo.ApproverRole">
+		insert into approver_role (approver_name, approval_id, role_type) values (#{approver_name},#{approval_id}, #{role_type})
+	</insert>
+	<!-- 更新当前审批流有多少审批组 -->
+	<update id="updateApprovalManagerCount">
+		update approval_manage set role_count =#{param1} where approval_id=#{param2}
+	</update>
+		<!-- 更新当前审批组审批顺序 -->
+	<update id="updatePriority" parameterType="com.yr.lize.pojo.ApproverRole">
+		update approver_role set role_priority =#{role_priority} where approver_role_id=#{approver_role_id}
+	</update>
+	<!-- 查询排序是否重复 -->
+	<select id="selectRolePriority" parameterType="com.yr.lize.pojo.ApproverRole"  resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where approval_id =#{approval_id} and role_priority =#{role_priority}
+	</select>
+	<!-- //根据id查询审批流程 -->
+	<select id="selectManage" resultType="com.yr.lize.pojo.ApproverManage">
+		select * from approval_manage where approval_id = #{param1}
+
+	</select>
+	<!-- //查询第一个要通知的审批组或主管 -->
+	<select id="selectApprovalRoleMin" resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where role_priority =(select min(role_priority) from approver_role WHERE approval_id=#{param1}) AND approval_id=#{param1}
+	</select>
+	<!-- //查询所有要通知的审批组或主管 -->
+	<select id="selectApprovalRoles" resultType="com.yr.lize.pojo.ApproverRole">
+		select * from approver_role where approval_id=#{param1} ORDER BY role_priority
+	</select>
+	 	<!-- 批量添加审批流 审批人 -->
+ 	<insert id="addApprovalList">
+ 		INSERT INTO approver
+ 		(ding_staff_id, allocation_id,approval_id)
+ 		VALUES
+ 		<foreach item="item" index="index" collection="param1" separator=",">
+ 		(#{item}, #{param2},#{param3})
+ 		</foreach>
+ 	</insert>
+ 	<!-- //查询当前登录人员的对应的审批记录信息 -->
+ 	<select id="selectApprover" resultType="com.yr.lize.pojo.Approver">
+ 		select TOP 1 * from approver where allocation_id=#{param1}
+ 		and ding_staff_id =#{param2}
+ 		and approval_id = #{param3}
+ 		ORDER BY id DESC
+ 	</select>
+ 	<!-- //把当前所有审批人的审批值设置为已审批 -->
+ 	<select id="updateApproverResult">
+ 		update approver set approval_result = 1 where allocation_id =#{param1}
+ 	</select>
+ 	<!-- 查询抄送人 -->
+ 	<select id="selectApproverCopyId" resultType="com.yr.lize.pojo.ApproverCopy">
+ 		select * from approver_copy where approval_id =#{param1}
+ 	</select>
+ 	<!-- //把当前审批人审批值设置为已审批 -->
+ 	<update id="updateApproverResultMi" parameterType="com.yr.lize.pojo.Approver">
+ 		update approver set approval_result = #{approval_result} where allocation_id =#{allocation_id}
+ 		<if test="ding_staff_id != null"> and ding_staff_id =#{ding_staff_id}</if>
+ 	</update>
+ 	<!-- 添加审批人 -->
+ 	<insert id="addapprover">
+ 		insert into approver (ding_staff_id, allocation_id) values (#{param1}, #{param2})
+ 	</insert>
+ 	<!-- //查询当前审批流有多少审批 -->
+ 	<select id="selectAllocationApproval" resultType="com.yr.lize.pojo.ApproverRole">
+ 		select * from approver_role where approval_id=#{param1} and company_id =#{param2}
+ 	</select>   
+ 	<!-- //查询对应公司的和条件的审批人 -->
+ 	<select id="selectConditionApproval" parameterType="com.yr.lize.pojo.ApproverRole" resultType="com.yr.lize.pojo.ApproverRole">
+ 		select * from approver_role where approval_id =#{approval_id} and company_id =#{company_id} 
+ 		<if test="approver_condition == null">and approver_condition IS NULL</if>
+ 		<if test="approver_condition != null">and approver_condition =#{approver_condition}</if>
+ 	</select>
+ 	 <!-- //记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续 -->
+ 	 <insert id="addApproveRroleRecord">
+ 		INSERT INTO approver_role_record
+ 		(approver_id ,approver_name ,approval_id ,role_priority ,role_state ,role_type ,company_id ,approver_condition ,apply_id)
+ 		VALUES
+ 		<foreach item="item" index="index" collection="param1" separator=",">
+ 		(#{item.approver_id} ,#{item.approver_name} ,#{item.approval_id} ,#{item.role_priority} ,#{item.role_state} 
+ 		,#{item.role_type} ,#{item.company_id} ,#{item.approver_condition} ,#{param2})
+ 		</foreach>
+ 	</insert>
+ 	 <!-- //查询对应公司的审批人或条件审批人 -->
+ 	<select id="selectApproveRroleRecord" parameterType="com.yr.lize.pojo.ApproverRole" resultType="com.yr.lize.pojo.ApproverRole">
+ 		SELECT * FROM approver_role_record WHERE 
+ 			approval_id =#{approval_id}
+ 			AND company_id =#{company_id} 
+ 			AND apply_id = #{apply_id}
+ 		<if test="approver_condition == null">AND approver_condition IS NULL</if>
+ 		<if test="approver_condition != null">AND approver_condition =#{approver_condition}</if>
+ 		
+ 	</select>
+ 	<!-- 删除对应申请id的那些已经通过的流程 -->
+ 	<delete id="deleteApproveRroleRecord" parameterType="com.yr.lize.pojo.ApproverRole" >
+ 		DELETE FROM approver_role_record WHERE 
+ 		 	approval_id =#{approval_id}
+ 			AND company_id =#{company_id} 
+ 			AND apply_id = #{apply_id}
+ 	</delete>
+
+	<!--查询approver所有种类-->
+	<select id="findCurrencyNameByTyep1" resultType="HashMap">
+		select * from  approval_manage
+	</select>
+
+	<update id="updateApproval1" parameterType="com.yr.lize.pojo.SystemStaff">
+		UPDATE approver_role SET approver_name = #{staff_Name},approver_id = #{dingding_staffid}
+		WHERE approval_id = 54 AND role_type = 3 AND approver_condition = 2
+	</update>
+
+	<update id="updateApproval2" parameterType="com.yr.lize.pojo.SystemStaff">
+		UPDATE approver_role SET approver_name = #{staff_Name},approver_id = #{dingding_staffid}
+		WHERE approval_id = 54 AND role_type = 3 AND approver_condition IS NULL
+	</update>
+
+	<select id="selectApprovalByAlId" resultType="HashMap">
+		SELECT * FROM approver WHERE allocation_id = #{param1} AND approval_id = #{param2}
+		ORDER BY id ASC
+	</select>
+</mapper>

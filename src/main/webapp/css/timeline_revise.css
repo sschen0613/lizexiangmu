@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+            .layui-icon-release{
+                color:#0080FF;
+                font-size:28px;
+            }
+            .revise_title{
+                font-size:18px !important;
+                color:#003D79 !important;
+            }
+            .revise_p{
+                font-family:"黑体";
+            }
+            .revise_time>a{
+                text-decoration:none !important;
+                font-family:"STHeiti";
+                color:#003D79 !important;
+                cursor:pointer;
+            }
+            .revise_time>a:hover{
+                color:#003D79 !important;
+            }
+
+            .show_none{
+                display: none;
+            }

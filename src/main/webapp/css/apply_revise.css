@@ -1,0 +1,324 @@
+@charset "UTF-8";
+
+
+html,body{
+    /*width:100%;*/
+    height:100%;
+}
+body{
+    position:relative;
+}
+.title{
+    text-align:center;
+    padding:20px 0;
+    color:#333;
+}
+.form-style{
+    position:absolute;top:50%;transform: translateY(-50%);
+    width:90%;
+}
+.form-style2{
+    margin-right:40px;
+}
+.label_revise{
+    /*border:1px solid black !important;*/
+}
+.inline_revise{
+    /*border:1px solid black !important;*/
+    width:100%;
+}
+.layui-input-inline{
+    width:100%;
+}
+.input_revise{
+    float:left;
+    /*border:1px solid black !important;*/
+    width:60% !important;
+    vertical-align: middle;
+}
+.button_revise{
+    /*border:1px solid black !important;*/
+    width:40%;
+    padding:0 !important;
+    font-size:0.16rem !important;
+}
+/* 添加多个档案 */
+.archives-container{
+    overflow: auto;
+    margin-bottom:15px;
+}
+.archives-items{
+	display: flex;flex-wrap:wrap;
+    justify-content:space-around;
+    padding:5px 0;margin-left:20px;
+    border-bottom:1px solid #C9C9C9;
+}
+.archives-items:last-child{border:0;}
+.archives-items>div{
+    flex-grow:1;
+    display: flex;
+    justify-content: space-around;
+}
+.archives-items>div>label{
+    flex-grow:1;
+    padding:0 3px;text-align:center;
+    line-height:23px;
+    font-size:10px;
+}
+.archives-items>div>div{
+    flex-grow:1;
+}
+.archives-items>div>div>input{
+    height:23px;line-height: 23px;text-align: center;
+    padding-left:1px; 
+    font-size:10px;
+    border:0;
+}
+/* 添加多个商品 */
+.goods{
+    max-height:150px;
+    overflow: auto;
+    margin-bottom:15px;
+}
+.add-goods{
+    display: flex;flex-wrap:wrap;
+    justify-content:space-around;
+    padding:5px 0;margin-left:20px;
+    border-bottom:1px solid #C9C9C9;
+}
+.add-goods:last-child{border:0;}
+.add-goods>div{
+    flex-grow:1;
+    display: flex;
+    justify-content: space-around;
+}
+.add-goods>div>label{
+    flex-grow:1;
+    padding:0 3px;
+    line-height:12px;
+    font-size:10px;
+}
+.add-goods>div>div{
+    flex-grow:1;
+}
+.add-goods>div>div>input{
+    height:23px;
+    padding-left:1px; 
+    font-size:10px;
+}
+
+.delete{
+    margin-left:5px;
+}
+/* 设施调拨 id不显示 */
+.display-none{
+	display:none !important;
+}
+
+/* 添加多个商品 样式2 */
+.add-goods2{}
+.add-goods2>div{
+    width:20%;
+    white-space:nowrap;
+}
+.add-goods2>div:nth-child(2){
+    width:35%;
+}
+.add-goods2>div>label{
+    line-height:23px;
+    text-align:center;
+}
+.add-goods>.row2{
+    margin-top:1px;
+}
+.archives-search-container{
+/* 	border:1px solid red; */
+	position:relative;
+}
+.archives-list-container{
+/* 	display:none; */
+	position:absolute;top:42px;left:0;z-index:100;width:100%;
+	box-sizing:border-box;
+	background-color:white;
+	
+	max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #d2d2d2;
+    box-shadow: 0 2px 4px rgba(0,0,0,.12);
+    border-radius: 2px;
+    padding: 5px 0;
+}
+.archives-list-container>ul{
+	box-sizing: border-box;
+}
+.archives-list-container>ul>li{
+	height: 38px;line-height: 38px;
+	padding-left:10px;
+/* 	border:1px solid #e6e6e6;  */
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.archives-list-container>ul>li:hover{
+	background-color:#eee;
+}
+.archives-list-container>ul>li:active{
+	background-color: #009688;
+	color:white;
+}
+
+
+/* 自定义滚动条样式 */
+	/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.archives-list-container::-webkit-scrollbar
+{
+/*     width: 16px; */
+/*     height: 16px; */
+/*     background-color: #F5F5F5; */
+	border:2px solid #eee;
+	box-sizing:border-box;
+}
+ 
+	/*定义滚动条轨道 内阴影+圆角*/
+.archives-list-container::-webkit-scrollbar-track
+{
+/*     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+/*     border-radius: 10px; */
+    background-color: #eee;
+}
+ 
+	/*定义滑块 内阴影+圆角*/
+.archives-list-container::-webkit-scrollbar-thumb
+{
+/*     border-radius: 10px; */
+/*     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+    background-color: #c2c2c2;
+}
+
+
+/* 登录界面 */
+.form-style3{
+    width:70%;
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.login{margin-left:0 !important;}
+.login-btn{width:100%;}
+
+/* 主页面 */
+.buttons{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:80%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap:wrap;
+}
+.buttons>a{
+    width:48%;
+    margin-left:0 !important;
+    margin-bottom:10px;
+}
+
+/*审批*/
+
+.content{
+    margin:10px 30px;
+}
+.container{
+    margin-bottom:10px;
+    border:1px solid #cceff5;
+    background:#fafcfd;
+}
+.container>form{}
+.container>form>div{
+    display: flex;
+    justify-content: space-around;
+    margin:5px 0;
+}
+.container>form>div>label{
+    flex-grow:1;
+    text-align:left;
+    padding-left:10px;
+    color:#666;
+}
+.container>form>div>input,.container>form>div>textarea{
+    flex-grow:1;
+    margin-right:5px;
+    width:70%;
+    border:0;
+    background:#fafcfd;
+}
+.container>form>div>textarea{
+    /*height: 200px !important;*/
+}
+.button{}
+.show-goods{
+    flex-wrap:wrap;
+    padding-left:18px;
+}
+.show-goods>.goods-items{
+    flex-grow:1;
+    width:45%;
+    margin:0 5px;
+    border-bottom:1px solid #ccc;
+}
+.goods-items>div{
+    display: flex;
+    justify-content: space-around;
+    
+}
+.goods-items>div>label{
+    flex-grow:1;
+    color:#666;
+    font-size:12px;
+}
+.goods-items>div>input{
+    flex-grow:1;
+    width:50%;
+    border:0;
+    background:#fafcfd;
+    font-size:12px;
+}
+
+.style{position:relative;}
+.style::before{
+    position:absolute;top:0;right:0;z-index:100;
+    content:'';
+    /*border:1px solid black;*/
+    opacity:0.5;
+}
+.style1{}
+.style1::before{
+    width:100px;height:100px;
+    background-image:url(../img/approved.png);
+    background-size:100%;
+}
+.style2{}
+.style2::before{
+    width:100%;height:100%;
+    background:#eee;
+}
+
+
+
+/* 添加多个商品 自定义搜索选择框  */
+.commodity-search-container{
+	display:flex;
+	align-items:stretch;
+	box-sizing:border-box;
+}
+.commodity-search-container>input{
+/* 	flex-basis：70%; */
+	border-right:0;
+}
+.commodity-search-container>button{
+/* 	flex-basis：30%; */
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+}
+.archives-list-container2{
+	width:70% !important;
+}
+/* 电脑端添加多个样式修改 */
+.computer_form div.goods label{
+	line-height:22px !important;
+}
+
