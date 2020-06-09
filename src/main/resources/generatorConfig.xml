@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+ 
+<generatorConfiguration>
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+    <commentGenerator>
+    	<!-- 是否去除自动生成的注释 true：是 ： false:否-->
+    	<property name="suppressAllComments" value="true"/>
+    </commentGenerator>
+    <!-- Mysql数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+    <jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        connectionURL="jdbc:sqlserver://47.75.33.205:1433;DatabaseName=lize"
+        userId="sa"
+        password="Admin123456">
+    </jdbcConnection>
+    <!-- Oracle数据库
+	    <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
+	        connectionURL="jdbc:oracle:thin:@127.0.0.1:1521:yycg"
+	        userId="yycg"
+	        password="yycg">
+	    </jdbcConnection> 
+    -->
+	
+	<!-- 默认为false，把JDBC DECIMAL 和NUMERIC类型解析为Integer，为true时
+	把JDBC DECIMAL 和NUMERIC类型解析为java.math.BigDecimal -->
+    <javaTypeResolver >
+		<property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+	
+	<!-- targetProject：生成POJO类的位置 -->
+    <javaModelGenerator targetPackage="com.yr.lize.pojo" targetProject=".\src\main\java">
+		<!-- enableSubPackages:是否让schema作为包的后缀 -->
+		<property name="enableSubPackages" value="false" />
+		<!-- 从数据库返回的值被清理前后的空格 -->
+		<property name="trimStrings" value="true" />
+    </javaModelGenerator>
+    
+	<!-- targetProject：mapper映射文件生成的位置 -->
+    <sqlMapGenerator targetPackage="com.yr.lize.mapper"  targetProject=".\src\main\java">
+		<!-- enableSubPackages:是否让schema作为包的后缀 -->
+		<property name="enableSubPackages" value="false" />
+    </sqlMapGenerator>
+    
+	<!-- targetProject：mapper接口生成的的位置 -->
+	<javaClientGenerator type="XMLMAPPER" targetPackage="com.yr.lize.mapper"  targetProject=".\src\main\java">
+		<!-- enableSubPackages:是否让schema作为包的后缀 -->
+		<property name="enableSubPackages" value="false" />
+    </javaClientGenerator>
+    
+	<!-- 指定数据表 -->
+
+	
+	<table schema="" tableName="contract_lizeoperationcontract"></table>
+	<table schema="" tableName="contract_lizeoperationcontracttable"></table>
+	<table schema="" tableName="contract_lizereducecontract"></table>
+	<table schema="" tableName="contract_lizereducecontracttable"></table>
+	<table schema="" tableName="contract_lizesalecontract"></table>
+	<table schema="" tableName="contract_lizesalecontracttable"></table>
+	<table schema="" tableName="contract_xinzeservercontract"></table>
+	<table schema="" tableName="finance_detectioninvoice"></table>
+	<table schema="" tableName="finance_operationinvoice"></table>
+	<table schema="" tableName="finance_saleinvoice"></table>
+	<table schema="" tableName="finance_saleinvoicetable"></table>
+	<table schema="" tableName="finance_serverequest"></table>
+	<table schema="" tableName="inventory_BObuy"></table>
+	<table schema="" tableName="inventory_BObuytable"></table>
+	<table schema="" tableName="inventory_drugout"></table>
+	<table schema="" tableName="inventory_drugouttable"></table>
+	<table schema="" tableName="inventory_equipmentbuy"></table>
+	<table schema="" tableName="inventory_equipmentbuytable"></table>
+	<table schema="" tableName="inventory_labmedicinebuy"></table>
+	<table schema="" tableName="inventory_labmedicinebuytable"></table>
+	<table schema="" tableName="inventory_lizeInsideout"></table>
+	<table schema="" tableName="inventory_lizeInsideouttable"></table>
+	<table schema="" tableName="inventory_lizeMaterialsout"></table>
+	<table schema="" tableName="inventory_lizeMaterialsouttable"></table>
+	<table schema="" tableName="inventory_lizeSellout"></table>
+	<table schema="" tableName="inventory_lizeSellouttable"></table>
+	<table schema="" tableName="inventory_officebuy"></table>
+	<table schema="" tableName="inventory_officebuytable"></table>
+	<table schema="" tableName="inventory_stockupbuy"></table>
+	<table schema="" tableName="inventory_stockupbuytable"></table>
+	<table schema="" tableName="inventory_xinzeequipmentmaintain"></table>
+	<table schema="" tableName="inventory_xinzeequipmentmaintaintable"></table>
+	<table schema="" tableName="inventory_xinzelabnormalbuy"></table>
+	<table schema="" tableName="inventory_xinzelabnormalbuytable"></table>
+	<table schema="" tableName="inventory_xinzeMaterialsout"></table>
+	<table schema="" tableName="inventory_xinzeMaterialsouttable"></table>
+	<table schema="" tableName="office_carmaintain"></table>
+	<table schema="" tableName="office_departregister"></table>
+	<table schema="" tableName="office_outprint"></table>
+	<table schema="" tableName="office_takeworkingdaysoff"></table>
+	<table schema="" tableName="office-workovertime"></table>
+	<table schema="" tableName="onlineOperation_abnormalclear"></table>
+	<table schema="" tableName="onlineOperation_detectiontask"></table>
+	<table schema="" tableName="onlineOperation_installdebug"></table>
+	<table schema="" tableName="onlineOperation_installdebugtable"></table>
+	<table schema="" tableName="onlineOperation_parsmaintain"></table>
+	<table schema="" tableName="onlineOperation_parsmaintaintable"></table>
+	<table schema="" tableName="onlineOperation_reagentget"></table>
+	<table schema="" tableName="onlineOperation_reagentgettable"></table>
+	<table schema="" tableName="onlineOperation_receivingdelivery"></table>
+	<table schema="" tableName="onlineOperation_receivingdeliverytable"></table>
+	<table schema="" tableName="onlineOperation_reportget"></table>
+	<table schema="" tableName="onlineOperation_standbybuy"></table>
+	<table schema="" tableName="onlineOperation_standbybuytable"></table>
+	<table schema="" tableName="onlineOperation_technologysupport"></table>
+	<table schema="" tableName="onlineOperation_technologysupporttable"></table>
+	<table schema="" tableName="reportMoveStamp_reportMoveStamp"></table>
+	<table schema="" tableName="reportMoveStamp_reportMoveStamptable"></table>
+	<table schema="" tableName="testingProcess_businessselect"></table>
+	<table schema="" tableName="testingProcess_businessselecttable"></table>
+	<table schema="" tableName="testingProcess_detectionperformance"></table>
+	<table schema="" tableName="testingProcess_detectionregister"></table>
+	<table schema="" tableName="testingProcess_detectionregistertable"></table>
+	<table schema="" tableName="testingProcess_samplingregister"></table>
+	<table schema="" tableName="testingProcess_samplingregistertable"></table>
+	<table schema="" tableName="testingProcess_samplingtask"></table>
+	<table schema="" tableName="testingProcess_samplingtasktable"></table>
+	<table schema="" tableName="testingProcess_sceneperformance"></table>
+	<table schema="" tableName="testingProcess_specimencoding"></table>
+	<table schema="" tableName="testingProcess_specimencodingtable"></table>
+	<table schema="" tableName="xinzedetection_detectiontask"></table>
+	<table schema="" tableName="xinzedetection_equipmentbuy"></table>
+
+
+
+    
+    <!-- 有些表的字段需要指定java类型 
+    <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+      <property name="useActualColumnNames" value="true"/>
+      <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+      <columnOverride column="DATE_FIELD" property="startDate" />
+      <ignoreColumn column="FRED" />
+      <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+    </table> -->
+ 
+  </context>
+</generatorConfiguration>

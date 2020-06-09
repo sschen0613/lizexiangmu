@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 数据源 -->
+	<!-- SqlSession工厂 -->
+	<!-- Mapper的自动扫描 -->
+	<!-- 配置数据源 -->
+	<!-- 本地数据源 -->
+	<bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.1.27:1433;DatabaseName=lzhj"></property>
+		<property name="user" value="sa"></property>
+		<property name="password" value="lzhj.123"></property>
+	</bean>
+	<!-- 丽泽账套 -->
+	<bean id="dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.1.200:1433;DatabaseName=UFDATA_201_2019"></property>
+		<property name="user" value="sa"></property>
+		<property name="password" value="SAsa1"></property>
+	</bean>
+	<!-- 丽泽账套 -->
+	<bean id="dataSource4" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.1.200:1433;DatabaseName=UFSystem"></property>
+		<property name="user" value="sa"></property>
+		<property name="password" value="SAsa1"></property>
+	</bean>
+	<!-- 信泽账套 -->
+	<bean id="dataSource3" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="jdbcUrl" value="jdbc:sqlserver://192.168.1.27:1433;DatabaseName=UFDATA_002_2019"></property>
+		<property name="user" value="sa"></property> 
+		<property name="password" value="lzhj.123"></property>
+	</bean> 
+	<bean id="dataSource" class="com.st.rbac.util.DynamicDataSource">
+		<property name="targetDataSources">
+				<map key-type="java.lang.String">
+				<!-- 指定lookupKey和与之对应的数据源 -->
+				<entry key="1" value-ref="dataSource1"></entry>
+				<entry key="2" value-ref="dataSource2"></entry>
+				<entry key="3" value-ref="dataSource3"></entry>
+					<entry key="4" value-ref="dataSource4"></entry>
+			</map>
+		</property>
+	<!-- 这里可以指定默认的数据源 -->
+		<property name="defaultTargetDataSource" ref="dataSource1" />	
+	</bean>
+	
+	<!-- 配置SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+
+		<!-- 指定MyBatis的核心配置文件 -->
+		<property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+	</bean>
+
+	<!-- 扫描Mapper下的所有接口
+		自动创建每个接口对应的Bean对象
+		<bean>
+		BumenMapper接口
+		扫描完成后，会自动的创建一个Bean，id为接口名，首字母小写bumenMapper
+	 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yr.lize.*.mapper"></property>
+	</bean>
+
+	<!-- 自动扫描Service -->
+	<context:component-scan base-package="com.yr.lize.*.service.impl"></context:component-scan>
+	
+	<!-- 配置事务 -->
+	<!-- 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!--	事务管理器，要管理连接对象上的事务,连接对象来源于,c3po链接池 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 事务通知 -->
+	<!-- 通过Spring事务管理机制，配置事务的通知
+		transaction-manager:指定事务的管理器
+		-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 事物的属性配置: 对哪些东西进行事务处理 -->
+		<tx:attributes>
+		<!-- REQUIRED 事务的传播性,如果没有事务给当前的方法开启一个新的事务 -->
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<!-- 這個類型的方法不需要使用事務 -->
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 以AOP的方式配置事务 -->
+<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	<bean id="dataSourceAspect" class="com.st.rbac.util.DataSourceAspect" />
+	<aop:config>
+		<aop:aspect ref="dataSourceAspect" >
+			<!-- 拦截所有service方法 -->
+			<!--我这里实在Mapper上面加的注解，可自行调换  -->
+			<aop:pointcut id="dataSourcePointcut" expression="execution(* com.yr.lize.*.mapper..*.*(..))"/>
+			<aop:before pointcut-ref="dataSourcePointcut" method="intercept" />
+		</aop:aspect>
+	</aop:config>
+</beans>
