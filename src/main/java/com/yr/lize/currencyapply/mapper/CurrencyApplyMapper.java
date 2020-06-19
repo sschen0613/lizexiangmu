@@ -37,11 +37,17 @@ public interface CurrencyApplyMapper {
 	//审批人查询自己需要审批的申请条数
 	Integer getCurrencyApproverRows(CurrencyApply currencyApply);
 
+	//审批人查询自己需要审批的申请条数
+	Integer getCurrencyApproverRowsTr(CurrencyApply currencyApply);
+
 	//销售请购审批人查询自己需要审批的申请条数
 	Integer getCurrencyApproverRows1(CurrencyApply currencyApply);
 
 	//审批人查询自己需要审批的申请
 	List<HashMap<String, Object>> selectCurrencyApprover(Page page2, CurrencyApply currencyApply);
+
+	//审批人查询自己需要审批的申请
+	List<HashMap<String, Object>> selectCurrencyApproverTr(Page page2, CurrencyApply currencyApply);
 
 	//审批人查询自己需要审批的申请
 	List<HashMap<String, Object>> selectCurrencyApprover2(CurrencyApply currencyApply);
@@ -133,4 +139,8 @@ public interface CurrencyApplyMapper {
 	Integer findCurrencyDetailsByMap(String barcode);
 
 	Integer getProductCount(String product_id);
+
+	void updateRefused();
+
+	List<HashMap<String,Object>> getCurrencyApply69ForRemind();
 }

@@ -63,6 +63,11 @@ public class CurrencyApplyController {
 	public String approvalOpinion() {
 		return "WEB-INF/views/approvalOpinion";
 	}
+	//转跳到天人审批意见页面
+	@RequestMapping("/Currency/trApprovalOpinion.action")
+	public String trApprovalOpinion() {
+		return "WEB-INF/views/trApprovalOpinion";
+	}
 	//跳转到工作流审批意见页面
 	@RequestMapping("/Currency/launchWorkFlowApprovalOpinion.action")
 	public String launchWorkFlowApprovalOpinion(){
@@ -116,6 +121,10 @@ public class CurrencyApplyController {
 		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
 		if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 
+		    //如果流程为69，天人报备流程，那么审批人为集团审批
+		    if(currencyApply.getCurrency_type() == 69){
+		        approverRole.setCompany_id(65);
+            }
 //            approverRole.setApprover_condition(condition);
 
 			currencyApply.setCondition_state(1);//加入条件标识
@@ -277,7 +286,11 @@ public class CurrencyApplyController {
 			for (CurrencyDetails c:currencyDetailss){
 				c.setDetails_string(currency_number);
 			}
-		}
+			///////////////2020.06.11///////////////////////
+		}else if (currencyApply.getCurrency_type() == 69 ){
+            //将申请人的钉钉id保存到流程数据中
+            currencyApply.setCurrency_string11(staff.getDingding_staffid());
+        }
 
 		//发起通用申请并记录
 		try {
@@ -802,6 +815,30 @@ public class CurrencyApplyController {
 		result.setData(list);
 		return result;
 	}
+
+    //审批人查询需要自己审批的请求
+    @RequestMapping("/Currency/selectCurrencyApproverTr.action")
+    @ResponseBody
+    public ResponseResult selectCurrencyApproverTr(Integer limit,Integer page,CurrencyApply currencyApply) {
+        ResponseResult result = new ResponseResult();
+        Page page2 = new Page();
+        if (limit != null) {
+            page2.setPagerows(limit);
+            page2.setCurpage(page);
+        }
+        currencyApply.setCurrency_string(currencyApply.getCurrency_string());
+
+        List<HashMap<String, Object>> list = iCurrencyApplyService.selectCurrencyApproverTr(page2,currencyApply);
+
+        Integer count = iCurrencyApplyService.getCurrencyApproverRowsTr(currencyApply);
+
+        result.setCode(0);
+        result.setCount(count);
+        result.setData(list);
+        return result;
+    }
+
+
 
 	//查看申请详情
 	@RequestMapping("/Currency/selectCurrencyDetails.action")
@@ -1541,5 +1578,16 @@ public class CurrencyApplyController {
 		result.setCode(0);
 		result.setData(productCount);
 		return result;
+	}
+
+	//给天人报备流程中选择的通知人发送通知
+	@RequestMapping("/Currency/sendMessage69.action")
+	@ResponseBody
+	public void sendMessage69(CurrencyApply currencyApply) {
+		try {
+			iCurrencyApplyService.sendMessage69(currencyApply);
+		}catch (ApiException e){
+			e.printStackTrace();
+		}
 	}
 }

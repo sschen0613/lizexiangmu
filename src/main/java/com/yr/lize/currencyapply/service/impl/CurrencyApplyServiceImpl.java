@@ -284,6 +284,9 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		ApproverRole approverRole3 = new ApproverRole();//创建一个审批流程类传入筛选条件用于通过或被拒绝后 删除记录的审批流程
 		approverRole3.setApply_id(currencyApply2.getCurrency_id());
 		approverRole3.setCompany_id(systemStaff.getCompany_Id());
+		if (currencyApply.getCurrency_type() == 69){
+			approverRole3.setCompany_id(65);
+		}
 		approverRole3.setApproval_id(approval_id);
 		if (currencyApply2.getApprover_state() == 0 && currencyApply2.getApprover_count() == currencyApply2.getCurrent_approvalCount()) {
 			return 100;//已经通过了
@@ -309,6 +312,9 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				approverRole2.setApproval_id(approval_id);//当前审批管理的id
 				approverRole2.setApply_id(currencyApply.getCurrency_id());
 				approverRole2.setCompany_id(systemStaff.getCompany_Id());
+				if (currencyApply.getCurrency_type() == 69){
+					approverRole2.setCompany_id(65);
+				}
 				if (currencyApply2.getCondition_state() != 1) {//判断是否为条件查询
 					approverRole2.setApprover_condition(2);
 					//查询当前审批流的设置信息
@@ -1103,6 +1109,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 							//Integer currency_id = Integer.parseInt(currencyApply2.getCurrency_string17());
 							currencyApplyMapper.updateFlagById66(currencyApply2.getCurrency_id());
 						}
+						//---------------------------审批完成后抄送人没有根据天人来进行查询20200617--------------------------
 						List<ApproverCopy> aCopies = systemApprovalMapper.selectCopyPerson(approval_id , systemStaff.getCompany_Id());
 						systemApprovalMapper.deleteApproveRroleRecord(approverRole3);
 						String userlist = "";
@@ -1689,7 +1696,13 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		return currencyApplyMapper.selectCurrencyApprover(page2,currencyApply);
 	}
 
-	@Override
+    @Override
+    public List<HashMap<String, Object>> selectCurrencyApproverTr(Page page2, CurrencyApply currencyApply) {
+        //审批人查询自己需要审批的申请
+        return currencyApplyMapper.selectCurrencyApproverTr(page2,currencyApply);
+    }
+
+    @Override
 	public List<HashMap<String, Object>> selectCurrencyApprover2(CurrencyApply currencyApply) {
 		//审批人查询自己需要审批的申请
 		return currencyApplyMapper.selectCurrencyApprover2(currencyApply);
@@ -1707,7 +1720,12 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		return currencyApplyMapper.getCurrencyApproverRows(currencyApply);
 	}
 
-	@Override
+    @Override
+    public Integer getCurrencyApproverRowsTr(CurrencyApply currencyApply) {
+        return currencyApplyMapper.getCurrencyApproverRowsTr(currencyApply);
+    }
+
+    @Override
 	public Integer getCurrencyApproverRows1(CurrencyApply currencyApply) {
 		//审批人查询自己需要审批的申请条数
 		return currencyApplyMapper.getCurrencyApproverRows1(currencyApply);
@@ -1716,6 +1734,10 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 	@Override
 	public List<HashMap<String, Object>> selectCurrencyDetails(CurrencyApply currencyApply) {
 		//查看申请详情
+		CurrencyApply currencyApply2  = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
+		if (currencyApply2.getCurrency_type() == 2){
+
+		}
 		return currencyApplyMapper.selectCurrencyDetails(currencyApply);
 	}
 
@@ -1740,6 +1762,11 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		String[] str = {"8","11","14","15","16","17","18","19","24","22","23","28","29","32","34","35","36","37","20","61","38","39","40","41","42","44","45","46","55","58","59","62","63","66","67","68","69"};
 		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
 		if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
+
+            //如果流程为69，天人报备流程，那么审批人为集团审批
+            if(currencyApply.getCurrency_type() == 69){
+                approverRole.setCompany_id(65);
+            }
 
 			currencyApply.setCondition_state(1);//加入条件标识
 			//查询当前审批流的设置信息
@@ -2505,5 +2532,40 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 
 			Integer i = currencyApplyMapper.insertFlowMessage(flow);
 		}
+	}
+
+	@Override
+	public void sendMessage69(CurrencyApply currencyApply) throws ApiException{
+
+
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd");
+        //查询流程相关信息
+        CurrencyApply currencyApply2  = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
+
+	    if ("0".equals(currencyApply.getCurrency_string10())){//合同未签订
+			currencyApply2.setCurrency_string6(currencyApply.getCurrency_string6());
+
+        }else if ("1".equals(currencyApply.getCurrency_string10())){//合同已签订
+            currencyApply2.setCurrency_date3(sdf.format(currencyApply.getCurrency_date3()));
+            currencyApply2.setCurrency_string10("1");
+			//更新流程信息 加入被通知人钉钉id和姓名
+			currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+        }else if ("2".equals(currencyApply.getCurrency_string10())){//终止报备
+            currencyApply2.setCurrency_string10("2");
+            //更新流程信息 流程状态为终止
+            currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+        }else if ("3".equals(currencyApply.getCurrency_string10())){//合同提醒
+
+        }else{//选择要通知的人
+            currencyApply2.setCurrency_string17(currencyApply.getCurrency_string17());
+            currencyApply2.setCurrency_string18(currencyApply.getCurrency_string18());
+
+            //记录通知时间
+			currencyApply.setCurrency_date5(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            //更新流程信息 加入被通知人钉钉id和姓名
+            currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+        }
+        //发送通知
+        dingDingUtilsService.sendMessage69(currencyApply.getCurrency_string10(),currencyApply2);
 	}
 }

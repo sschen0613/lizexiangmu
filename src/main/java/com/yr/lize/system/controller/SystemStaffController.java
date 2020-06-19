@@ -188,7 +188,23 @@ public class SystemStaffController {
 		result.setData(list);
 		
 		return result;
-		
+
+	}
+
+	//查询角色是业务经理和区域经理的人
+	@RequestMapping("/Staff/selectStaffTr.action")
+	@ResponseBody
+	public ResponseResult selectStaffTr() {
+
+		ResponseResult result = new ResponseResult();
+
+		List<HashMap<String, Object>> list = iSystemStaffService.selectStaffTr();
+
+		result.setCode(0);
+		result.setData(list);
+
+		return result;
+
 	}
 	
 	//添加员工

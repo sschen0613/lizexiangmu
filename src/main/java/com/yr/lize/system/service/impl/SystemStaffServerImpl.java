@@ -61,6 +61,11 @@ public class SystemStaffServerImpl implements ISystemStaffService {
 		return systemStaffMapper.selectStaff(page2, staff);
 	}
 
+	@Override
+	public List<HashMap<String, Object>> selectStaffTr() {
+		return systemStaffMapper.selectStaffTr();
+	}
+
 	//根据当前用户查询员工数量
 	@Override
 	public Integer getRows(SystemStaff staff) {

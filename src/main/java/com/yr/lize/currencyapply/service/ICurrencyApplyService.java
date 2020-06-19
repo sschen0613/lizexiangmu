@@ -30,11 +30,17 @@ public interface ICurrencyApplyService {
 	//审批人查询自己需要审批的申请
 	List<HashMap<String, Object>> selectCurrencyApprover(Page page2, CurrencyApply currencyApply);
 
+    //天人审批人查询自己需要审批的申请
+    List<HashMap<String, Object>> selectCurrencyApproverTr(Page page2, CurrencyApply currencyApply);
+
 	//销售请购审批人查询自己需要审批的申请
 	List<HashMap<String, Object>> selectCurrencyApprover1(Page page2, CurrencyApply currencyApply);
 	
 	//审批人查询自己需要审批的申请记录条数
 	Integer getCurrencyApproverRows(CurrencyApply currencyApply);
+
+    //审批人查询自己需要审批的申请记录条数
+    Integer getCurrencyApproverRowsTr(CurrencyApply currencyApply);
 
 	//销售请购审批人查询自己需要审批的申请记录条数
 	Integer getCurrencyApproverRows1(CurrencyApply currencyApply);
@@ -132,5 +138,8 @@ public interface ICurrencyApplyService {
 	Integer getProductCount(String product_id);
 
 	void addBarcode(SystemStaff staff,CurrencyApply currencyApply,String currencyDetails);
+
+	//更新天人报备流程（通知人钉钉id和通知人名称）
+	void sendMessage69(CurrencyApply currencyApply) throws ApiException ;
 
 }

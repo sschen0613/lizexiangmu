@@ -74,7 +74,7 @@
             <td>联系人</td>
             <td><input type="text" id='contact_person' name="contact_person" lay-verify="required"></td>
             <td>联系电话</td>
-            <td><input type="text" id='contact_phone' name="contact_phone" lay-verify="required"></td>
+            <td colspan="2"><input type="text" id='contact_phone' name="contact_phone" lay-verify="required"></td>
         </tr>
         </tbody>
         <thead>
@@ -142,7 +142,8 @@
                     "currency_date2":business_time,
                     "currency_string7":business_area,
                     "currency_string8":contact_person,
-                    "currency_string9":contact_phone
+                    "currency_string9":contact_phone,
+                    "currency_string10":0   //合同是否签订 0未签 1已签 2终止报备
                 }
                 ,dataType : "JSON"
                 ,beforeSend: function(){
@@ -179,6 +180,8 @@
                 e.target.title = e.target.value;
             });
         }
+        //监听电话输入框输入正确格式
+        inputLimitPhone($('#contact_phone'));
 
     });
 </script>

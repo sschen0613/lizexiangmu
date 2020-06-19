@@ -5,7 +5,7 @@
     String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 请假申请 -->
+<!-- 天人报备申请 -->
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -51,7 +51,7 @@
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-xs" lay-event="add">添加请假申请</button>
+        <button class="layui-btn layui-btn-xs" lay-event="add">添加天人报备申请</button>
     </div>
 </script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -114,20 +114,23 @@
         //创建table实例
         var tableInner = table.render({
             elem: '#tab'
-            ,url: 'Currency/selectApplicantCurrency.action?currency_type=57' //数据接口
+            ,url: 'Currency/selectApplicantCurrency.action?currency_type=69' //数据接口
             ,page: true //开启分页
             ,toolbar: '#toolbarDemo'
-            ,title: '请假申请表'
+            ,title: '天人报备申请表'
             // ,totalRow: true //开启合计行, totalRowText: '合计'
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                ,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
+                ,{field: 'currency_number', title: '编号', minWidth:220, sort:true}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date2', title: '请假开始日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date3', title: '请假结束日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_string2', title: '请假时长（d）', minWidth:100}
-                ,{field: 'currency_string8', title: '请假类型', minWidth:100}
-                ,{field: 'currency_string7', title: '申请事由', minWidth:200}
+                ,{field: 'currency_string2', title: '业务类型', minWidth:140}
+                ,{field: 'currency_string3', title: '单位名称', minWidth:140}
+                ,{field: 'currency_string4', title: '项目（产品）名称', minWidth:140}
+                ,{field: 'currency_string5', title: '业务（产品）规模', minWidth:140}
+                ,{field: 'currency_date2', title: '业务需求时间', sort: true, minWidth:120,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_string7', title: '业务所在区域', minWidth:120}
+                ,{field: 'currency_string8', title: '联系人', minWidth:100}
+                ,{field: 'currency_string9', title: '联系电话', minWidth:120}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
             ]]
@@ -207,12 +210,12 @@
                     layer.open({
                         type: 2,
                         // skin:'layui-layer-molv', //layui-layer-lan
-                        title: '添加请假申请',
+                        title: '添加天人报备申请',
                         //shadeClose: true,
                         shade: 0.8,
                         shadeClose: true,
                         area: ['80%', '80%'],
-                        content: 'office/askForLeaveRequestForm.action' //iframe的url
+                        content: 'report/businessReportRequestForm.action' //iframe的url
                     });
                     break;
                 case 'delete':

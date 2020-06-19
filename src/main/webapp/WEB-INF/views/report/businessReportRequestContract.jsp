@@ -66,10 +66,19 @@
 </form>
 
 <table id="tab" lay-filter="table"></table>
-
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">审批</a>
-    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="remind">提醒负责人</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="endReport">终止报备</a>
+</script>
+
+<script type="text/html" id="over1">
+    {{#  if(d.currency_string10 === '2'){ }}
+    <span style="color: red;">{{ '报备已终止' }}</span>
+    {{#  } else if( d.currency_string10 === '1'){ }}
+    <span style="color: green;">{{ '合同已签订' }}</span>
+    {{#  } else{ }}
+        <span style="color:yellow ;">{{ '合同未签订' }}</span>
+    {{#  } }}
 </script>
 <script>
     //一般直接写在一个js文件中
@@ -198,7 +207,7 @@
                         ,currency_string9:"联系电话"
                     });
                     // 3. 执行导出函数，系统会弹出弹框
-                    LAY_EXCEL.exportExcel(data, '请假统计.xlsx', 'xlsx');
+                    LAY_EXCEL.exportExcel(data, '天人报备统计.xlsx', 'xlsx');
                 }
             });
 
@@ -208,12 +217,13 @@
         //创建table实例
         var tableInner = table.render({
             elem: '#tab'
-            ,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
+            ,url: 'Currency/selectCurrencyApproverTr.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
             ,page: true //开启分页
             ,toolbar: true
             ,title: '天人报备审批'
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
+                ,{field: '', title: '状态', minWidth:120,templet:'#over1'}
                 ,{field: 'currency_number', title: '编号', minWidth:220, sort:true}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string2', title: '业务类型', minWidth:140}
@@ -221,12 +231,24 @@
                 ,{field: 'currency_string4', title: '项目（产品）名称', minWidth:140}
                 ,{field: 'currency_string5', title: '业务（产品）规模', minWidth:140}
                 ,{field: 'currency_date2', title: '业务需求时间', sort: true, minWidth:120,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date3', title: '合同签订时间', sort: true, minWidth:120,templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string7', title: '业务所在区域', minWidth:120}
                 ,{field: 'currency_string8', title: '联系人', minWidth:100}
                 ,{field: 'currency_string9', title: '联系电话', minWidth:120}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
-            ]]
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:280}
+            ]],
+            done: function (res, curr, count) {
+                console.log(res.data);
+                var that = this.elem.next();
+                res.data.forEach(function (item, index) {
+                    if (item.currency_string10 === "2") {//已终止
+                        var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']");
+                        tr.css("background-color", "lightsteelblue");
+                        //tr.find(".laytable-cell-1-0-9").css("color","blue");
+                    }
+                });
+            }
         });
 
         //监听工具条
@@ -235,28 +257,30 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-            if(layEvent === 'del'){ //删除
-                layer.open({
-                    type: 2,
-                    // skin:'layui-layer-molv', //layui-layer-lan
-                    title: '审批进度',
-                    shadeClose: true,
-                    shade: 0.8,
-                    maxmin: true,
-                    area: ['80%', '80%'],
-                    content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
-                    +data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type=57"//iframe的url
+            if(layEvent === 'endReport'){ //删除
+                layer.confirm('确认终止报备？', function(index){
+                    //更新通知人，并发送钉钉消息
+                    $.ajax({
+                        url : "Currency/sendMessage69.action",
+                        type : "post",
+                        data : {"currency_type":data.currency_type,"currency_id":data.currency_id,"currency_string10":2},
+                        dataType : "JSON",
+                        success : function(res){
+                            layer.close(layer.index);
+                            layer.msg("报备已经终止");
+                        }
+                    });
                 });
-            } else if(layEvent === 'edit'){ //审批
-                layer.open({
-                    type: 2,
-                    // skin:'layui-layer-molv', //layui-layer-lan
-                    title: '审批',
-                    shadeClose: true,
-                    shade: 0.8,
-                    maxmin: true,
-                    area: ['30%', '40%'],
-                    content: 'Currency/trApprovalOpinion.action?approval_id=69&currency_id='+data.currency_id
+            } else if(layEvent === 'remind'){ //审批
+                //更新通知人，并发送钉钉消息
+                $.ajax({
+                    url : "Currency/sendMessage69.action",
+                    type : "post",
+                    data : {"currency_type":data.currency_type,"currency_id":data.currency_id,"currency_string10":3},
+                    dataType : "JSON",
+                    success : function(res){
+                        layer.msg("已经提醒负责人");
+                    }
                 });
             }
         });

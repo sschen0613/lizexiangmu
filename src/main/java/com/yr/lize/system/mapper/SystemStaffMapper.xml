@@ -69,6 +69,25 @@
 			 
 	
 	</select>
+
+
+	<select id="selectStaffTr" resultType="HashMap">
+		SELECT
+		a.staff_id AS stid, a.staff_number AS stnumber, a.dingding_staffid,system_position.position_id
+		,a.staff_name AS stname, a.staff_sex AS stsex, a.staff_age AS stage, system_company.company_id
+		,a.staff_phone, a.staff_email, a.staff_birthday, a.join_date, a.staff_identity,a.staff_idture
+		,system_department.department_name, system_company.company_name, system_position.position_name
+		,staff_state.state_name, b.staff_name, a.staff_address, system_department.ding_depmid ,a.staff_state
+		FROM system_staff AS a
+		LEFT JOIN system_staff AS b ON a.staff_superior = b.staff_id
+		LEFT JOIN system_department ON a.department_id = system_department.ding_depmid
+		LEFT JOIN system_company ON a.company_id = system_company.company_id
+		LEFT JOIN system_position ON a.position_id = system_position.position_id
+		LEFT JOIN staff_state ON staff_state.staffstate_id = a.staff_state
+		where
+			a.delete_id = 1 and a.position_Id in (47,65)
+	</select>
+
 	<!-- 根据当前用户查询员工数量 -->
 	<select id="getRows" resultType="Integer">
 		select count(*) as count from system_staff 

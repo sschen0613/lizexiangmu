@@ -20,6 +20,8 @@ public interface SystemStaffMapper {
 	List<PowerMenu> getMenu(SystemStaff systemStaff);
 	//根据用户权限查询员工
 	List<HashMap<String, Object>> selectStaff(Page page2, SystemStaff staff);
+	//根据用户权限查询员工
+	List<HashMap<String, Object>> selectStaffTr();
 	//根据当前用户权限查询员工数量
 	Integer getRows(SystemStaff staff);
 	//添加员工

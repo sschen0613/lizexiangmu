@@ -217,14 +217,46 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			// 查询钉钉角色组人员
 			String accessToken = response.getAccessToken();
 
-			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/attendance/listRecord");
+
+            /*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
+            OapiUserGetRequest request1 = new OapiUserGetRequest();
+            request1.setUserid("18306515071");
+            request.setHttpMethod("GET");
+            OapiUserGetResponse response1 = client1.execute(request1, accessToken);*/
+
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
+			OapiUserGetDeptMemberRequest req = new OapiUserGetDeptMemberRequest();
+			req.setDeptId("107773833");
+			req.setHttpMethod("GET");
+			OapiUserGetDeptMemberResponse rsp = client1.execute(req, accessToken);
+			System.out.println(rsp.getBody());*/
+
+			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
+			OapiUserListbypageRequest request1 = new OapiUserListbypageRequest();
+			request1.setDepartmentId(107655743L);
+			request1.setOffset(0L);
+			request1.setSize(100L);
+			request1.setOrder("entry_desc");
+			request1.setHttpMethod("GET");
+			OapiUserListbypageResponse execute = client1.execute(request1,accessToken);
+
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+			OapiDepartmentListRequest request1 = new OapiDepartmentListRequest();
+			request1.setId("1");
+			request1.setFetchChild(true);
+			request1.setHttpMethod("GET");
+			OapiDepartmentListResponse response1 = client1.execute(request1, accessToken);
+			System.err.println(response1.getBody());
+			List<Department> departments = response1.getDepartment();*/
+
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/attendance/listRecord");
 			OapiAttendanceListRecordRequest request1 = new OapiAttendanceListRecordRequest();
 			request1.setCheckDateFrom("2019-11-07 00:00:00");
 			request1.setCheckDateTo("2019-11-14 00:00:00");
 			request1.setUserIds(Arrays.asList("19310151521252271"));
-			OapiAttendanceListRecordResponse res = client1.execute(request1,accessToken);
+			OapiAttendanceListRecordResponse res = client1.execute(request1,accessToken);*/
 
-			System.out.println(res.getRecordresult());
+			System.out.println(111);
 		} catch (ApiException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -498,6 +530,100 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 
         request.setMsg(msg);
         OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
+		System.err.println(response.getBody());
+	}
+
+
+	@Override
+	public void sendMessage69(String flag,CurrencyApply currencyApply) throws ApiException {
+		//1.获取token
+		String accessToken = getAccessToken();
+
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        String date2 = df.format(currencyApply.getCurrency_date());
+
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+		OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+
+		//自己测试使用
+		//request.setAgentId(210224725L);
+		//丽泽正式使用
+		request.setAgentId(251250837L);
+		request.setToAllUser(false); //	是否发送给企业全部用户(ISV不能设置true) 83307209
+
+		OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+
+        msg.setOa(new OapiMessageCorpconversationAsyncsendV2Request.OA());
+        msg.getOa().setHead(new OapiMessageCorpconversationAsyncsendV2Request.Head());
+        msg.getOa().getHead().setText("天人报备流程");
+        msg.getOa().setBody(new OapiMessageCorpconversationAsyncsendV2Request.Body());
+		if ("0".equals(flag)){//未签订合同给曹静发送消息
+            request.setUseridList("0847572503855936"); //接收者的用户userid列表，最大列表长度：20
+			//request.setUseridList("203719292837623745");
+            msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
+                    +"天人报备流程还未签订合同，单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4()+",原因为："
+                    +currencyApply.getCurrency_string6());
+        }else if ("1".equals(flag)){
+		    //已签订给流程发起人和曹静发送消息
+			String users = currencyApply.getCurrency_string11()+","+currencyApply.getCurrency_string17();
+			request.setUseridList(users); //接收者的用户userid列表，最大列表长度：20
+
+            msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
+                    +"天人报备流程已签订合同，单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4()+",签订日期为："
+                    +df1.format(currencyApply.getCurrency_date3()));
+
+        }else if ("2".equals(flag)){
+		    //终止报备，分别为流程发起人和消息接收人发送消息
+		    String users = currencyApply.getCurrency_string11()+","+currencyApply.getCurrency_string17();
+            request.setUseridList(users); //接收者的用户userid列表，最大列表长度：20
+            msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
+                    +"天人报备流程已经终止报备，单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4());
+        }else if ("3".equals(flag)){
+            //提醒合同签订追踪，为消息接收人发送消息
+            request.setUseridList(currencyApply.getCurrency_string17()); //接收者的用户userid列表，最大列表长度：20
+            msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
+                    +"天人报备流程相应合同还未签订，请追踪。单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4());
+        }else {
+		    //曹静选择给负责人发消息
+            request.setUseridList(currencyApply.getCurrency_string17()); //接收者的用户userid列表，最大列表长度：20
+
+            msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
+                    +"天人报备流程由你负责，单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4());
+
+        }
+        msg.setMsgtype("oa");
+		request.setMsg(msg);
+		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
+		System.err.println(response.getBody());
+	}
+
+	@Override
+	public void sendMessageAgain69(String userId,String content) throws ApiException {
+		//1.获取token
+		String accessToken = getAccessToken();
+
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+		OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+		//自己测试使用
+		//request.setAgentId(210224725L);
+		//丽泽正式使用
+		request.setAgentId(251250837L);
+		request.setToAllUser(false); //	是否发送给企业全部用户(ISV不能设置true) 83307209
+
+		OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+
+		msg.setOa(new OapiMessageCorpconversationAsyncsendV2Request.OA());
+		msg.getOa().setHead(new OapiMessageCorpconversationAsyncsendV2Request.Head());
+		msg.getOa().getHead().setText("天人报备流程");
+		msg.getOa().setBody(new OapiMessageCorpconversationAsyncsendV2Request.Body());
+		//提醒合同签订追踪，为消息接收人发送消息
+		request.setUseridList(userId); //接收者的用户userid列表，最大列表长度：20
+		msg.getOa().getBody().setContent(content);
+		msg.setMsgtype("oa");
+		request.setMsg(msg);
+		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
 		System.err.println(response.getBody());
 	}
 	

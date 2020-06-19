@@ -52,4 +52,10 @@ public interface IDingDingUtilsService {
 
 	//发送提醒给各科室科长
 	void sendrRemind(String userlist,String content) throws ApiException;
+
+	//为天人报备流程通知人发送通知消息
+	void sendMessage69(String flag,CurrencyApply currencyApply) throws ApiException;
+
+	//为天人报备流程通知人发送通知消息
+	void sendMessageAgain69(String userId,String content) throws ApiException;
 }
