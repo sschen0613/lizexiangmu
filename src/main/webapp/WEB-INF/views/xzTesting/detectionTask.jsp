@@ -25,7 +25,7 @@
 		 <div class="layui-inline">
              <label class="layui-form-label label-revise">项目名称 :</label>
              <div class="layui-input-block">
-                 <input type="text" name="currency_string2" lay-verify="" placeholder="请输入项目名称" autocomplete="off" class="layui-input input-revise">
+                 <input type="text" name="currency_string18" lay-verify="" placeholder="请输入项目名称" autocomplete="off" class="layui-input input-revise">
              </div>
          </div>
 		<div class="layui-inline">
