@@ -198,7 +198,7 @@
                         ,currency_string9:"联系电话"
                     });
                     // 3. 执行导出函数，系统会弹出弹框
-                    LAY_EXCEL.exportExcel(data, '请假统计.xlsx', 'xlsx');
+                    LAY_EXCEL.exportExcel(data, '天人报备统计.xlsx', 'xlsx');
                 }
             });
 

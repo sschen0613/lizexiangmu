@@ -560,8 +560,8 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
         msg.getOa().getHead().setText("天人报备流程");
         msg.getOa().setBody(new OapiMessageCorpconversationAsyncsendV2Request.Body());
 		if ("0".equals(flag)){//未签订合同给曹静发送消息
-            request.setUseridList("0847572503855936"); //接收者的用户userid列表，最大列表长度：20
-			//request.setUseridList("203719292837623745");
+            //request.setUseridList("0847572503855936"); //接收者的用户userid列表，最大列表长度：20
+			request.setUseridList("203719292837623745");
             msg.getOa().getBody().setContent("日期："+date2+",编号："+currencyApply.getCurrency_number()
                     +"天人报备流程还未签订合同，单位名称："+currencyApply.getCurrency_string3()+"；项目名称："+currencyApply.getCurrency_string4()+",原因为："
                     +currencyApply.getCurrency_string6());

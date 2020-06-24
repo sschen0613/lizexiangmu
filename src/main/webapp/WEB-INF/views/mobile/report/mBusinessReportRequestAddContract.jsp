@@ -195,10 +195,16 @@
                     }else {
                         //更新通知人，并发送钉钉消息
                         $.ajax({
-                            url : "../Currency/sendMessage69.action",
+                            url : "Currency/sendMessage69.action",
                             type : "post",
                             data : {"currency_type":approval_id,"currency_id":currency_id,"currency_date3":contract_date,"currency_string10":1},
                             dataType : "JSON",
+                            beforeSend: function(){
+                                layer.msg('正在发送签订消息', {
+                                    icon: 16
+                                    ,shade: 0.01
+                                });
+                            },
                             success : function(res){
                                 layer.msg("提交成功");
                             }
@@ -216,10 +222,16 @@
                     }else {
                         //更新通知人，并发送钉钉消息
                         $.ajax({
-                            url : "../Currency/sendMessage69.action",
+                            url : "Currency/sendMessage69.action",
                             type : "post",
                             data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string6":contract_reason,"currency_string10":0},
                             dataType : "JSON",
+                            beforeSend: function(){
+                                layer.msg('正在发送未签订消息', {
+                                    icon: 16
+                                    ,shade: 0.01
+                                });
+                            },
                             success : function(res){
                                 layer.msg("提交成功");
                             }
@@ -230,10 +242,16 @@
                 $('#remind').click(function(){
                     //提醒负责人
                     $.ajax({
-                        url : "../Currency/sendMessage69.action",
+                        url : "Currency/sendMessage69.action",
                         type : "post",
                         data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string10":3},
                         dataType : "JSON",
+                        beforeSend: function(){
+                            layer.msg('正在发送提醒消息', {
+                                icon: 16
+                                ,shade: 0.01
+                            });
+                        },
                         success : function(res){
                             layer.msg("提交成功");
                         }
@@ -244,10 +262,16 @@
                 $('#endReport').click(function(){
                     //更新通知人，并发送钉钉消息
                     $.ajax({
-                        url : "../Currency/sendMessage69.action",
+                        url : "Currency/sendMessage69.action",
                         type : "post",
                         data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string10":2},
                         dataType : "JSON",
+                        beforeSend: function(){
+                            layer.msg('正在发送终止消息', {
+                                icon: 16
+                                ,shade: 0.01
+                            });
+                        },
                         success : function(res){
                             layer.msg("提交成功");
                         }

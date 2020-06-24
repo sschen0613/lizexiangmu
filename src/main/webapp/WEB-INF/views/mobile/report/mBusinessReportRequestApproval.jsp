@@ -253,20 +253,19 @@
                                         });
                                     },
                                     success:function(result){
-                                        layer.msg(result.msg);
-                                        $(e.target).closest('.content-list').addClass('style1');
-                                        $(e.target).parent().find('button').addClass('layui-btn-disabled').attr('disabled',true);
-                                        parent.$('.iframe-return-type').val('1');//给父页面传值,表示已进行审批且同意
-
                                         //更新通知人，并发送钉钉消息
                                         $.ajax({
-                                            url : "../Currency/sendMessage69.action",
+                                            url : "Currency/sendMessage69.action",
                                             type : "post",
                                             data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string17":messageMan,"currency_string18":messageManName},
                                             dataType : "JSON",
                                             success : function(res){
                                             }
                                         });
+                                        layer.msg(result.msg);
+                                        $(e.target).closest('.content-list').addClass('style1');
+                                        $(e.target).parent().find('button').addClass('layui-btn-disabled').attr('disabled',true);
+                                        parent.$('.iframe-return-type').val('1');//给父页面传值,表示已进行审批且同意
                                     }
                                 });
                                 layer.close(index);

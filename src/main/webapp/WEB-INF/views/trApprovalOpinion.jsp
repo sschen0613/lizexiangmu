@@ -83,18 +83,7 @@
 			if (messageMan == "" || messageMan == null){
 			    layer.msg("请选择通知人");
 			    return false;
-			}else {
-                //更新通知人，并发送钉钉消息
-                $.ajax({
-                    url : "../Currency/sendMessage69.action",
-                    type : "post",
-                    data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string17":messageMan,"currency_string18":messageManName},
-                    dataType : "JSON",
-                    success : function(res){
-
-                    }
-                });
-            }
+			}
 
             $('#myForm').addClass('layui-btn-disabled');
             $('#myForm').attr("disabled",'disabled');
@@ -108,6 +97,15 @@
 			 		,dataType : "JSON"
 			 		,success : function(result){
 						layer.msg(result.msg);
+						$.ajax({
+							url : "../Currency/sendMessage69.action",
+							type : "post",
+							data : {"currency_type":approval_id,"currency_id":currency_id,"currency_string17":messageMan,"currency_string18":messageManName},
+							dataType : "JSON",
+							success : function(res){
+								layer.msg("通知成功");
+							}
+						});
 
 						if (result.msg == '操作成功' && approval_id == 9 && position == 62){
 							var delivery_type = data.field.delivery_type;

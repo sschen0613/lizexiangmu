@@ -85,7 +85,7 @@
 		LEFT JOIN system_position ON a.position_id = system_position.position_id
 		LEFT JOIN staff_state ON staff_state.staffstate_id = a.staff_state
 		where
-			a.delete_id = 1 and a.position_Id in (47,65)
+			a.delete_id = 1 and a.position_Id in (47,40)
 	</select>
 
 	<!-- 根据当前用户查询员工数量 -->

@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 丽泽公司销售合同发票开具申请列表-手机端 -->
+<!-- 天人公司销售合同发票开具审批列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -21,12 +21,13 @@
 	<body>
 		<div class="approval-list">
 			<div class="approval-list-title">
-				<a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-				<h2 class="">丽泽公司销售合同发票开具申请</h2>
+				<a href="mobile/view/Mindex.action?currentTab=approval" class="layui-icon layui-icon-left"></a>
+				<h2 class="">天人公司销售合同发票开具审批</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
-							<li>全部撤回</li>
+							<li>全部通过</li>
+							<li>全部驳回</li>
 						</ul>
 					</div>
 				</span>
@@ -34,10 +35,10 @@
 			<div class="approval-list-content">
 				<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 					<ul class="layui-tab-title">
-				  		<li class="layui-this">审批中</li>
+				  		<li class="layui-this">待审批</li>
 				    	<li>已通过</li>
 				    	<li>未通过</li>
-				    	<li>已撤回</li>
+				    	<li>撤回</li>
 					</ul>
 					<div class="layui-tab-content" style="height:100%;">
 				    	<div class="layui-tab-item waitting layui-show">
@@ -87,10 +88,10 @@
                 //UNIT //每页加载数量(in funtion_tool.js)
                 
                 //数据初始化
-                var currency_type = 28;
+                var currency_type = 70;
     			var staffid ="${sessionScope.systemStaff.dingding_staffid }";
     			$.ajax({
-    				url:'Currency/selectApplicantCurrency.action?currency_type='+ currency_type,
+    				url:'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid,
     				type:'post',
     				dataType:'JSON',
     				beforeSend: function(){
@@ -114,16 +115,8 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="finance/mInvoiceOfSalesContractDetails.action?currency_id='+item.currency_id
-    				    				 +'&current_approvalCount='+item.current_approvalCount
-    				    				 +'&approver_count='+item.approver_count
-    				    				 +'&approvalOpinion_type=28&approval_id=28'
-    				    				 +'&currency_number='+item.currency_number
-    				    				 +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
-    				    				 +'&currency_string2='+item.currency_string2+'&currency_string3='+item.currency_string3+'&currency_string4='+item.currency_string4+'&currency_string5='+item.currency_string5+'&currency_string7='+item.currency_string7
-    				    				 +'&currency_string8='+item.currency_string8+'&currency_string9='+item.currency_string9+'&currency_string10='+item.currency_string10+'&currency_string11='+item.currency_string11
-    				    				 +'&currency_money='+item.currency_money+'&currency_money2='+item.currency_money2+'&currency_money3='+item.currency_money3
-    				    				 +'&currency_string12='+item.currency_string12+'&currency_string13='+item.currency_string13+'&currency_int5='+item.currency_int5+'&currency_string14='+item.currency_string14+'&currency_string15='+item.currency_string15+'&currency_string16='+item.currency_string16+'&currency_int6='+item.currency_int6
+    				    		 +		'<a href="finance/mInvoiceOfSalesContractTrApproval.action?currency_id='+item.currency_id
+    				    		 +		'&dingStaffid='+staffid
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'
     				    		 +			'<span class="layui-icon layui-icon-right"></span>'
@@ -164,7 +157,7 @@
         					flow.load({
         	                	elem: '#waitting_demo' //流加载容器
         	                	,isAuto: true //自动加载
-        	                	,end: '没有更多申请信息了' //底部信息
+        	                	,end: '没有更多审批信息了' //底部信息
         	                    ,done: function(page, next){ //执行下一页的回调
         	                      	//模拟数据插入
         							setTimeout(function(){
@@ -197,7 +190,7 @@
     					flow.load({
     	                	elem: '#waitting_demo' //流加载容器
     	                	,isAuto: true //自动加载
-    	                	,end: '没有更多申请信息了' //底部信息
+    	                	,end: '没有更多审批信息了' //底部信息
     	                    ,done: function(page, next){ //执行下一页的回调
     	                      	//模拟数据插入
     							setTimeout(function(){
@@ -217,7 +210,7 @@
     					flow.load({
     	                	elem: '#adopt_demo' //流加载容器
     	                	,isAuto: true //自动加载
-    	                	,end: '没有更多申请信息了' //底部信息
+    	                	,end: '没有更多审批信息了' //底部信息
     	                    ,done: function(page, next){ //执行下一页的回调
     	                      	//模拟数据插入
     							setTimeout(function(){
@@ -237,7 +230,7 @@
     					flow.load({
     	                	elem: '#reject_demo' //流加载容器
     	                	,isAuto: true //自动加载
-    	                	,end: '没有更多申请信息了' //底部信息
+    	                	,end: '没有更多审批信息了' //底部信息
     	                    ,done: function(page, next){ //执行下一页的回调
     	                      	//模拟数据插入
     							setTimeout(function(){
@@ -257,7 +250,7 @@
     					flow.load({
     	                	elem: '#revoke_demo' //流加载容器
     	                	,isAuto: true //自动加载
-    	                	,end: '没有更多申请信息了' //底部信息
+    	                	,end: '没有更多审批信息了' //底部信息
     	                    ,done: function(page, next){ //执行下一页的回调
     	                      	//模拟数据插入
     							setTimeout(function(){
@@ -273,123 +266,83 @@
     					});
     				}
 				});
-                //查看详情点击事件
-                window.approvalDetails = function(e){
-                    var action = $(e).attr('href');
-                    layer.open({
-                        type: 1,
-                        title: false,
-                        closeBtn: 1,
-                        //shadeClose: true,
-                        area: ['93%','96%'],
-                        content: '<iframe src="'+action+'" class="approval-details-iframe"></iframe>',
-                        end: function(index, layero){
-                            if($('.iframe-return-type').val() != 0){
-                                var html = '<li>'+$(e).closest('li').html()+'</li>';
-                                var index1 = html.indexOf('id="a') + 5;
-                                var index2 = html.indexOf('" onclick');
-                                var id0 = Number(html.substring(index1,index2));//获取要插入新的li的a标签的id  要删除的原li的a标签的id
-                                //从待审批移除
-                                //从流加载数组删除记录
-                                for(var i = 1;i < A_List.waitting.length;i++){
-                                    //console.log(id0);
-                                    var key = A_List.waitting[i].indexOf('id="a'+id0+'"');
-                                    if(key != -1){
-                                        html = A_List.waitting[i];
-                                        A_List.waitting.splice(i,1);
-                                        A_List.waitting[0].count--;
-                                        //移除DOM对象
-                                        $(e).closest('li').remove();
-                                        break;
-                                    }
-                                }
-                                //添加到新选项卡
-                                //点击同意
-                                if($('.iframe-return-type').val() == '1'){
-                                    //内容添加到已通过
-                                    html = html.replace('waitting','adopt');
-                                    if(A_List.adopt.length == 1){
-                                        A_List.adopt.splice(1,0,html);
-                                        A_List.adopt[0].count++;
-                                        $('.'+A_List.adopt[0].name).removeClass('approval-none');
-                                    }else{
-                                        var i;
-                                        for(i = 1;i < A_List.adopt.length;i++){
-                                            var n1 = A_List.adopt[i].indexOf('id="') + 5;
-                                            var n2 = A_List.adopt[i].indexOf('" onclick');
-                                            var id = Number(A_List.adopt[i].substring(n1,n2));//获取已有的li的a标签的id
-                                            //将li插入正确的位置
-                                            if(id0 < id){
-                                                A_List.adopt.splice(i,0,html);
-                                                A_List.adopt[0].count++;
-                                                break;
-                                            }
-                                        }
-                                        if(i == A_List.adopt.length){
-                                            A_List.adopt.splice(i,0,html);
-                                            A_List.adopt[0].count++;
-                                        }
-                                    }
-                                }
-                                //点击拒绝
-                                else if($('.iframe-return-type').val() == '-1'){
-                                    //内容添加到未通过
-                                    html = html.replace('waitting','reject');
-                                    if(A_List.reject.length == 1){
-                                        A_List.reject.splice(1,0,html);
-                                        A_List.reject[0].count++;
-                                        $('.'+A_List.reject[0].name).removeClass('approval-none');
-                                    }else{
-                                        var i;
-                                        for(i = 1;i < A_List.reject.length;i++){
-                                            var n1 = A_List.reject[i].indexOf('id="') + 5;
-                                            var n2 = A_List.reject[i].indexOf('" onclick');
-                                            var id = Number(A_List.reject[i].substring(n1,n2));//获取已有的li的a标签的id
-                                            //将li插入正确的位置
-                                            if(id0 < id){
-                                                A_List.reject.splice(i,0,html);
-                                                A_List.reject[0].count++;
-                                                break;
-                                            }
-                                        }
-                                        if(i == A_List.reject.length){
-                                            A_List.reject.splice(i,0,html);
-                                            A_List.reject[0].count++;
-                                        }
-                                    }
-                                }
-                                //点击撤回
-                                else if($('.iframe-return-type').val() == '2'){
-                                    //内容添加到已撤回
-                                    html = html.replace('waitting','revoke');
-                                    if(A_List.revoke.length == 1){
-                                        A_List.revoke.splice(1,0,html);
-                                        A_List.revoke[0].count++;
-                                        $('.'+A_List.revoke[0].name).removeClass('approval-none');
-                                    }else{
-                                        var i;
-                                        for(i = 1;i < A_List.revoke.length;i++){
-                                            var n1 = A_List.revoke[i].indexOf('id="') + 5;
-                                            var n2 = A_List.revoke[i].indexOf('" onclick');
-                                            var id = Number(A_List.revoke[i].substring(n1,n2));//获取已有的li的a标签的id
-                                            //将li插入正确的位置
-                                            if(id0 < id){
-                                                A_List.revoke.splice(i,0,html);
-                                                A_List.revoke[0].count++;
-                                                break;
-                                            }
-                                        }
-                                        if(i == A_List.revoke.length){
-                                            A_List.revoke.splice(i,0,html);
-                                            A_List.revoke[0].count++;
-                                        }
-                                    }
-                                }
-                            }
-                            $('.iframe-return-type').val('0');//重置,表示弹出层无操作
-                        }
-                    });
-                }
+    			//查看详情点击事件
+    			window.approvalDetails = function(e){
+    				var action = $(e).attr('href');
+    				layer.open({
+    					type: 1,
+    					title: false,
+    					closeBtn: 1,
+    					//shadeClose: true,
+    					area: ['93%','96%'],
+    					content: '<iframe src="'+action+'" class="approval-details-iframe"></iframe>',
+    					end: function(index, layero){
+    						//点击同意
+    						if($('.iframe-return-type').val() == '1'){
+    							//内容添加到已通过
+    							var html = '<li>'+$(e).closest('li').html()+'</li>';
+    							html = html.replace('waitting','adopt');
+    							var index1 = html.indexOf('id="a') + 5;
+    							var index2 = html.indexOf('" onclick');
+    							var id0 = Number(html.substring(index1,index2));//获取要插入的li的a标签的id
+    							for(var i = 1;i < A_List.adopt.length;i++){
+    								var n1 = A_List.adopt[i].indexOf('id="') + 5;
+    								var n2 = A_List.adopt[i].indexOf('" onclick');
+    								var id = Number(A_List.adopt[i].substring(n1,n2));//获取已有的li的a标签的id
+    								//将li插入正确的位置
+    								if(id0 < id){
+    									A_List.adopt.splice(i,0,html);
+    									break;
+    								}
+    							}
+    							//从待审批移除
+    							//从流加载数组删除记录
+    							for(var i = 1;i < A_List.waitting.length;i++){
+    								//console.log(id0);
+    								var key = A_List.waitting[i].indexOf('id="a'+html.substring(index1,index2)+'"');
+    								if(key != -1){
+    									A_List.waitting.splice(i,1);
+    									//移除DOM对象
+    	    							$(e).closest('li').remove();
+    									break;
+    								}
+    							}
+    						}
+    						//点击拒绝
+    						else if($('.iframe-return-type').val() == '-1'){
+    							//内容添加到未通过
+    							var html = '<li>'+$(e).closest('li').html()+'</li>';
+    							html = html.replace('waitting','reject');
+    							var index1 = html.indexOf('id="a') + 5;
+    							var index2 = html.indexOf('" onclick');
+    							var id0 = Number(html.substring(index1,index2));//获取要插入的li的a标签的id
+    							for(var i = 1;i < A_List.reject.length;i++){
+    								var n1 = A_List.reject[i].indexOf('id="') + 5;
+    								var n2 = A_List.reject[i].indexOf('" onclick');
+    								var id = Number(A_List.reject[i].substring(n1,n2));//获取已有的li的a标签的id
+    								//将li插入正确的位置
+    								if(id0 < id){
+    									A_List.reject.splice(i,0,html);
+    									break;
+    								}
+    							}
+    							//从待审批移除
+    							//从流加载数组删除记录
+    							for(var i = 1;i < A_List.waitting.length;i++){
+    								//console.log(id0);
+    								var key = A_List.waitting[i].indexOf('id="a'+html.substring(index1,index2)+'"');
+    								if(key != -1){
+    									A_List.waitting.splice(i,1);
+    									//移除DOM对象
+    	    							$(e).closest('li').remove();
+    									break;
+    								}
+    							}
+    						}
+    						$('.iframe-return-type').val('0');//重置,表示弹出层无操作
+    					}
+					});
+    			}
                 
             });
 		</script>

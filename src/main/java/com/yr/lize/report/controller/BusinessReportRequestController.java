@@ -14,8 +14,8 @@ public class BusinessReportRequestController {
 	//跳转天人报备申请表界面
 	@RequestMapping("report/businessReportRequestForm.action")
 	public String setupAllocationApproverView2() {
-		return "WEB-INF/views/report/businessReportRequestForm";
-		//return "WEB-INF/views/mobile/report/mBusinessReportRequest";
+		//return "WEB-INF/views/report/businessReportRequestForm";
+		return "WEB-INF/views/mobile/report/mBusinessReportRequest";
 	}
 	//跳转天人报备审批界面
 	@RequestMapping("report/businessReportRequestApproval.action")

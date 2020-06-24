@@ -893,6 +893,23 @@
                     ,{field: 'details_money3', title: '检测数量', minWidth: 80}
                 ]]
             });
+        }//天人销售合同发票开具申请
+        else if(currency_type == 70){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '用户数据表'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    {fixed: 'left', field: 'details_string5', title: '货物名称', minWidth: 200}
+                    ,{field: 'details_string6', title: '型号', minWidth: 80}
+                    ,{field: 'details_string7', title: '单位', minWidth: 80}
+                    ,{field: 'details_money', title: '数量', minWidth: 80}
+                    ,{field: 'details_money4', title: '金额', minWidth: 80}
+                ]]
+            });
         }
 
         table.on('row(test2)', function(obj){
