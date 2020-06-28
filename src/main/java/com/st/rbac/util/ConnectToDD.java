@@ -1,43 +1,18 @@
 package com.st.rbac.util;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiCallBackRegisterCallBackRequest;
-import com.dingtalk.api.request.OapiDepartmentGetRequest;
-import com.dingtalk.api.request.OapiDepartmentListIdsRequest;
-import com.dingtalk.api.request.OapiDepartmentListRequest;
-import com.dingtalk.api.request.OapiGettokenRequest;
-import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;
-import com.dingtalk.api.request.OapiProcessinstanceCreateRequest;
-import com.dingtalk.api.request.OapiProcessinstanceGetRequest;
-import com.dingtalk.api.request.OapiProcessinstanceListidsRequest;
-import com.dingtalk.api.request.OapiRoleSimplelistRequest;
-import com.dingtalk.api.request.OapiUserGetDeptMemberRequest;
-import com.dingtalk.api.response.OapiCallBackRegisterCallBackResponse;
-import com.dingtalk.api.response.OapiDepartmentGetResponse;
-import com.dingtalk.api.response.OapiDepartmentListIdsResponse;
-import com.dingtalk.api.response.OapiDepartmentListResponse;
+import com.dingtalk.api.request.*;
+import com.dingtalk.api.response.*;
 import com.dingtalk.api.response.OapiDepartmentListResponse.Department;
-import com.dingtalk.api.response.OapiGettokenResponse;
-import com.dingtalk.api.response.OapiMessageCorpconversationAsyncsendV2Response;
-import com.dingtalk.api.response.OapiProcessinstanceCreateResponse;
-import com.dingtalk.api.response.OapiProcessinstanceGetResponse;
 import com.dingtalk.api.response.OapiProcessinstanceGetResponse.ProcessInstanceTopVo;
-import com.dingtalk.api.response.OapiProcessinstanceListidsResponse;
-import com.dingtalk.api.response.OapiRoleSimplelistResponse;
 import com.dingtalk.api.response.OapiRoleSimplelistResponse.OpenEmpSimple;
-import com.dingtalk.api.response.OapiUserGetDeptMemberResponse;
 import com.taobao.api.ApiException;
 import com.yr.lize.pojo.SystemStaff;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 //连接钉钉的测试类
 public class ConnectToDD {

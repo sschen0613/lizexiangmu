@@ -20,6 +20,8 @@
 		CM_Contract_B
 		<where>
 			GETDATE() &lt;= convert(DATETIME,strContractEndDate,120)
+			AND
+			GETDATE() &gt;= convert(DATETIME,strContractStartDate,120)
 			and
 			CM_Contract_B.strBisectionUnit = #{param1}
 			and iStatus = 1
