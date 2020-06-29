@@ -1583,7 +1583,8 @@ public class CurrencyApplyController {
 	//给天人报备流程中选择的通知人发送通知
 	@RequestMapping("/Currency/sendMessage69.action")
 	@ResponseBody
-	public void sendMessage69(CurrencyApply currencyApply) {
+	public ResponseResult sendMessage69(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
 		logger.info(currencyApply.getCurrency_string10());
 		logger.info("-------------------我发送了消息----------------------");
 		try {
@@ -1591,5 +1592,6 @@ public class CurrencyApplyController {
 		}catch (ApiException e){
 			e.printStackTrace();
 		}
+		return result;
 	}
 }

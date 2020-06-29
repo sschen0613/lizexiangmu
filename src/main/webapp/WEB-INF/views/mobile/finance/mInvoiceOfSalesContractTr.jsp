@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人公司销售合同发票开具申请-手机端 -->
+<!-- 天人公司合同发票开具申请-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -24,7 +24,7 @@
 		<div class="container-apply">
 			<div class="approval-list-title">
 				<a href="mobile/view/Mindex.action?currentTab=apply" class="layui-icon layui-icon-left"></a>
-				<h2 class="">天人公司销售合同发票开具申请</h2>
+				<h2 class="">天人公司合同发票开具申请</h2>
 				<span class="menu layui-icon layui-icon-more" onclick="$('.sub-menu').slideToggle();">
 					<div class="sub-menu">
 						<ul>
@@ -59,22 +59,10 @@
 							<input type="text" name="currency_date" id="date" class="layui-input" readonly>
 						</div>
  					</div>
- 					<div class="layui-form-item">
-						<label class="layui-form-label">所属区域 :</label>
-						<div class="layui-input-block">
-							<input type="text" name="area" id="area" class="layui-input" lay-verify="required">
-						</div>
-					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">客户名称 :</label>
 						<div class="layui-input-block">
 							<input type="text" name="customer_name" id="customer_name" class="layui-input" lay-verify="required">
-						</div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label">开票名称 :</label>
-						<div class="layui-input-block">
-							<input type="text" name="invoice_name" id="invoice_name" class="layui-input" lay-verify="required">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -134,7 +122,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">申请开票金额 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="applyInvoice_amount" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="layui-input" lay-verify="required">
+							<input type="text" name="applyInvoice_amount" class="layui-input" readonly>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -144,7 +132,7 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">开票事由 :</label>
+						<label class="layui-form-label">备注 :</label>
 						<div class="layui-input-block">
 							<input type="text" name="invoice_reason" class="layui-input">
 						</div>
@@ -184,7 +172,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">金额 :</label>
 									<div class="layui-input-block">
-										<input type="text" name="unit_price" class="layui-input" lay-verify="required">
+										<input type="text" id="sum'+d_count+'" name="unit_price" class="layui-input" lay-verify="required">
 									</div>
 								</div>
 							</div>
@@ -222,9 +210,7 @@
 					// console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
 					// console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                     var buy_number = data.field.buy_number;
-                    var area = data.field.area;
                     var customer_name = data.field.customer_name;
-					var invoice_name = data.field.invoice_name;
 					var tax_number = data.field.tax_number;
 					var site = data.field.site;
 					var telephone = data.field.telephone;
@@ -258,9 +244,7 @@
 				 		,data : {
 				 			'currency_type':70,
 				 			'currency_number':buy_number,
-				 			'currency_string2':area,  //区域
 				 			'currency_string3':customer_name,
-				 			'currency_string5':invoice_name,
 				 			'currency_string7':tax_number,
 				 			'currency_string8':site,
 				 			'currency_string9':telephone,
@@ -321,6 +305,14 @@
                     }
                 });
 
+                $('input[name="unit_price"]').on("input",function(e){
+                	var sum = 0;
+					$.each($('.details'),function(index,item){
+						sum += Number($(item).find('input[name="unit_price"]').val());
+					});
+					$("#applyInvoice_amount").val(sum);
+				});
+
                 //操作
                 //点击添加明细按钮
                 var d_count = 1;
@@ -358,7 +350,7 @@
                     +      '<div class="layui-form-item">'
                     +        '<label class="layui-form-label">金额 :</label>'
                     +        '<div class="layui-input-block">'
-                    +          '<input type="text"  name="unit_price" class="layui-input" lay-verify="required">'
+                    +          '<input type="text" id="sum'+d_count+'" name="unit_price" class="layui-input" lay-verify="required">'
                     +        '</div>'
                     +      '</div>'
                     +    '</div>'
@@ -384,7 +376,6 @@
                 inputLimitAmount0($('#contract_totalamount'));//合同总金额
                 inputLimitAmount0($('#actual_receipt'));//已收款金额
                 inputLimitAmount0($('#alreadyInvoice_amount'));//已开票金额
-                inputLimitAmount0($('#applyInvoice_amount'));//申请开票金额
                 //监听电话输入框输入正确格式
                 inputLimitPhone($('#telephone'));
                 

@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人公司销售合同发票开具申请列表-手机端 -->
+<!-- 天人公司合同发票开具申请列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-				<h2 class="">天人公司销售合同发票开具申请</h2>
+				<h2 class="">天人公司合同发票开具申请</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
@@ -120,7 +120,7 @@
     				    				 +'&approvalOpinion_type=70&approval_id=70'
     				    				 +'&currency_number='+item.currency_number
     				    				 +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
-    				    				 +'&currency_string2='+item.currency_string2+'&currency_string3='+item.currency_string3+'&currency_string5='+item.currency_string5+'&currency_string7='+item.currency_string7
+    				    				 +'&currency_string3='+item.currency_string3+'&currency_string7='+item.currency_string7
     				    				 +'&currency_string8='+item.currency_string8+'&currency_string9='+item.currency_string9+'&currency_string10='+item.currency_string10+'&currency_string11='+item.currency_string11
     				    				 +'&currency_money='+item.currency_money+'&currency_money2='+item.currency_money2+'&currency_money3='+item.currency_money3
     				    				 +'&currency_string12='+item.currency_string12+'&currency_string13='+item.currency_string13+'&currency_int5='+item.currency_int5+'&currency_string14='+item.currency_string14

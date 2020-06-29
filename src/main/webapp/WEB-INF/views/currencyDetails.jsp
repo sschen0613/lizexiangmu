@@ -893,7 +893,7 @@
                     ,{field: 'details_money3', title: '检测数量', minWidth: 80}
                 ]]
             });
-        }//天人销售合同发票开具申请
+        }//天人合同发票开具申请
         else if(currency_type == 70){
             //执行一个 table 实例
             table.render({

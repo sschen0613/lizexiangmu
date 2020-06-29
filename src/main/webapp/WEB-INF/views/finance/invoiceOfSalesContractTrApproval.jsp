@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人销售合同发票开具审批 -->
+<!-- 天人合同发票开具审批 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -170,9 +170,7 @@
                                 currency_date:function (value,line,data) {
                                     return Format0(value,"yyyy-MM-dd HH:mm:ss");
                                 },
-                                currency_string2:"currency_string2",
                                 currency_string3:"currency_string3",
-                                currency_string5:"currency_string5",
                                 currency_string7:"currency_string7",
                                 currency_string8:"currency_string8",
                                 currency_string9:"currency_string9",
@@ -189,14 +187,14 @@
                                 currency_string14:"currency_string14"
                             });
                             data.unshift({
-                                currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期',currency_string2:"所属区域",
-                                currency_string3: '客户名称',currency_string5: '开票名称',currency_string7: '税号',currency_string8: '地址',
+                                currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期',
+                                currency_string3: '客户名称',currency_string7: '税号',currency_string8: '地址',
                                 currency_string9: '电话',currency_string10: '开户行',currency_string11: '账号',currency_money: '合同金额', currency_money2: '收款金额',currency_money3: '未收金额',
                                 currency_string12:"已开票金额",currency_string13:"申请开票金额", currency_int5:"发票类型",
-                                currency_string14:"开票事由"
+                                currency_string14:"备注"
                             });
                             // 3. 执行导出函数，系统会弹出弹框
-                            LAY_EXCEL.exportExcel(data, '天人销售合同发票.xlsx', 'xlsx');
+                            LAY_EXCEL.exportExcel(data, '天人合同发票.xlsx', 'xlsx');
                         }
                     });
 
@@ -209,7 +207,7 @@
 					,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
 					,page: true //开启分页
 					,toolbar: true
-			    	,title: '天人销售合同发票开具审批'
+			    	,title: '天人合同发票开具审批'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
@@ -217,9 +215,7 @@
 						,{field: 'staff_name', title: '申请人', minWidth:80}
 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string2', title: '所属区域', minWidth:150}
 						,{field: 'currency_string3', title: '客户名称', minWidth:200}
-						,{field: 'currency_string5', title: '开票名称', minWidth:100}
 						,{field: 'currency_string7', title: '税号', minWidth:100}
 						,{field: 'currency_string8', title: '地址', minWidth:200}
 						,{field: 'currency_string9', title: '电话', minWidth:100}
@@ -231,7 +227,7 @@
 						,{field: 'currency_string12', title: '已开票金额', minWidth:110}
 						,{field: 'currency_string13', title: '申请开票金额', minWidth:120}
 						,{field: 'currency_int5', title: '发票类型', minWidth:100,templet:'<div>{{d.currency_int5 == "1" ? "普通发票" : "专用发票"}}</div>'}
-						,{field: 'currency_string14', title: '开票事由', minWidth:100}
+						,{field: 'currency_string14', title: '备注', minWidth:100}
                         ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:230}
 					]]

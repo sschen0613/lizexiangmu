@@ -22,7 +22,7 @@
 <body>
 <div id="content" class="content">
     <div class="sign"><i id="number"></i></div>
-    <div class="title"><h2>天人公司销售合同发票开具审批详情<i id="number0"></i></h2></div>
+    <div class="title"><h2>天人公司合同发票开具审批详情<i id="number0"></i></h2></div>
     <table border="1" class="layui-table">
         <colgroup>
             <col width="100">
@@ -42,14 +42,8 @@
             <td id="date"></td>
         </tr>
         <tr>
-            <td>区域</td>
-            <td id="area" colspan="2"></td>
             <td>客户名称</td>
-            <td id="customer_name" colspan="2"></td>
-        </tr>
-        <tr>
-            <td>开票名称</td>
-            <td id="invoice_name" colspan="5"></td>
+            <td id="customer_name" colspan="5"></td>
         </tr>
         <tr>
             <td>税号（社会统一信用码）</td>
@@ -84,7 +78,7 @@
             <td id="invoice_type"></td>
         </tr>
         <tr>
-            <td>开票事由</td>
+            <td>备注</td>
             <td colspan=5 id="invoice_reason"></td>
         </tr>
         <tr>

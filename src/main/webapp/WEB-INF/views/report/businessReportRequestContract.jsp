@@ -225,7 +225,9 @@
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: '', title: '状态', minWidth:120,templet:'#over1'}
                 ,{field: 'currency_number', title: '编号', minWidth:220, sort:true}
+                ,{field: 'staff_name', title: '申请人', minWidth:80}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_string2', title: '申请人', minWidth:140}
                 ,{field: 'currency_string2', title: '业务类型', minWidth:140}
                 ,{field: 'currency_string3', title: '单位名称', minWidth:140}
                 ,{field: 'currency_string4', title: '项目（产品）名称', minWidth:140}
@@ -267,7 +269,7 @@
                         dataType : "JSON",
                         success : function(res){
                             layer.close(layer.index);
-                            layer.msg("报备已经终止");
+                            layer.msg("报备已经终止",{time: 2000});
                         }
                     });
                 });
@@ -279,7 +281,7 @@
                     data : {"currency_type":data.currency_type,"currency_id":data.currency_id,"currency_string10":3},
                     dataType : "JSON",
                     success : function(res){
-                        layer.msg("已经提醒负责人");
+                        layer.msg("已经提醒负责人",{time: 2000});
                     }
                 });
             }

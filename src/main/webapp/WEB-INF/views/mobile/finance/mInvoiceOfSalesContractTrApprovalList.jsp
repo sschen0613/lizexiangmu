@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人公司销售合同发票开具审批列表-手机端 -->
+<!-- 天人公司合同发票开具审批列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a href="mobile/view/Mindex.action?currentTab=approval" class="layui-icon layui-icon-left"></a>
-				<h2 class="">天人公司销售合同发票开具审批</h2>
+				<h2 class="">天人公司合同发票开具审批</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>

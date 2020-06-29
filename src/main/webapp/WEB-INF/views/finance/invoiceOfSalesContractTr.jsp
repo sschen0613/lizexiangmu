@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人销售合同发票开具申请 -->
+<!-- 天人合同发票开具申请 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -51,7 +51,7 @@
 
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">天人公司销售合同发票开具请购单</button>
+				<button class="layui-btn layui-btn-xs" lay-event="add">天人公司合同发票开具请购单</button>
 			</div>
 		</script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -135,7 +135,7 @@
 					,url: 'Currency/selectApplicantCurrency.action?currency_type=70' //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '天人销售合同发票开具申请'
+			    	,title: '天人合同发票开具申请'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
@@ -143,9 +143,7 @@
  						,{field: 'staff_name', title: '申请人', minWidth: 80}
  						,{field: 'department_name', title: '申请部门', minWidth: 100}
 						,{field: 'currency_date', title: '申请日期', minWidth: 100, sort: true,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string2', title: '区域', minWidth: 150}
 						,{field: 'currency_string3', title: '客户名称', minWidth: 200}
-						,{field: 'currency_string5', title: '开票名称', minWidth: 100} 
 						,{field: 'currency_string7', title: '税号', minWidth: 100} 
 						,{field: 'currency_string8', title: '地址', minWidth: 200} 
 						,{field: 'currency_string9', title: '电话', minWidth: 100} 
@@ -156,7 +154,7 @@
 						,{field: 'currency_money3', title: '欠款金额', minWidth: 100}
 						,{field: 'currency_string12', title: '已开票金额', minWidth: 110}
 						,{field: 'currency_string13', title: '申请开票金额', minWidth: 120}
-						,{field: 'currency_string14', title: '开票事由', minWidth:100}
+						,{field: 'currency_string14', title: '备注', minWidth:100}
 						,{field: 'currency_int5', title: '发票类型', minWidth: 100,templet:'<div>{{d.currency_int5 == "1" ? "普通发票" : "专用发票"}}</div>'}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:250}
@@ -183,7 +181,7 @@
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({
 							type: 2,
-							title: '天人公司销售合同开票单修改',
+							title: '天人公司合同开票单修改',
 							//shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
@@ -237,7 +235,7 @@
 							layer.open({
 								type: 2,
 								// skin:'layui-layer-molv', //layui-layer-lan
-								title: '天人销售合同开票单填写',
+								title: '天人合同开票单填写',
 								//shadeClose: true,
 								shade: 0.8,
 								maxmin: true,

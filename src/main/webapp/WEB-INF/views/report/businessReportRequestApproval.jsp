@@ -215,6 +215,7 @@
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'currency_number', title: '编号', minWidth:220, sort:true}
+                ,{field: 'staff_name', title: '申请人', minWidth:80}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string2', title: '业务类型', minWidth:140}
                 ,{field: 'currency_string3', title: '单位名称', minWidth:140}

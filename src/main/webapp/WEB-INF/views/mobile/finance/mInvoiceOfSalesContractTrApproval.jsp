@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 天人公司销售合同发票开具审批明细-手机端 -->
+<!-- 天人公司合同发票开具审批明细-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -25,7 +25,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-finance"></use>
 	        	</svg>
-	        	天人公司销售合同发票开具审批详情
+	        	天人公司合同发票开具审批详情
 			</h2>
 			<div class="content">
 				
@@ -126,16 +126,8 @@
                                     +				'<input type="text" name="currency_date" id="date" value="'+Format(item.currency_date,"yyyy-MM-dd")+'" class="layui-input" readonly>'
                                     +			'</div>'
                                     +			'<div>'
-                                    +				'<label class="">所属区域 :</label>'
-                                    +				'<input type="text" id="area" name="area" value="'+item.currency_string2+'" class="layui-input" readonly>'
-                                    +			'</div>'
-                                    +			'<div>'
                                     +				'<label class="">客户名称 :</label>'
                                     +				'<input type="text" id="customer_name" value="'+item.currency_string3+'" class="layui-input" readonly>'
-                                    +			'</div>'
-                                    +			'<div>'
-                                    +				'<label class="">开票名称 :</label>'
-                                    +				'<input type="text" name="invoice_name" value="'+item.currency_string5+'" class="layui-input" readonly>'
                                     +			'</div>'
                                     +			'<div>'
                                     +				'<label class="">税号 :</label>'
@@ -182,7 +174,7 @@
                                     +				'<input name="invoice_type" value="'+(item.currency_int5==1?"普通发票":"专用发票")+'" class="layui-input" readonly>'
                                     +			'</div>'
                                     +			'<div>'
-                                    +				'<label class="">开票事由 :</label>'
+                                    +				'<label class="">备注 :</label>'
                                     +				'<input name="invoice_reason" value="'+item.currency_string14+'" class="layui-input" readonly>'
                                     +			'</div>'
                                     +			'<div><label class="label-title">明细信息 </label></div>'

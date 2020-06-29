@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: dingtalk-sdk-java:taobao-sdk-java-auto:3.0.12">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.m2/repository/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$USER_HOME$/.m2/repository/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$USER_HOME$/.m2/repository/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/dingtalk-sdk-java/taobao-sdk-java-auto/3.0.12/taobao-sdk-java-auto-3.0.12-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
