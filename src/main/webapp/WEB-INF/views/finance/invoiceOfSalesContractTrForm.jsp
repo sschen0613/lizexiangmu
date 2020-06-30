@@ -75,13 +75,13 @@
 					<td>已开票金额</td>
 					<td colspan=2><input type="text" id="alreadyInvoice_amount" name="alreadyInvoice_amount" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
 					<td>申请开票金额</td>
-					<td><input type="text" id="applyInvoice_amount" name="applyInvoice_amount" readonly></td>
+					<td><input type="text" id="applyInvoice_amount" name="applyInvoice_amount" placeholder="由明细金额累计得出" readonly></td>
 					<td>发票类型</td>
 					<td><select name="invoice_type"><option value="1">普通发票</option><option value="2">专用发票</option></select></td>
 				</tr>
 				<tr>
 					<td>备注</td>
-					<td colspan=6><input type="text" name="invoice_reason" placeholder="请务必填写开票事由" lay-verify="required"></td>
+					<td colspan=6><input type="text" name="invoice_reason"></td>
 				</tr>
 				<tr>
 					<th colspan=7 style="text-align: center;">明细信息</th>
@@ -99,7 +99,7 @@
 					<td><input type="text" name="specifications_models"></td>
 					<td><input type="text" name="unit"></td>
 					<td><input type="text" id="buy_quantity1" name="buy_quantity" lay-verify="required"></td>
-					<td><input type="text" id="unit_price" name="unit_price" lay-verify="required"></td>
+					<td><input type="text" id="sum1" name="unit_price" lay-verify="required"></td>
 					<td class="delete1"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>
 				</tr>
 			</tbody>	
@@ -165,6 +165,12 @@
 					var invoice_type = data.field.invoice_type;
 
 					var invoice_reason = data.field.invoice_reason;
+
+					//如果已申请开票+申请开票大于合同金额，阻止提交
+					if ((applyInvoice_amount+alreadyInvoice_amount)>contract_totalamount){
+						layer.msg("开票总金额不能大于合同总金额");
+						return false;
+					}
 					
 					var currentDetails = [];
 					$.each($('.details'),function(index,item){
@@ -245,14 +251,6 @@
                     }
                 });
 
-				$("#unit_price").on("input",function(e){
-					var sum = 0;
-					$.each($('.details'),function(index,item){
-						sum += Number($(item).find('input[name="unit_price"]').val());
-					});
-					$("#applyInvoice_amount").val(sum);
-				});
-
                 //操作
                 //点击添加明细按钮
 				var d_count = 1;
@@ -278,7 +276,18 @@
 					deleteItem($('.delete'+index));  //每一行绑定行删除事件
 					//searchProcess($('.container'+index)); //每一行绑定即时搜索框
 				    inputLimitNumber($('#buy_quantity'+index)); //每一行给申请数量绑定方法,限制输入内容(数字)(in function_tool.js)
-				    //inputLimitAmount0($('#sum'+index));////监听金额输入框只允许输入数字(小数点后保留两位)
+					//每行金额求和计算申请开票金额
+				    applyInvoiceAmount($('#sum'+index));
+				}
+				function applyInvoiceAmount($demo) {
+					$demo.on("input",function(e){
+						var sum = 0;
+						$.each($('.details'),function(index,item){
+							sum += Number($(item).find('input[name="unit_price"]').val());
+						});
+						$("#applyInvoice_amount").val(sum);
+					});
+
 				}
 				function deleteItem($demo){
 					deleteDetailsItem1($demo);

@@ -51,7 +51,7 @@
 
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">天人公司合同发票开具请购单</button>
+				<button class="layui-btn layui-btn-xs" lay-event="add">天人公司合同发票开具申请单</button>
 			</div>
 		</script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->

@@ -122,7 +122,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">申请开票金额 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="applyInvoice_amount" class="layui-input" readonly>
+							<input type="text" name="applyInvoice_amount" class="layui-input" placeholder="由明细金额累计得出" readonly>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -172,7 +172,7 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">金额 :</label>
 									<div class="layui-input-block">
-										<input type="text" id="sum'+d_count+'" name="unit_price" class="layui-input" lay-verify="required">
+										<input type="text" id="sum1" name="unit_price" class="layui-input" lay-verify="required">
 									</div>
 								</div>
 							</div>
@@ -223,6 +223,11 @@
 					var applyInvoice_amount = Number(data.field.applyInvoice_amount);
 					var invoice_type = data.field.invoice_type;
 					var invoice_reason = data.field.invoice_reason;
+					//如果已申请开票+申请开票大于合同金额，阻止提交
+					if ((applyInvoice_amount+alreadyInvoice_amount)>contract_totalamount){
+						layer.msg("开票总金额不能大于合同总金额");
+						return false;
+					}
 					
 					var currentDetails = [];
 					$.each($('.details'),function(index,item){
@@ -367,7 +372,18 @@
                 	deleteItem($('.delete'+index)); //每一行绑定行删除事件
                 	slideToggleDetailsItem($('.details-title'+index)); //每一行绑定滑动事件
                     inputLimitNumber($('#buy_quantity'+index)); //每一行给申请数量绑定方法,限制输入内容(数字)(in function_tool.js)
+					applyInvoiceAmount($('#sum'+index));
                 }
+                function applyInvoiceAmount($demo) {
+					$demo.on("input",function(e){
+						var sum = 0;
+						$.each($('.details'),function(index,item){
+							sum += Number($(item).find('input[name="unit_price"]').val());
+						});
+						$("#applyInvoice_amount").val(sum);
+					});
+
+				}
                 function deleteItem($demo){
                 	deleteDetailsItem3($demo);
                 }
