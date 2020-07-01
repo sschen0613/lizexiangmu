@@ -183,19 +183,33 @@
                         currency_date2:function (value,line,data) {
                             return Format(value,"yyyy-MM-dd");
                         },
+                        currency_date3:function (value,line,data) {
+                            return Format(value,"yyyy-MM-dd");
+                        },
                         currency_string2:"currency_string2",
                         currency_string3:"currency_string3",
                         currency_string4:"currency_string4",
                         currency_string5:"currency_string5",
                         currency_string7:"currency_string7",
                         currency_string8:"currency_string8",
-                        currency_string9:"currency_string9"
+                        currency_string9:"currency_string9",
+                        currency_string10:function (value,line,data) {
+                            if (value == "0"){
+                                return "合同未签订";
+                            }else if (value == "1"){
+                                return "合同已签订";
+                            }else if(value == "2"){
+                                return "报备已终止";
+                            }
+
+                        },
                     });
                     data.unshift({
+                        currency_string10: '状态',
                         currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期'
                         ,currency_string2:"业务类型",currency_string3:"单位名称",currency_string4:"项目（产品）名称"
                         ,currency_string5:"业务（产品）规模",currency_date2: '业务需求时间',currency_string7:"业务所在区域",currency_string8:"联系人"
-                        ,currency_string9:"联系电话"
+                        ,currency_string9:"联系电话",currency_date3: '合同签订时间'
                     });
                     // 3. 执行导出函数，系统会弹出弹框
                     LAY_EXCEL.exportExcel(data, '天人报备统计.xlsx', 'xlsx');
