@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 区域经理大额经费申请列表-手机端 -->
+<!-- 区域经理办公用品大额经费申请列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-				<h2 class="">区域经理大额经费申请</h2>
+				<h2 class="">区域经理办公用品大额经费申请</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>

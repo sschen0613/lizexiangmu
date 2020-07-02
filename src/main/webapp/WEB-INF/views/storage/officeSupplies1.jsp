@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 区域经理大额经费申请 -->
+<!-- 区域经理办公用品大额经费申请 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -49,7 +49,7 @@
 
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">区域经理大额经费申请单</button>
+				<button class="layui-btn layui-btn-xs" lay-event="add">区域经理办公用品大额经费申请单</button>
 			</div>
 		</script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -117,7 +117,7 @@
 					,url: 'Currency/selectApplicantCurrency.action?currency_type='+ currency_type //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '区域经理大额经费申请单'
+			    	,title: '区域经理办公用品大额经费申请单'
  			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
@@ -153,7 +153,7 @@
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({
 							type: 2,
-							title: '区域经理大额经费申请单修改',
+							title: '区域经理办公用品大额经费申请单修改',
 							//shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
@@ -207,7 +207,7 @@
 							layer.open({
 								type: 2,
 								// skin:'layui-layer-molv', //layui-layer-lan
-								title: '区域经理大额经费申请单填写',
+								title: '区域经理办公用品大额经费申请单填写',
 								//shadeClose: true,
 								shade: 0.8,
 								maxmin: true,
@@ -229,7 +229,7 @@
 // 					layer.open({
 // 						type: 2,
 // 						// skin:'layui-layer-molv', //layui-layer-lan
-// 						title: '区域经理大额经费审批',
+// 						title: '区域经理办公用品大额经费审批',
 // 						shadeClose: true,
 // 						shade: 0.8,
 // 						maxmin: true,

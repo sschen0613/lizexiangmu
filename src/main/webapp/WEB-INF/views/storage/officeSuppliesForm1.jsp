@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 区域经理大额经费申请单 -->
+<!-- 区域经理办公用品大额经费申请单 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -25,7 +25,7 @@
 		<table class="layui-table table-open">
 			<thead>
 				<tr>
-					<th colspan=7 class="table-h">区域经理大额经费申请单</th>
+					<th colspan=7 class="table-h">区域经理办公用品大额经费申请单</th>
 				</tr>
 				<tr>
 					<th colspan=7 style="text-align:right">请购单号：<input type="text" id="buy_number" name="buy_number" readonly> </th>

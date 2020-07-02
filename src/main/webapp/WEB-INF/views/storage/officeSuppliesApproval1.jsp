@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 区域经理大额经费审批 -->
+<!-- 区域经理办公用品大额经费审批 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -140,7 +140,7 @@
 					,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '区域经理大额经费审批表'
+			    	,title: '区域经理办公用品大额经费审批表'
  			    	,totalRow: true //开启合计行
 					,id : "tab"
 					,cols: [[ //表头
