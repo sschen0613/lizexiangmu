@@ -59,6 +59,10 @@
 					<td>未收/付金额</td>
 					<td><input type="text" id="outstanding_receipt" name="outstanding_receipt" ></td>
 				</tr>
+				<tr>
+					<td>备注</td>
+					<td colspan=5><input type="text" name="remark"></td>
+				</tr>
 		 	</tbody>
 			<thead>
 				<tr>
@@ -111,6 +115,8 @@
                     var contract_amount = data.field.contract_amount;
                     var actual_receipt = data.field.actual_receipt;
                     var outstanding_receipt = data.field.outstanding_receipt;
+
+					var remark = data.field.remark;//备注
 					
 					var currency_type = 63;
 
@@ -123,6 +129,7 @@
                     myForm.set("currency_string10",contract_amount);
                     myForm.set("currency_string11",actual_receipt);
                     myForm.set("currency_string12",outstanding_receipt);
+					myForm.set("currency_string13",remark);
 
                     for(let i = 0;i < $("#pics")[0].files.length;i++){
                         myForm.append("pics",$("#pics")[0].files[i])

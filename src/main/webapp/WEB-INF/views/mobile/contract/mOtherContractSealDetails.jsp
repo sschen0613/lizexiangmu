@@ -55,6 +55,7 @@
                 var currency_string10 = '${param.currency_string10}'; //已收金额
                 var currency_string11 = '${param.currency_string11}'; //已收金额
                 var currency_string12 = '${param.currency_string12}'; //已收金额
+				var currency_string13 = '${param.currency_string13}'; //备注
 
                 
                 var currency_id = '${param.currency_id}';
@@ -117,6 +118,10 @@
                             +				'<label class="">未收/付金额 :</label>'
                             +				'<input name="applied_amount" value="'+currency_string12+'" class="layui-input" readonly>'
                             +			'</div>'
+							+			'<div>'
+							+				'<label class="">备注 :</label>'
+							+				'<textarea name="remark" class="layui-textarea" readonly>'+currency_string13+'</textarea>'
+							+			'</div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
 							 +			'</div>'

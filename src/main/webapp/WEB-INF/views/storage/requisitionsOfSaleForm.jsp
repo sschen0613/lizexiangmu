@@ -280,7 +280,7 @@
                 var areaid = "${sessionScope.systemStaff.staff_Address }";
                 var position_Id = "${sessionScope.systemStaff.position_Id }";//获取当前登录人角色信息
                 //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26：物资部长
-                if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29){
+                if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70){
                     //登录人角色不为上述角色，则将合同金额信息隐藏
                     $(".money").css('display','none');
                     $('td[name="recent"]').css('display','none');
@@ -455,7 +455,7 @@
 	    	    					 			 +	'<td><input type="text" name="contract_quantity" value="'+item.合同数量+'" readonly></td>'
 	    	    					 			 +	'<td><input type="text" id="buy_quantity'+d_count+'" name="buy_quantity" lay-verify="required"></td>'
 	    	    					 			 +	'<td><input type="text" name="inventory_quantity" value="'+fAvaQuantity+'" readonly></td>'
-	    				       			if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29){
+	    				       			if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70){
                                             html+=	'<td name="recent" style="display: none"><input type="text" name="recent_price" value="'+recentPrice+'" readonly></td>'
                                                 +	'<td name="recent" style="display: none"><input type="text" name="iInvLSCost" value="'+iInvLSCost+'" readonly></td>'
 												+	'<td name="recent" style="display: none"><input type="text" name="dbl_price" value="'+item.含税原币单价+'" readonly></td>'

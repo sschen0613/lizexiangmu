@@ -342,6 +342,10 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 							approver2.setApproval_result(1);
 							systemApprovalMapper.updateApproverResultMi(approver2);
 							res2 = currencyApplyMapper.refuseRequest(currencyApply);
+							//20200708 陈书生
+							//在审批记录表中添加审批组字段，用来记录审批组
+							approvalOpinions.setApproval_state(approverRole.getApprover_name());
+
 							//添加审批意见
 							currencyApplyMapper.addApprovalOpinion(approvalOpinions);
 							//修改当前审批层级
@@ -1272,6 +1276,8 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				approver2.setApproval_result(2);
 				systemApprovalMapper.updateApproverResultMi(approver2);
 
+				//approvalOpinions.setApproval_state(approverRole.getApprover_name());
+
 				//添加审批意见
 				currencyApplyMapper.addApprovalOpinion(approvalOpinions);
 				//修改当前审批层级
@@ -1759,7 +1765,8 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 
 		//添加不需要条件判定的数组
 
-		String[] str = {"8","11","14","15","16","17","18","19","24","22","23","28","29","32","34","35","36","37","20","61","38","39","40","41","42","44","45","46","55","58","59","62","63","66","67","68","69","70"};
+		String[] str = {"8","11","14","15","16","17","18","19","24","22","23","28","29","32","34","35","36","37","20","61","38","39","40","41","42"
+                ,"44","45","46","55","58","59","62","63","66","67","68","69","70","71"};
 		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
 		if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 
@@ -1908,6 +1915,9 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 
 		//已审批的审批意见
 		List<HashMap<String, Object>> list = currencyApplyMapper.selectApprovalOpinion(approvalOpinions);
+		if (currencyApply.getApprover_state() == 0){//如果已经被审核完成，则直接返回list6
+			return list;
+		}
 		List<HashMap<String, Object>> approvallist = new ArrayList<>();
 		for (int a = 0;a < roles.size();a++) {
 			HashMap<String,Object> hashMap = new HashMap<>();

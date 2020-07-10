@@ -465,9 +465,9 @@
 	<!-- 添加审批意见 -->
 	<insert id="addApprovalOpinion" parameterType="com.yr.lize.pojo.ApprovalOpinion">
  			INSERT INTO approvalOpinion
- 			(approvalOpinion_result ,approvalOpinion_type ,approver_id ,approver_name ,approval_id,approval_date,approval_stat)
+ 			(approvalOpinion_result ,approvalOpinion_type ,approver_id ,approver_name ,approval_id,approval_date,approval_stat,approval_state)
  			VALUES
- 			(#{approvalOpinion_result} ,#{approvalOpinion_type} ,#{approver_id} ,#{approver_name} ,#{approval_id},#{approval_date},#{approval_stat})
+ 			(#{approvalOpinion_result} ,#{approvalOpinion_type} ,#{approver_id} ,#{approver_name} ,#{approval_id},#{approval_date},#{approval_stat},#{approval_state})
  	</insert>
 	<!-- 查询审批意见 -->
 	<select id="selectApprovalOpinion" parameterType="com.yr.lize.pojo.ApprovalOpinion" resultType="HashMap">

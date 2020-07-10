@@ -148,6 +148,7 @@
                         ,{field: 'currency_string10', title: '合同总金额', minWidth:100}
                         ,{field: 'currency_string11', title: '已收/付金额', minWidth:100}
                         ,{field: 'currency_string12', title: '未收/付金额', minWidth:100}
+						,{field: 'currency_string13', title: '备注', minWidth:100}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:260}
 					]]

@@ -20,6 +20,16 @@ public class ApprovalOpinion {
 
 	private Integer approval_stat;
 
+	private String approval_state;
+
+	public String getApproval_state() {
+		return approval_state;
+	}
+
+	public void setApproval_state(String approval_state) {
+		this.approval_state = approval_state;
+	}
+
 	public Date getApproval_date() {
 		return approval_date;
 	}

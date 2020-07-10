@@ -228,7 +228,7 @@
 
                 var position_Id = "${sessionScope.systemStaff.position_Id }";//获取当前登录人角色信息
                 //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26：物资部长
-                if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29){
+                if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70){
                     //登录人角色不为上述角色，则将合同金额信息隐藏
                     $('td[name="recent"]').css('display','none');
                 }

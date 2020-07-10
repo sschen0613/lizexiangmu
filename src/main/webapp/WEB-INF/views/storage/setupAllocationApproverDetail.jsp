@@ -188,7 +188,7 @@
                     +	'<td>'+item.details_string7+'</td>'
                     +	'<td>'+item.details_money+'</td>';
                     /*+	'<td>'+item.details_money3+'</td>';*/
-                if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29){
+                if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70){
                     html +=	'<td></td>'
                     +	'</tr>';
                 }else{

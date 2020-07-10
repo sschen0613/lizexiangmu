@@ -58,7 +58,7 @@
             });
 
             //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26:物资部长
-            if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29) {
+            if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70) {
                 //执行一个 table 实例
                 table.render({
                     elem: '#test1'
@@ -104,7 +104,7 @@
         else if(currency_type == 8){
 
             //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26:物资部长
-            if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29) {
+            if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70) {
                 //执行一个 table 实例
                 table.render({
                     elem: '#test'
@@ -181,7 +181,7 @@
             });
 
             //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26:物资部长
-            if (position_Id != 5 && position_Id != 23 && position_Id != 34 && position_Id != 41 && position_Id != 29) {
+            if (position_Id != 5 && position_Id != 77 && position_Id != 76 && position_Id != 73 && position_Id != 29 && position_Id != 70) {
                 //执行一个 table 实例
                 table.render({
                     elem: '#test1'
@@ -336,6 +336,26 @@
                     ,{field: 'details_string7', title: '单位', minWidth: 80}
                     ,{field: 'details_money', title: '数量', minWidth: 80}
                     ,{field: 'details_money2', title: '预计单价', minWidth: 80}
+                    //,{field: 'details_money3', title: '预计价格', minWidth: 100}
+                ]]
+            });
+        }
+
+        //办公用品审批
+        else if(currency_type == 71){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '用户数据表'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}
+                    //,{field: 'details_string6', title: '规格型号', minWidth: 100}
+                    ,{field: 'details_string7', title: '单位', minWidth: 80}
+                    ,{field: 'details_money', title: '数量', minWidth: 80}
+                    //,{field: 'details_money2', title: '预计单价', minWidth: 80}
                     //,{field: 'details_money3', title: '预计价格', minWidth: 100}
                 ]]
             });

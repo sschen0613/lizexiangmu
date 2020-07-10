@@ -131,6 +131,10 @@
                             +				'<label class="">未收/付金额 :</label>'
                             +				'<input type="text" name="applied_amount" value="'+item.currency_string12+'" class="layui-input" readonly>'
                             +			'</div>'
+								+			'<div>'
+								+				'<label class="">备注 :</label>'
+								+				'<textarea name="remark" class="layui-textarea" readonly>'+item.currency_string13+'</textarea>'
+								+			'</div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
 							 +			'</div>'

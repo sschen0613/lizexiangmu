@@ -183,7 +183,7 @@
 						,{field: 'currency_string7', title: '招待事由', minWidth:200}
 						,{field: 'currency_money6', title: '申请金额', minWidth:100}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
-						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
+						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:200}
 					]]
 				});
 

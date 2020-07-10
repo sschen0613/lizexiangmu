@@ -89,6 +89,12 @@
 							<input id="outstanding_receipt" type="text" name="outstanding_receipt" class="layui-input" lay-verify="required">
 						</div>
 					</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">备注 :</label>
+							<div class="layui-input-block">
+								<input id="remark" type="text" name="remark" class="layui-input">
+							</div>
+						</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">上传图片 :</label>
 						<div class="layui-input-block">
@@ -136,6 +142,8 @@
                     var actual_receipt = data.field.actual_receipt;
                     var outstanding_receipt = data.field.outstanding_receipt;
 
+					var remark = data.field.remark;//备注
+
                     var currency_type = 63;
 
                     var myForm = new FormData();
@@ -146,6 +154,7 @@
                     myForm.set("currency_string10",contract_amount);
                     myForm.set("currency_string11",actual_receipt);
                     myForm.set("currency_string12",outstanding_receipt);
+					myForm.set("currency_string13",remark);
 
                     for(let i = 0;i < $("#pics")[0].files.length;i++){
                         myForm.append("pics",$("#pics")[0].files[i])
