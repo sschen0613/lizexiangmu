@@ -159,7 +159,8 @@
                                         +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
                                         +		'<div class="details">'
                                         +			'<div>'
-                                        +				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+										+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+                                        //+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
                                         +			'</div>'
                                         +		'</div>'
                                         +	'</div>';

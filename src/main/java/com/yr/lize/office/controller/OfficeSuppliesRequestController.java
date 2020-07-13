@@ -19,6 +19,7 @@ public class OfficeSuppliesRequestController {
 	@RequestMapping("office/officeSupplies.action")
 	public String setupAllocationApproverView1() {
 		return "WEB-INF/views/office/officeSupplies";
+		//return "WEB-INF/views/mobile/office/mOfficeSupplies";
 	}
 	//跳转办公用品申请表界面
 	@RequestMapping("office/officeSuppliesForm.action")

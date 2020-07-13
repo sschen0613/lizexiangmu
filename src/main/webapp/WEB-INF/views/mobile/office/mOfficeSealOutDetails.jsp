@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 办公用品申请详情-手机端 -->
+<!-- 公章外带申请详情-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -25,7 +25,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-storage"></use>
 	        	</svg>
-	        	办公用品申请详情
+	        	公章外带申请详情
 			</h2>
 			<div class="content">
 				
@@ -90,17 +90,13 @@
 							 +				'<label class="">申请日期 :</label>'
 							 +				'<input type="text" name="currency_date" id="date" value="'+currency_date+'" class="layui-input" readonly>'
 							 +			'</div>'
+							+			'<div>'
+							+				'<label class="">外带用途 :</label>'
+							+				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+currency_string7+'</textarea>'
+							+			'</div>'
 							 +			'<div>'
-							 +				'<label class="">需求日期 :</label>'
+							 +				'<label class="">归还日期 :</label>'
 							 +				'<input type="text" name="expectedDelivery_date" id="date1" value="'+currency_date2+'" class="layui-input" readonly>'
-							 +			'</div>'
-							 +			'<div>'
-							 +				'<label class="">申请事由 :</label>'
-							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+currency_string7+'</textarea>'
-							 +			'</div>'
-							 +			'<div><label class="label-title">明细信息 </label></div>'
-							 +			'<div class="approval-detail-container">'
-											//明细信息
 							 +			'</div>'
 							 + 			'<div class="approval-progress">'
 							 +				'<label class="">审批进度 :</label>'
@@ -118,48 +114,7 @@
 							 +		'</form>'
 							 +	'</div>';
 						$('.content').append(html);
-						//获取明细信息
-						$.ajax({
-							url:'Currency/selectCurrencyDetails.action?currency_id='+currency_id,
-							type:'post',
-							data:{},
-							dataType:'JSON',
-							success:function(res){
-								var html0 = '';
-								$.each(res.data,function(index,item){
-									html0+=	'<div class="approval-detail">'
-							  		 	 +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
-							  		 	 +		'<div class="details">'
-							 		 	 +			'<div>'
-							 		 	 +				'<label class="">物品名称 :</label>'
-							 		 	 +				'<input id="product_name" name="product_name" value="'+item.details_string5+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'
-							 		 	 +			'<div>'
-							 		 	 +				'<label class="">规格型号 :</label>'
-							 		 	 +				'<input type="text" name="specifications_models" value="'+item.details_string6+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'
-							 		 	 +			'<div>'
-							 		 	 +				'<label class="">单位 :</label>'
-							 		 	 +				'<input type="text" name="unit" value="'+item.details_string7+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'
-							 		 	 +			'<div>'
-							 		 	 +				'<label class="">数量 :</label>'
-							 		 	 +				'<input type="text" name="buy_quantity" value="'+item.details_money+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'
-							 		 	 +			'<div>'
-							 		 	 +				'<label class="">预计单价 :</label>'
-							 		 	 +				'<input type="text" name="unit_price" value="'+item.details_money2+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'
-							 		 	/* +			'<div>'
-							 		 	 +				'<label class="">预计价格 :</label>'
-							 		 	 +				'<input type="text" name="anticipated_price" value="'+item.details_money3+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'*/
-							 		 	 +		'</div>'
-							 		 	 +	'</div>';
-								});
-								$('.approval-detail-container').html(html0);
-							}
-						});
+
 						//渲染进度条
 						element.render('progress');
 						//更新进度条

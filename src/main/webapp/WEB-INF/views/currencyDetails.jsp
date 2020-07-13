@@ -19,6 +19,8 @@
 
 <table class="layui-hide" id="test2" lay-filter="test2"></table>
 
+<table class="layui-hide" id="test3" lay-filter="test3"></table>
+
 <script type="text/html" id="barDemo">
 
 </script>
@@ -27,8 +29,14 @@
  
 </script>
 <script type="text/html" id="system_img">
-    <img src="{{d.coverpath}}" class="layui-nav-img">
+
 </script>
+
+<script type="text/html" id="system_file">
+    <%--<img src="{{d.coverpath}}" class="layui-nav-img">--%>
+    <a href="{{d.coverpath}}">查看文件</a>
+</script>
+
 <script type="text/javascript">
     layui.use(['laydate', 'laypage', 'layer','table', 'element'], function(){
         var laydate = layui.laydate //日期
@@ -814,14 +822,14 @@
         //丽泽销售合同盖章审批
         else if(currency_type == 63){
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
                 ,title: '图片'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '合同图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '合同文件', width: 150,templet:"#system_file"}
                 ]]
             });
         }
@@ -948,5 +956,21 @@
             obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
         });
 
+        /*table.on('row(test3)', function(obj){
+            var data = obj.data;
+
+            layer.open({
+                type: 2 //Page层类型
+                ,area: ['700px', '300px']
+                ,title: '文件查看'
+                ,shade: 0.6 //遮罩透明度
+                ,maxmin: true //允许全屏最小化
+                ,anim: 1 //0-6的动画形式，-1不开启
+                //,content: '<img src="'+data.coverpath+'" alt="查看图片">'
+                ,content: data.coverpath
+            });
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });*/
     });
 </script>

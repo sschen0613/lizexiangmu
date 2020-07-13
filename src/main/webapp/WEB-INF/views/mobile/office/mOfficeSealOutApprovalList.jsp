@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 办公用品审批列表-手机端 -->
+<!-- 公章外带审批列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a href="mobile/view/Mindex.action?currentTab=approval" class="layui-icon layui-icon-left"></a>
-				<h2 class="">办公用品审批</h2>
+				<h2 class="">公章外带审批</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
@@ -86,7 +86,7 @@
                 //UNIT //每页加载数量(in funtion_tool.js)
                 
                 //数据初始化
-                var currency_type = 1;
+                var currency_type = 72;
     			var staffid ="${sessionScope.systemStaff.dingding_staffid }";
     			$.ajax({
     				url:'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid,
@@ -113,7 +113,7 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="storage/mOfficeSuppliesApproval.action?currency_id='+item.currency_id
+    				    		 +		'<a href="office/mOfficeSealOutApproval.action?currency_id='+item.currency_id
     				    		 +		'&dingStaffid='+staffid
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'

@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 办公用品申请列表-手机端 -->
+<!-- 公章外带申请列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -85,7 +85,7 @@
                 //UNIT //每页加载数量(in funtion_tool.js)
                 
                 //数据初始化
-                var currency_type = 1;
+                var currency_type = 72;
     			var staffid ="${sessionScope.systemStaff.dingding_staffid }";
     			$.ajax({
     				url:'Currency/selectApplicantCurrency.action?currency_type='+ currency_type,
@@ -112,10 +112,10 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="storage/mOfficeSuppliesDetails.action?currency_id='+item.currency_id
+    				    		 +		'<a href="office/mOfficeSuppliesDetails.action?currency_id='+item.currency_id
     				    				 +'&current_approvalCount='+item.current_approvalCount
     				    				 +'&approver_count='+item.approver_count
-    				    				 +'&approvalOpinion_type=1&approval_id=1'
+    				    				 +'&approvalOpinion_type=72&approval_id=72'
     				    				 +'&currency_number='+item.currency_number
     				    				 +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
     				    				 +'&currency_date2='+Format(item.currency_date2,"yyyy-MM-dd")

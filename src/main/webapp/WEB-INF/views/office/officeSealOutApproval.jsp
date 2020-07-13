@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 办公用品审批 -->
+<!-- 公章外带审批 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -58,7 +58,7 @@
 		<table id="tab" lay-filter="table"></table>
 
 		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
+			<%--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>--%>
 			<a class="layui-btn layui-btn-xs" lay-event="edit">审批</a>
 			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>
 		</script>
@@ -73,7 +73,7 @@
 				,form = layui.form
 				,layedit = layui.layedit;
 
-				var currency_type = 1;
+				var currency_type = 72;
 				var staffid ="${sessionScope.systemStaff.dingding_staffid }";
 				
 				//表单更新渲染
@@ -140,17 +140,16 @@
 					,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '办公用品（设施）请购审批表'
+			    	,title: '公章外带审批表'
  			    	,totalRow: true //开启合计行
 					,id : "tab"
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
-						,{field: 'staff_name', title: '申请人', minWidth:80, fixed: 'left', unresize: true, sort: true, totalRowText: '合计'}
+						,{field: 'staff_name', title: '申请人', minWidth:80, fixed: 'left'}
 						,{field: 'department_name', title: '申请部门', minWidth:100}
-						,{field: 'currency_money6', title: '总金额', minWidth:100, totalRow: true}
 						,{field: 'currency_date', title: '申请日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_date2', title: '需求日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string7', title: '申请事由', minWidth:100}
+						,{field: 'currency_string7', title: '外带用途', minWidth:100}
+						,{field: 'currency_date2', title: '归还日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
                         ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{title:'操作', toolbar: '#barDemo', minWidth:250}
 					]]
@@ -183,7 +182,7 @@
 							maxmin: true,
 							area: ['80%', '80%'],
 							content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
-									+data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type=1"//iframe的url
+									+data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type=72"//iframe的url
 						}); 
 					} else if(layEvent === 'edit'){ //审批
 						layer.open({
@@ -194,7 +193,7 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['30%', '40%'],
-							content: 'Currency/approvalOpinion.action?approval_id=1&currency_id='+data.currency_id
+							content: 'Currency/approvalOpinion.action?approval_id=72&currency_id='+data.currency_id
 						});
 					}
 				});

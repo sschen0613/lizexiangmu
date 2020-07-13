@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 办公用品申请 -->
+<!-- 公章外带申请 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -49,7 +49,7 @@
 
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">办公用品（设施）请购申请单</button>
+				<button class="layui-btn layui-btn-xs" lay-event="add">公章外带申请单</button>
 			</div>
 		</script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -69,7 +69,7 @@
 				,form = layui.form
 				,layedit = layui.layedit;
 
-				var currency_type = 1;
+				var currency_type = 72;
 				
 				//表单更新渲染
 				form.render();
@@ -117,17 +117,14 @@
 					,url: 'Currency/selectApplicantCurrency.action?currency_type='+ currency_type //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '办公用品（设施）请购申请单'
+			    	,title: '公章外带申请单'
  			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
 						,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
-// 						,{field: 'staff_name', title: '申请人', minWidth:80}
-// 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_money6', title: '总金额', minWidth:100, totalRow: true}
-						,{field: 'currency_date2', title: '需求日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string7', title: '申请事由', minWidth:200}
+						,{field: 'currency_string7', title: '外带用途', minWidth:200}
+						,{field: 'currency_date2', title: '归还日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
 					]]
@@ -153,7 +150,7 @@
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({
 							type: 2,
-							title: '办公用品（设施）请购申请单修改',
+							title: '公章外带（设施）请购申请单修改',
 							//shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
@@ -207,12 +204,12 @@
 							layer.open({
 								type: 2,
 								// skin:'layui-layer-molv', //layui-layer-lan
-								title: '办公用品（设施）请购申请单填写',
+								title: '公章外带申请单填写',
 								//shadeClose: true,
 								shade: 0.8,
 								maxmin: true,
 								area: ['80%', '80%'],
-								content: 'storage/officeSuppliesForm.action' //iframe的url
+								content: 'office/officeSealOutForm.action' //iframe的url
 							});
 				    	break;
 				    	case 'delete':
@@ -229,12 +226,12 @@
 // 					layer.open({
 // 						type: 2,
 // 						// skin:'layui-layer-molv', //layui-layer-lan
-// 						title: '办公用品（设施）请购审批',
+// 						title: '公章外带（设施）请购审批',
 // 						shadeClose: true,
 // 						shade: 0.8,
 // 						maxmin: true,
 // 						area: ['80%', '80%'],
-// 						content: 'storage/officeSuppliesForm.action' //iframe的url
+// 						content: 'storage/officeSealOutForm.action' //iframe的url
 // 					});
 // 				});
 				//查询审批管理信息

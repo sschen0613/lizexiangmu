@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%   
-	String path = request.getContextPath();   
-	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
-%> 
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!-- 办公用品申请-手机端 -->
 <html>
@@ -13,6 +13,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css">
 		<link rel="stylesheet" href="css/mobile.css">
+		<link rel="stylesheet" type="text/css" href="css/search_bar_custom.css">
 		<script src="layui/layui.js"></script>
 		<script src="js/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="js/iconfont.js"></script>
@@ -76,15 +77,15 @@
 									<input type="text" name="id" class="layui-input" readonly>
 								</div>
 							</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">名称 :</label>
-									<div id="container1" class="layui-input-block container container1">
-										<input id="name" name="name" class="layui-input search-box" placeholder="输入关键字查询" lay-verify="required">
-										<div class="list-container" style="display:none;">
-											<ul></ul>
-										</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">名称 :</label>
+								<div id="container1" class="layui-input-block container container1">
+									<input id="name" name="name" class="layui-input search-box" placeholder="输入关键字查询" lay-verify="required">
+									<div class="list-container" style="display:none;">
+										<ul></ul>
 									</div>
 								</div>
+							</div>
 								<%--<div class="layui-form-item">
 									<label class="layui-form-label">规格型号 :</label>
 									<div class="layui-input-block">
@@ -145,7 +146,7 @@
 					elem: '#date1' //指定元素
 				});
 				detailsRender(1); //明细信息第一行自定义渲染事件
-				
+
                 //监听提交按钮
               	form.on('submit(submitForm)', function(data){
 					// console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
@@ -168,12 +169,12 @@
 
 
 						var details_money3 = details_money2*details_money;
-						
+
 						var obj = {'details_int':details_int,'details_string5':details_string5,'details_string7':details_string7
 							,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
 						currencyDetails.push(obj);
 					});
-					
+
 				 	$.ajax({
 				 		 url : "Currency/launchCurrencyApply.action"
 				 		,type : "post"
@@ -197,7 +198,7 @@
     			$('#resetForm').click(function(e){
     				window.location.reload();
     			});
-                
+
                 //表单数据初始化
 				//获取请购单号
 				setBuyNumber();
@@ -310,8 +311,7 @@
 										var price = item.price; //价格
 										if(price == undefined) price = 0;
 
-										html += '<li value="'+id+'" data-id="'+id+'" data-name="'+name+'"data-unit="'+unit+'" data-price="'+price+'">' +name+'</li>';
-										//将获取的所有信息保存到自定义属性中
+										html += '<li value="'+id+'" data-id="'+id+'" data-name="'+name+'" data-unit="'+unit+'" data-price="'+price+'">'+name+'</li>';
 									});
 									$demo.find('.list-container>ul').html(html);
 									$demo.find('.list-container').css('display','block');
@@ -339,7 +339,7 @@
 						$demo.find('.list-container').css('display','none');
 					});
                 }
-                
+
             });
         </script>
 	</body>
