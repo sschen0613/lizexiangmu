@@ -48,18 +48,20 @@
 					<th colspan=6 style="text-align:center;">明细信息</th>
 				</tr>
 				<tr>
-					<td>编号</td>
-					<td colspan="2">物品名称</td>
+					<td>ID</td>
+					<td>编码</td>
+					<td>物品名称</td>
 					<%--<td>规格型号</td>--%>
 					<td>单位</td>
 					<td>数量</td>
-					<td style="display: none">预计单价</td>
+					<td style="display: none">单价</td>
 					<%--<td>预计价格</td>--%>
 					<td>操作</td>
 				</tr>
 				<tr class="details">
 					<td><input type="text" name="id" readonly></td>
-		 			<td id="container1" class="container container1" colspan="2">
+					<td><input type="text" name="code" readonly></td>
+		 			<td id="container1" class="container container1">
 						<input id='name' name="name" class="search-box" placeholder="输入关键字查询" type="text">
 						<div class="list-container" style="display:none;">
 		                	<ul></ul>
@@ -121,6 +123,7 @@
 					var currency_type = 71;//71是当前审批请求的类型,审批管理主键id;
 					var details = $('.details');
 					var currencyDetails = [];
+					var money = 0;
 					$.each(details,function(index,item){
 						var details_int = $(item).find('input[name="id"]').val();
 						var details_string5 = $(item).find('input[name="name"]').val();
@@ -129,6 +132,7 @@
 						var details_money = Number($(item).find('input[name="amount"]').val());
 						var details_money2 = Number($(item).find('input[name="price"]').val());
 						var details_money3 = details_money2*details_money;
+						money += details_money3;
 						
 						var obj = {'details_int':details_int,'details_string5':details_string5,'details_string7':details_string7
 								,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
@@ -138,7 +142,7 @@
 				 	$.ajax({
 				 		 url : "Currency/launchCurrencyApply.action"
 				 		,type : "post"
-				 		,data : {currency_string7:currency_string7,"currency_type":currency_type,"currencyDetails" : JSON.stringify(currencyDetails)}
+				 		,data : {currency_string7:currency_string7,"currency_type":currency_type,"currency_money":money,"currencyDetails" : JSON.stringify(currencyDetails)}
 				 		,dataType : "JSON"
                         ,beforeSend: function(){
                             layer.msg('正在提交申请', {
@@ -173,7 +177,8 @@
 					d_count++;
 					var html = '<tr class="details">'
 							+	'<td><input type="text" name="id" readonly></td>'
-							 +	'<td id="container'+d_count+'" class="container container'+d_count+'" colspan="2">'
+							+	'<td><input type="text" name="code" readonly></td>'
+							 +	'<td id="container'+d_count+'" class="container container'+d_count+'">'
 							 +		'<input id="name" name="name" class="search-box" placeholder="输入关键字查询" type="text">'
 							 +		'<div class="list-container" style="display:none;">'
 				             +   		'<ul></ul>'
@@ -228,7 +233,8 @@
 									$.each(res.data,function(index,item){
 										//当属性值不存在时
 										var id = item.id;
-
+										var code = item.code;//名字
+										if(code == undefined) code = '无';
 										var name = item.name;//名字
 										if(name == undefined) name = '无';
 										var unit = item.unit;//单位
@@ -236,7 +242,7 @@
 										var price = item.price; //价格
 										if(price == undefined) price = 0;
 
-										html += '<li value="'+id+'" data-id="'+id+'" data-name="'+name+'"data-unit="'+unit+'" data-price="'+price+'">' +name+'</li>';
+										html += '<li value="'+id+'" data-id="'+id+'" data-code="'+code+'" data-name="'+name+'"data-unit="'+unit+'" data-price="'+price+'">' +name+'</li>';
 										//将获取的所有信息保存到自定义属性中
 									});
 									$demo.find('.list-container>ul').html(html);
@@ -255,6 +261,7 @@
 						var value = $(this).val();//number类型
 						var text = $(this).text();
 						$(this).closest('.details').find('input[name="id"]').val($(this).attr('data-id')); //存货编码
+						$(this).closest('.details').find('input[name="code"]').val($(this).attr('data-code')); //商品名称input标签
 						$(this).closest('.details').find('input[name="name"]').val($(this).attr('data-name')); //商品名称input标签
 						$(this).closest('.details').find('input[name="unit"]').val($(this).attr('data-unit')); //单位
 						//保存明细信息当前行的商品名称input框值

@@ -72,9 +72,15 @@
 							<div class="details-title details-title1">明细信息#1<span class="layui-icon layui-icon-up"></span></div>
 							<div class="details">
 							<div class="layui-form-item">
-								<label class="layui-form-label">编号 :</label>
+								<label class="layui-form-label">ID :</label>
 								<div class="layui-input-block">
 									<input type="text" name="id" class="layui-input" readonly>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">编码 :</label>
+								<div class="layui-input-block">
+									<input type="text" name="code" class="layui-input" readonly>
 								</div>
 							</div>
 							<div class="layui-form-item">
@@ -156,6 +162,7 @@
 					var currency_type = 71;//1是当前审批请求的类型,审批管理主键id;
 					var details = $('.details');
 					var currencyDetails = [];
+					var money = 0;
 
 					$.each(details,function(index,item){
 
@@ -166,9 +173,7 @@
 						var details_money2 = Number($(item).find('input[name="price"]').val());
 						var details_money3 = details_money2*details_money;
 
-
-
-						var details_money3 = details_money2*details_money;
+						money += details_money3;
 
 						var obj = {'details_int':details_int,'details_string5':details_string5,'details_string7':details_string7
 							,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
@@ -178,7 +183,7 @@
 				 	$.ajax({
 				 		 url : "Currency/launchCurrencyApply.action"
 				 		,type : "post"
-				 		,data : {'currency_string7':currency_string7,"currency_type":currency_type,"currencyDetails" : JSON.stringify(currencyDetails)}
+				 		,data : {'currency_string7':currency_string7,"currency_money":money,"currency_type":currency_type,"currencyDetails" : JSON.stringify(currencyDetails)}
 				 		,dataType : "JSON"
                         ,beforeSend: function(){
                             layer.msg('正在提交申请', {
@@ -217,11 +222,17 @@
                     +    '<div class="details-title details-title'+d_count+'">明细信息#'+(++n_count)+'<span class="layui-icon layui-icon-up"></span></div>'
                     +    '<div class="details">'
                     +      '<div class="layui-form-item">'
-                    +        '<label class="layui-form-label">编号 :</label>'
+                    +        '<label class="layui-form-label">ID :</label>'
                     +        '<div class="layui-input-block">'
                     +          '<input type="text" name="id" class="layui-input" readonly>'
                     +        '</div>'
                     +      '</div>'
+					  +      '<div class="layui-form-item">'
+					  +        '<label class="layui-form-label">编码 :</label>'
+					  +        '<div class="layui-input-block">'
+					  +          '<input type="text" name="code" class="layui-input" readonly>'
+					  +        '</div>'
+					  +      '</div>'
 					  +      '<div class="layui-form-item">'
 					  +        '<label class="layui-form-label">名称 :</label>'
 					  +        '<div id="container'+d_count+'" class="layui-input-block container container'+d_count+'">'
@@ -303,7 +314,8 @@
 									$.each(res.data,function(index,item){
 										//当属性值不存在时
 										var id = item.id;
-
+										var code = item.code;//编码
+										if(code == undefined) code = '无';
 										var name = item.name;//名字
 										if(name == undefined) name = '无';
 										var unit = item.unit;//单位
@@ -311,7 +323,7 @@
 										var price = item.price; //价格
 										if(price == undefined) price = 0;
 
-										html += '<li value="'+id+'" data-id="'+id+'" data-name="'+name+'" data-unit="'+unit+'" data-price="'+price+'">'+name+'</li>';
+										html += '<li value="'+id+'" data-id="'+id+'" data-code="'+code+'" data-name="'+name+'" data-unit="'+unit+'" data-price="'+price+'">'+name+'</li>';
 									});
 									$demo.find('.list-container>ul').html(html);
 									$demo.find('.list-container').css('display','block');
@@ -329,6 +341,7 @@
 						var value = $(this).val();//number类型
 						var text = $(this).text();
 						$(this).closest('.details').find('input[name="id"]').val($(this).attr('data-id')); //存货编码
+						$(this).closest('.details').find('input[name="code"]').val($(this).attr('data-code')); //商品名称input标签
 						$(this).closest('.details').find('input[name="name"]').val($(this).attr('data-name')); //商品名称input标签
 						$(this).closest('.details').find('input[name="unit"]').val($(this).attr('data-unit')); //单位
 						//保存明细信息当前行的商品名称input框值

@@ -111,6 +111,10 @@
 							 +				'<label class="">申请事由 :</label>'
 							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
 							 +			'</div>'
+								+			'<div>'
+								+				'<label class="">总额 :</label>'
+								+				'<input type="text" name="currency_money" id="currency_money" value="'+item.currency_money+'" class="layui-input" readonly>'
+								+			'</div>'
 							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
@@ -168,14 +172,14 @@
 							 		 	 +				'<label class="">数量 :</label>'
 							 		 	 +				'<input type="text" name="buy_quantity" value="'+item.details_money+'" class="layui-input" readonly>'
 							 		 	 +			'</div>'
-							 		 	 /*+			'<div>'
-							 		 	 +				'<label class="">预计单价 :</label>'
+							 		 	 +			'<div>'
+							 		 	 +				'<label class="">单价 :</label>'
 							 		 	 +				'<input type="text" name="unit_price" value="'+item.details_money2+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'*/
-							 		 	/* +			'<div>'
-							 		 	 +				'<label class="">预计价格 :</label>'
+							 		 	 +			'</div>'
+							 		 	 +			'<div>'
+							 		 	 +				'<label class="">金额 :</label>'
 							 		 	 +				'<input type="text" name="anticipated_price" value="'+item.details_money3+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'*/
+							 		 	 +			'</div>'
 							 		 	 +		'</div>'
 							 		 	 +	'</div>';
 								});

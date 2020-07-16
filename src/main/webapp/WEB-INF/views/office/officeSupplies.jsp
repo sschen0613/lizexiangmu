@@ -144,7 +144,7 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url currency_id通用审批流主键
+							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type+'&currency_string18=0' //iframe的url currency_id通用审批流主键
 						});
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({

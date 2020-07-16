@@ -2,11 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yr.lize.office.mapper.OfficeSuppliesMapper">
     <select id="selectOfficeSuppliesList" parameterType="com.yr.lize.pojo.OfficeSupplies" resultType="com.yr.lize.pojo.OfficeSupplies">
-        select id,name,unit,price
+        select id,code,name,unit,price
         from office_supplies
         where 1=1
         <if test="name != null and name != ''">
           and  name like '%${name}%'
+        </if>
+        <if test="code != null and code != ''">
+            and  code like '%${code}%'
         </if>
         order by id desc
     </select>
@@ -14,15 +17,16 @@
     <!--新增办公用品-->
     <insert id="addOfficeSupplies" parameterType="com.yr.lize.pojo.OfficeSupplies">
         insert into office_supplies
-        (name,unit,price)
+        (code,name,unit,price)
         values
-        (#{name},#{unit},#{price})
+        (#{code},#{name},#{unit},#{price})
     </insert>
 
     <!--更新办公用品-->
     <update id="updateOfficeSupplies" parameterType="com.yr.lize.pojo.OfficeSupplies">
         update office_supplies
-        <set >
+        <set>
+            <if test="code != null and code != ''">code = #{code},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="unit != null and unit != ''">unit = #{unit},</if>
             <if test="price != null and price != ''">price = #{price},</if>

@@ -85,6 +85,7 @@
  			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
+						,{field: 'code', title: '编码', minWidth:40}
  						,{field: 'name', title: '名称', minWidth:40}
  						,{field: 'unit', title: '单位', minWidth:20}
 						,{field: 'price', title: '价格', minWidth:20}
@@ -105,7 +106,7 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'office/reviseOfficeSupplies.action?id='+data.id+'&name='+data.name+'&unit='+data.unit+'&price='+data.price//iframe的url
+							content: 'office/reviseOfficeSupplies.action?id='+data.id+'&code='+data.code+'&name='+data.name+'&unit='+data.unit+'&price='+data.price//iframe的url
 							,end:function () {//关闭弹框，刷新里诶包
 								location.reload();
 							}

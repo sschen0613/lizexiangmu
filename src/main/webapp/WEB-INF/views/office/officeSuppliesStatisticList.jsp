@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="css/form_top_revise.css">
 		<link rel="stylesheet" type="text/css" href="css/table.css">
+		<script src="js/echarts.js"></script>
 		<script src="layui/layui.js"></script>
 		<script src="js/jquery-3.1.1.min.js"></script>
 		<script src="js/function_tool.js"></script>
@@ -56,6 +57,8 @@
 		</form>
 
 		<table id="tab" lay-filter="table"></table>
+
+		<div id="statisticList" style="width: 400px;height: 700px;"></div>
 
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
@@ -197,7 +200,23 @@
 						});
 					}
 				});
-				
+
+				var myChart = echarts.init(document.getElementById('statisticList'));
+				var option = {
+					xAxis: {
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [{
+						data: [120, 200, 150, 80, 70, 110, 130],
+						type: 'bar'
+					}]
+				};
+				myChart.setOption(option);
+
 			});
 		</script>
 	</body>

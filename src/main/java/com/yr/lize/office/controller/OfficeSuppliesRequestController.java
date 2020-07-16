@@ -74,7 +74,7 @@ public class OfficeSuppliesRequestController {
 	//跳转办公用品统计界面
 	@RequestMapping("office/officeSuppliesStatistics.action")
 	public String officeSuppliesStatistics() {
-		return "WEB-INF/views/office/officeSuppliesStatistics";
+		return "WEB-INF/views/office/officeSuppliesStatisticList";
 	}
 
 	//获取办公用品列表

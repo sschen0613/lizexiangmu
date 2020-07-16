@@ -11,6 +11,12 @@
 <script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
 
     <form class="layui-form form_revise">
+		<div class="layui-form-item">
+			<label class="layui-form-label">编码</label>
+			<div class="layui-input-block">
+				<input placeholder="请输入编码" type="text" value="${param.code}" name="code"  autocomplete="off" class="layui-input">
+			</div>
+		</div>
 		  <div class="layui-form-item">
 		    <label class="layui-form-label">名称</label>
 		    <div class="layui-input-block">
@@ -53,13 +59,14 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table', 'element','form'], 
 			console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
 			var data2 = data.field //当前容器的全部表单字段，名值对形式：{name: value
 				,id = data2.id
+				,code = data2.code
 				,name = data2.name
 				,unit = data2.unit
 				,price = data2.price;
 		 	$.ajax({
 		 		url : "../office/addOfficeSupplies.action"
 		 		,type : "post"
-		 		,data : {"id" :id, "name" :name, "unit" :unit, "price" :price}
+		 		,data : {"id" :id, "code" :code,"name" :name, "unit" :unit, "price" :price}
 		 		,dataType : "JSON"
 		 		,success : function(result){
 		 				parent.layer.close(parent.layer.getFrameIndex(window.name));
