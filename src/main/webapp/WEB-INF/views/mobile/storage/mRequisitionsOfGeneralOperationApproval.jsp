@@ -287,7 +287,7 @@
                                                 });
                                                 $('.approval-detail-container').html(html0);
                                                 //如果当前登录人角色不为  5:管理员；23:总经理；34:财务主管；47:区域经理；29:开发管理员 26:物资部长
-                                                if (position != 5 && position != 23 && position != 34 && position != 41 && position != 29){
+                                                if (position != 5 && position != 77 && position != 76 && position != 73 && position != 29 && position != 70){
                                                     $('div[name="recent"]').hide();
                                                 }
                                             }
