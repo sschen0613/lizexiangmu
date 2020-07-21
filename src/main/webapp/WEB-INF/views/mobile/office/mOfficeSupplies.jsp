@@ -167,6 +167,7 @@
 					$.each(details,function(index,item){
 
 						var details_int = $(item).find('input[name="id"]').val();
+						var details_string4 = $(item).find('input[name="code"]').val();
 						var details_string5 = $(item).find('input[name="name"]').val();
 						var details_string7 = $(item).find('input[name="unit"]').val();
 						var details_money = Number($(item).find('input[name="amount"]').val());
@@ -175,7 +176,7 @@
 
 						money += details_money3;
 
-						var obj = {'details_int':details_int,'details_string5':details_string5,'details_string7':details_string7
+						var obj = {'details_int':details_int,'details_string4':details_string4,'details_string5':details_string5,'details_string7':details_string7
 							,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
 						currencyDetails.push(obj);
 					});
@@ -344,6 +345,7 @@
 						$(this).closest('.details').find('input[name="code"]').val($(this).attr('data-code')); //商品名称input标签
 						$(this).closest('.details').find('input[name="name"]').val($(this).attr('data-name')); //商品名称input标签
 						$(this).closest('.details').find('input[name="unit"]').val($(this).attr('data-unit')); //单位
+						$(this).closest('.details').find('input[name="price"]').val($(this).attr('data-price')); //单位
 						//保存明细信息当前行的商品名称input框值
 						var n = Number( $demo.attr('id').replace('container','') );
 						currentProductValues[n] = $(this).closest('.details').find('input[name="name"]').val();

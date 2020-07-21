@@ -38,4 +38,44 @@
     <delete id="deleteOfficeSupplies" parameterType="com.yr.lize.pojo.OfficeSupplies">
         delete from office_supplies where id = #{id}
     </delete>
+
+    <select id="selectOfficeSuppliesAmountList" parameterType="com.yr.lize.pojo.CurrencyApply" resultType="java.util.HashMap">
+        SELECT
+        sum(currency_apply.currency_money) AS currency_money,system_department.department_name,system_staff.department_id
+        FROM currency_apply
+        LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
+        LEFT JOIN system_department ON system_department.ding_depmid = system_staff.department_id
+        WHERE
+        currency_apply.currency_type = 71 and
+        currency_apply.approver_count = currency_apply.current_approvalCount
+        AND currency_apply.approver_state = 0
+        <if test="currency_type != null and currency_type != ''">AND currency_apply.currency_type = #{currency_type}</if>
+        <if test="currency_date3 != null">AND currency_apply.currency_date <![CDATA[ <= ]]>#{currency_date3}</if>
+        <if test="currency_date2 != null">AND currency_apply.currency_date >=#{currency_date2}</if>
+        GROUP BY system_department.department_name,system_staff.department_id
+        ORDER BY  sum(currency_apply.currency_money) DESC
+    </select>
+
+    <select id="selectOfficeSuppliesAmountListByDep" parameterType="com.yr.lize.pojo.CurrencyApply" resultType="java.util.HashMap">
+
+        SELECT a.details_string4,b.name AS details_string5,b.unit AS details_string7,
+        a.details_money,b.price AS details_money2,a.details_money3
+        FROM (SELECT
+        currency_details.details_string4
+        ,sum(currency_details.details_money) AS details_money,sum(currency_details.details_money3) AS details_money3
+        FROM currency_apply
+        LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
+        LEFT JOIN system_department ON system_department.ding_depmid = system_staff.department_id
+        LEFT JOIN currency_details ON currency_apply.currency_id = currency_details.currency_id
+        WHERE
+        currency_apply.approver_count = currency_apply.current_approvalCount
+        AND currency_apply.approver_state = 0
+        <if test="currency_type != null and currency_type != ''">AND currency_apply.currency_type = #{currency_type}</if>
+        <if test="currency_department != null and currency_department != ''">AND system_staff.department_id = #{currency_department}</if>
+        <if test="currency_date3 != null">AND currency_apply.currency_date <![CDATA[ <= ]]>#{currency_date3}</if>
+        <if test="currency_date2 != null">AND currency_apply.currency_date >=#{currency_date2}</if>
+        GROUP BY details_string4) a
+        LEFT JOIN office_supplies b ON a.details_string4 = b.code
+        order by a.details_money3 desc
+    </select>
 </mapper>

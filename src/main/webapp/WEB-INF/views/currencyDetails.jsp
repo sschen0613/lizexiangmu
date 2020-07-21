@@ -48,6 +48,7 @@
         var currency_id = ${param.currency_id};	//number类型
         var currency_type = Number('${param.currency_type}'); //string类型
         var position_Id = "${sessionScope.systemStaff.position_Id }";//获取当前登录人角色信息
+        var departmentId ="${sessionScope.systemStaff.department_Id }";//获取当前登录用户部门id
 
         //销售请购审批
         if(currency_type == 9){
@@ -351,8 +352,7 @@
 
         //办公用品审批
         else if(currency_type == 71){
-            var currency_string18 = ${param.currency_string18};
-            if (currency_string18 == 1){
+            if (departmentId == 297){
                 //执行一个 table 实例
                 table.render({
                     elem: '#test'
@@ -361,7 +361,8 @@
                     ,title: '用户数据表'
                     ,totalRow: true
                     ,cols: [[ //表头
-                        {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}
+                        {fixed: 'left', field: 'details_string4', title: '编码', minWidth: 80},
+                        {field: 'details_string5', title: '物品名称', minWidth: 100}
                         //,{field: 'details_string6', title: '规格型号', minWidth: 100}
                         ,{field: 'details_string7', title: '单位', minWidth: 80}
                         ,{field: 'details_money', title: '数量', minWidth: 80}
@@ -378,7 +379,8 @@
                     ,title: '用户数据表'
                     ,totalRow: true
                     ,cols: [[ //表头
-                        {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}
+                        {fixed: 'left', field: 'details_string4', title: '编码', minWidth: 80},
+                        {field: 'details_string5', title: '物品名称', minWidth: 100}
                         //,{field: 'details_string6', title: '规格型号', minWidth: 100}
                         ,{field: 'details_string7', title: '单位', minWidth: 80}
                         ,{field: 'details_money', title: '数量', minWidth: 80}

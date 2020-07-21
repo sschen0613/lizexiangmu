@@ -1,7 +1,11 @@
 package com.yr.lize.office.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yr.lize.pojo.CurrencyApply;
 import com.yr.lize.pojo.OfficeSupplies;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @BelongsProject: lizexiangmu
@@ -22,4 +26,10 @@ public interface IOfficeSuppliesRequestService {
 
     //删除办公用品
     public Integer deleteOfficeSupplies(OfficeSupplies officeSupplies);
+
+    //查询每个部门办公用品使用总额
+    public List<HashMap<String,Object>> selectOfficeSuppliesAmountList(CurrencyApply currencyApply);
+
+    //查询每个部门办公用品使用总额
+    public List<HashMap<String,Object>> selectOfficeSuppliesAmountListByDep(CurrencyApply currencyApply);
 }

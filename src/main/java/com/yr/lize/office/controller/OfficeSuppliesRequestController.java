@@ -2,12 +2,16 @@ package com.yr.lize.office.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yr.lize.office.service.IOfficeSuppliesRequestService;
+import com.yr.lize.pojo.CurrencyApply;
 import com.yr.lize.pojo.OfficeSupplies;
 import com.yr.lize.pojo.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class OfficeSuppliesRequestController {
@@ -77,6 +81,12 @@ public class OfficeSuppliesRequestController {
 		return "WEB-INF/views/office/officeSuppliesStatisticList";
 	}
 
+	//跳转办公用品统计详情界面
+	@RequestMapping("office/officeSuppliesStatisticDetails.action")
+	public String officeSuppliesStatisticDetails() {
+		return "WEB-INF/views/office/officeSuppliesStatisticDetails";
+	}
+
 	//获取办公用品列表
 	@RequestMapping("office/selectOfficeSuppliesList.action")
 	@ResponseBody
@@ -107,6 +117,28 @@ public class OfficeSuppliesRequestController {
 		Integer ins = iOfficeSuppliesRequestService.deleteOfficeSupplies(officeSupplies);
 		responseResult.setCode(0);
 		responseResult.setMsg("操作成功");
+		return responseResult;
+	}
+
+	//获取办公用品列表
+	@RequestMapping("office/selectOfficeSuppliesAmountList.action")
+	@ResponseBody
+	public ResponseResult selectOfficeSuppliesAmountList(CurrencyApply currencyApply) {
+		ResponseResult responseResult = new ResponseResult();
+		List<HashMap<String,Object>> list = iOfficeSuppliesRequestService.selectOfficeSuppliesAmountList(currencyApply);
+		responseResult.setCode(0);
+		responseResult.setData(list);
+		return responseResult;
+	}
+
+	//获取办公用品列表
+	@RequestMapping("office/selectOfficeSuppliesAmountListByDep.action")
+	@ResponseBody
+	public ResponseResult selectOfficeSuppliesAmountListByDep(CurrencyApply currencyApply) {
+		ResponseResult responseResult = new ResponseResult();
+		List<HashMap<String,Object>> list = iOfficeSuppliesRequestService.selectOfficeSuppliesAmountListByDep(currencyApply);
+		responseResult.setCode(0);
+		responseResult.setData(list);
 		return responseResult;
 	}
 }

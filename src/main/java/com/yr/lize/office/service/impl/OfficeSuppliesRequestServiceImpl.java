@@ -4,10 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yr.lize.office.mapper.OfficeSuppliesMapper;
 import com.yr.lize.office.service.IOfficeSuppliesRequestService;
+import com.yr.lize.pojo.CurrencyApply;
 import com.yr.lize.pojo.OfficeSupplies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,5 +51,15 @@ public class OfficeSuppliesRequestServiceImpl implements IOfficeSuppliesRequestS
     @Override
     public Integer deleteOfficeSupplies(OfficeSupplies officeSupplies) {
         return officeSuppliesMapper.deleteOfficeSupplies(officeSupplies);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectOfficeSuppliesAmountList(CurrencyApply currencyApply) {
+        return officeSuppliesMapper.selectOfficeSuppliesAmountList(currencyApply);
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectOfficeSuppliesAmountListByDep(CurrencyApply currencyApply) {
+        return officeSuppliesMapper.selectOfficeSuppliesAmountListByDep(currencyApply);
     }
 }
