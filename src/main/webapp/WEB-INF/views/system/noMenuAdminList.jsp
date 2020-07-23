@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../css/edit_revise.css">
 <script src="../layui/layui.js"></script>
 <script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
-<link rel="stylesheet" href="css/search_revise.css">  
+<link rel="stylesheet" href="../css/search_revise.css">
 <form class="layui-form">
 	<div class="layui-form-item" style="padding-top:10px;">
 		  <div class="layui-inline searchintop_inline">
@@ -73,7 +73,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
     ,cols: [[ //表头
     	{type: 'checkbox', fixed: 'left'}
       ,{field: 'menu_id', title: 'ID', width:80, sort: true, fixed: 'left'}
-      ,{field: 'menu_name', title: '菜单名称', width:160}
+      ,{field: 'menu_name', title: '菜单名称', width:300}
       ,{fixed: 'right',minWidth: 250, width:250, align:'center', toolbar: '#barDemo'}    
       ]]
   });
@@ -87,7 +87,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
     if(layEvent === 'detail'){
       layer.msg('查看操作');
     } else if(layEvent === 'del'){
-      layer.confirm('确认添加', function(index){
+      layer.confirm('确认添加',{offset:'100'}, function(index){
         obj.del(); //删除对应行（tr）的DOM结构
         layer.close(index);
         //向服务端发送删除指令

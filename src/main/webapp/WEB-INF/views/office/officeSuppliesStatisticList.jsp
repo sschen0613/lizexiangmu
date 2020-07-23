@@ -44,7 +44,7 @@
 
 		<table id="tab" lay-filter="table"></table>
 
-		<div id="statisticList" style="width: 700px;height: 400px;"></div>
+		<%--<div id="statisticList" style="width: 700px;height: 400px;"></div>--%>
 
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
@@ -170,7 +170,7 @@
 					}
 				});
 
-				var myChart = echarts.init(document.getElementById('statisticList'));
+				//var myChart = echarts.init(document.getElementById('statisticList'));
 				var option = {
 					title: {
 						text: '各部门办公用品使用情况',
@@ -206,13 +206,13 @@
 						}
 					}]
 				};
-				myChart.setOption(option);
+				/*myChart.setOption(option);
 
 				myChart.on('click', function (params) {
 					console.log(params.value);
 					console.log(params[1].ind)
 					console.log(params);
-				});
+				});*/
 
 			});
 		</script>

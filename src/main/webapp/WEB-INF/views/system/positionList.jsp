@@ -84,7 +84,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
     ,id:'tab'
     ,cols: [[ //表头
       {field: 'position_id', title: 'ID', width:80, sort: true}
-      ,{field: 'position_name', title: '角色', width:120}
+      ,{field: 'position_name', title: '角色', width:300}
       ,{fixed: 'right',title:'操作', width: 400, align:'center', toolbar: '#barDemo'}    
       ]]
   });
@@ -102,6 +102,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
 	    	shade: 0.8,
 	    	shadeClose:true,
 	        maxmin: true,
+			offset: '100',
 	        closeBtn: 1,
 	    	area: ['800px', '80%'],
 	    	content: '../PowerMenu/yesMenuAdminList.action?position_Id='+data.position_id, 
@@ -117,6 +118,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
 	    	shade: 0.8,
 	    	shadeClose:true,
 	        maxmin: true,
+			offset: '100',
 	        closeBtn: 1,
 	    	area: ['800px', '80%'],
 	    	content: '../PowerMenu/noMenuAdminList.action?position_Id='+data.position_id, 
@@ -126,7 +128,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
 	          }
 	    });
     } else if(layEvent === 'del'){
-      layer.confirm('确认删除', function(index){
+      layer.confirm('确认删除',{offset: '100'}, function(index){
         obj.del(); //删除对应行（tr）的DOM结构
         layer.close(index);
         //向服务端发送删除指令
@@ -152,6 +154,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
 	    	shade: 0.8,
 	    	shadeClose:true,
 	        maxmin: true,
+			offset: '100',
 	        closeBtn: 1,
 	    	area: ['800px', '80%'],
 	    	content: '../Position/updatePositionList.action?position_Id='+data.position_id+'&position_name='+data.position_name
@@ -175,6 +178,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
   	    	shade: 0.8,
   	    	shadeClose:true,
   	        maxmin: true,
+			  offset: '100',
   	        closeBtn: 1,
   	    	area: ['800px', '80%'],
   	    	content: '../Position/addPositionList.action"',
