@@ -914,14 +914,33 @@
                 ]]
             });
         }
-        //办公用品审批
-        else if(currency_type == 62  || currency_type == 68){
+        //技术保障部配件采购明细
+        else if(currency_type == 73){
             //执行一个 table 实例
             table.render({
                 elem: '#test'
                 ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '安装组配件采购明细表'
+                ,title: '技术保障部配件采购明细表'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}
+                    ,{field: 'details_string6', title: '规格型号', minWidth: 100}
+                    ,{field: 'details_money', title: '数量', minWidth: 80}
+                    ,{field: 'details_money2', title: '预估金额', minWidth: 80}
+                    ,{field: 'details_string7', title: '备注', minWidth: 100}
+                ]]
+            });
+        }
+
+        //其他类采购流程明细
+        else if(currency_type == 62 || currency_type == 68){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '采购明细表'
                 ,totalRow: true
                 ,cols: [[ //表头
                     {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}

@@ -84,7 +84,7 @@ layui.use(['laydate', 'layedit','laypage', 'layer', 'table',  'element','form'],
     ,id:'tab'
     ,cols: [[ //表头
       {field: 'position_id', title: 'ID', width:80, sort: true}
-      ,{field: 'position_name', title: '部门', width:120}
+      ,{field: 'position_name', title: '角色', width:120}
       ,{fixed: 'right',title:'操作', width: 400, align:'center', toolbar: '#barDemo'}    
       ]]
   });

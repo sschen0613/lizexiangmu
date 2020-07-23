@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 备货请购申请 -->
+<!-- 安装组配件采购申请 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -135,7 +135,7 @@
 					,url: 'Currency/selectApplicantCurrency.action?currency_type=62' //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '备货请购申请'
+			    	,title: '安装组配件采购申请'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
@@ -171,7 +171,7 @@
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({
 							type: 2,
-							title: '备货请购单修改',
+							title: '安装组配件采购单修改',
 							//shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
