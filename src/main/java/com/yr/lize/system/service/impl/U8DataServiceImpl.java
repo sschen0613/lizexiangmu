@@ -1,16 +1,16 @@
 package com.yr.lize.system.service.impl;
 
-import java.math.BigDecimal;
-import java.util.*;
-
+import com.yr.lize.system.mapper.U8DataMapper;
 import com.yr.lize.system.mapper.XZU8DataMapper;
-import org.apache.poi.xslf.model.geom.IfElseExpression;
+import com.yr.lize.system.service.U8DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-import com.yr.lize.system.mapper.U8DataMapper;
-import com.yr.lize.system.service.U8DataService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class U8DataServiceImpl implements U8DataService{
@@ -118,9 +118,19 @@ public class U8DataServiceImpl implements U8DataService{
 	}
 
 	@Override
+	public List<HashMap<String, Object>> selectContractDetails(String strContractID) {
+		return null;
+	}
+
+	@Override
 	public List<HashMap<String, Object>> selectXZContractAll(String strContractID) {
 		// TODO Auto-generated method stub
 		return xzu8DataMapper.selectContractAll(strContractID);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectXZContractDetails(String strContractID) {
+		return xzu8DataMapper.selectContractDetails(strContractID);
 	}
 
 	@Override

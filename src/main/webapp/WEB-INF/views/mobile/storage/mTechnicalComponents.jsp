@@ -28,7 +28,7 @@
 				<span class="menu layui-icon layui-icon-more" onclick="$('.sub-menu').slideToggle();">
 					<div class="sub-menu">
 						<ul>
-							<li onclick="window.location.href = 'storage/mInstallComponentsList.action';">查看申请记录</li>
+							<li onclick="window.location.href = 'storage/mTechnicalComponentsList.action';">查看申请记录</li>
 						</ul>
 					</div>
 				</span>
@@ -100,13 +100,13 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">请购数量 :</label>
 									<div class="layui-input-block">
-										<input type="text" name="buy_quantity" class="layui-input" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" lay-verify="required">
+										<input type="text" name="buy_quantity" id="buy_quantity1" class="layui-input" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" lay-verify="required">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">预估金额 :</label>
 									<div class="layui-input-block">
-										<input type="text" name="price" class="layui-input" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" lay-verify="required">
+										<input type="text" id="price1" name="price" class="layui-input" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" lay-verify="required">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -161,21 +161,24 @@
                     var expectedDelivery_date = data.field.expectedDelivery_date; //期望到货日期
 					var area = data.field.area; //申请事由
 
-                    var currency_type = 62;
-					
+                    var currency_type = 73;
+					var allMoney = 0;
 					var currentDetails = [];
 					$.each($('.details'),function(index,item){
+						var number = $(item).find('input[name="number"]').val(); //序号
                         var product_name = $(item).find('input[name="product_name"]').val(); //商品名称
                         var specifications_models = $(item).find('input[name="specifications_models"]').val(); //规格型号
                         var buy_quantity = Number($(item).find('input[name="buy_quantity"]').val()); //请购数量
 						var price = Number($(item).find('input[name="price"]').val()); //预估金额
-
+						var remark = $(item).find('input[name="remark"]').val(); //备注
+						allMoney += price;
                         var obj = {
-                            'details_string5':product_name
-                            ,'details_string6':specifications_models
-                            ,'details_money':buy_quantity
-							,'details_money2':price
+							'details_string':number
+							,'details_string5':product_name
+							,'details_string6':specifications_models
+							,'details_money':buy_quantity
 							,'details_string7':remark
+							,'details_money2':price
                         };
                         currentDetails.push(obj);
 					});
@@ -184,12 +187,14 @@
 				 		 url : "Currency/launchCurrencyApply.action"
 				 		,type : "post"
 				 		,data : {
-                            "currency_money6":price
-                            ,"currency_type":currency_type
-                            ,"currency_number":buy_number
-                            ,"currency_string":illustration
-                            ,"currency_date3":expectedDelivery_date
-                            ,"currencyDetails":JSON.stringify(currentDetails)
+							"currency_type":currency_type
+							,"currency_date":currencyDate
+							,"currency_number":buy_number
+							,"currency_string":illustration
+							,"currency_date3":expectedDelivery_date
+							,"currency_string2":area
+							,"currency_money6":allMoney
+							,"currencyDetails":JSON.stringify(currentDetails)
 						}
 				 		,dataType : "JSON"
                         ,beforeSend: function(){
@@ -246,6 +251,18 @@
                     +          '<input type="text" id="buy_quantity'+d_count+'" name="buy_quantity" class="layui-input" onkeyup="if(isNaN(value))execCommand("undo")" onafterpaste="if(isNaN(value))execCommand("undo")" lay-verify="required">'
                     +        '</div>'
                     +      '</div>'
+				  +      '<div class="layui-form-item">'
+				  +        '<label class="layui-form-label">预估金额 :</label>'
+				  +        '<div class="layui-input-block">'
+				  +          '<input type="text" id="price'+d_count+'" name="price" class="layui-input" onkeyup="if(isNaN(value))execCommand("undo")" onafterpaste="if(isNaN(value))execCommand("undo")" lay-verify="required">'
+				  +        '</div>'
+				  +      '</div>'
+				  +      '<div class="layui-form-item">'
+				  +        '<label class="layui-form-label">备注 :</label>'
+				  +        '<div class="layui-input-block">'
+				  +          '<input type="text" id="remark" name="remark" class="layui-input">'
+				  +        '</div>'
+				  +      '</div>'
                     +    '</div>'
                     +    '<div class="delete delete'+d_count+'">'
                     +      '<button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>'
@@ -261,6 +278,7 @@
                 	slideToggleDetailsItem($('.details-title'+index)); //每一行绑定滑动事件
                     //searchProcess($('.container'+index)); //每一行绑定即时搜索框
                     inputLimitNumber($('#buy_quantity'+index)); //每一行给申请数量绑定方法,限制输入内容(数字)(in function_tool.js)
+					inputLimitNumber($('#price'+index)); //每一行给申请数量绑定方法,限制输入内容(数字)(in function_tool.js)
                 }
                 //行删除事件
                 function deleteItem($demo){

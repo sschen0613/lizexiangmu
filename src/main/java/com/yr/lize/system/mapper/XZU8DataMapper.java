@@ -22,6 +22,8 @@ public interface XZU8DataMapper {
 		List<HashMap<String, Object>> selectReceivables(String strContractID);
 		//根据合同编码查询所有合同带出内容
 		List<HashMap<String, Object>> selectContractAll(String strContractID);
+		//根据合同编码查询合同明细内容
+		List<HashMap<String, Object>>selectContractDetails(String strContractID);
 		//根据存货编码查询所有合同带出最近日期价格
 		List<HashMap<String, Object>> selectCost(String cInvCode);
 		//

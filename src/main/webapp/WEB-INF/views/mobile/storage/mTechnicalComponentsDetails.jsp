@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 安装组请购申请详情-手机端 -->
+<!-- 技术保障部配件采购申请详情-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -25,7 +25,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-storage"></use>
 	        	</svg>
-	        	其他类请购申请详情
+				技术保障部配件采购申请详情
 			</h2>
 			<div class="content">
 				
@@ -49,7 +49,7 @@
                 var currency_date = '${param.currency_date}'; //申请日期
                 var currency_date3 = '${param.currency_date3}'; //期望到货日期
                 var currency_money6 = '${param.currency_money6}';
-                var currency_string = '${param.currency_string}';
+                var currency_string2 = '${param.currency_string2}';
 
                 var currency_id = '${param.currency_id}';
     			var approvalOpinion_type = '${param.approvalOpinion_type}';
@@ -99,6 +99,10 @@
 							 +				'<label class="">期望到货日期 :</label>'
 							 +				'<input type="text" name="expectedDelivery_date" id="date1" value="'+currency_date3+'" class="layui-input" readonly>'
 							 +			'</div>'
+							+			'<div>'
+							+				'<label class="">申请事由 :</label>'
+							+				'<input type="text" name="area" id="area" value="'+currency_string2+'" class="layui-input" readonly>'
+							+			'</div>'
 							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
@@ -143,6 +147,14 @@
 							 		 	 +				'<label class="">请购数量 :</label>'
 							 		 	 +				'<input type="text" name="buy_quantity" value="'+item.details_money+'" class="layui-input" readonly>'
 							 		 	 +			'</div>'
+										+			'<div>'
+										+				'<label class="">预估金额 :</label>'
+										+				'<input type="text" name="buy_quantity" value="'+item.details_money2+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">备注 :</label>'
+										+				'<input type="text" name="buy_quantity" value="'+item.details_string7+'" class="layui-input" readonly>'
+										+			'</div>'
 							 		 	 +		'</div>'
 							 		 	 +	'</div>';
 								});

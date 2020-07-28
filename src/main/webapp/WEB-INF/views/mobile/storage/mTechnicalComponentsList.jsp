@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 安装组请购申请列表-手机端 -->
+<!-- 技术保障部配件采购申请列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-				<h2 class="">安装组请购申请</h2>
+				<h2 class="">技术保障部配件采购申请</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
@@ -85,7 +85,7 @@
                 //UNIT //每页加载数量(in funtion_tool.js)
                 
                 //数据初始化
-                var currency_type = 68;
+                var currency_type = 73;
     			var staffid ="${sessionScope.systemStaff.dingding_staffid }";
     			$.ajax({
     				url:'Currency/selectApplicantCurrency.action?currency_type='+ currency_type,
@@ -112,13 +112,13 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="storage/mRequisitionsOfStockupDetails1.action?currency_id='+item.currency_id
+    				    		 +		'<a href="storage/mTechnicalComponentsDetails.action?currency_id='+item.currency_id
     				    				 +'&current_approvalCount='+item.current_approvalCount
     				    				 +'&approver_count='+item.approver_count
-    				    				 +'&approvalOpinion_type=68&approval_id=68'
+    				    				 +'&approvalOpinion_type=73&approval_id=73'
     				    				 +'&currency_number='+item.currency_number
     				    				 +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
-    				    				 +'&currency_string='+item.currency_string+'&currency_date3='+Format(item.currency_date3,"yyyy-MM-dd")+'&currency_money6'+item.currency_money6
+    				    				 +'&currency_string2='+item.currency_string2+'&currency_date3='+Format(item.currency_date3,"yyyy-MM-dd")+'&currency_money6'+item.currency_money6
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'
     				    		 +			'<span class="layui-icon layui-icon-right"></span>'

@@ -1,10 +1,6 @@
 package com.yr.lize.system.service;
 
-import com.yr.lize.pojo.ResponseResult;
-
 import java.math.BigDecimal;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +30,13 @@ public interface U8DataService {
 		//根据合同编码查询所有合同带出内容
 		List<HashMap<String, Object>>selectContractAll(String strContractID);
 
+		//根据合同编码查询合同明细内容
+		List<HashMap<String, Object>>selectContractDetails(String strContractID);
+
+
 		List<HashMap<String, Object>>selectXZContractAll(String strContractID);
+		//根据合同编码查询合同明细内容
+		List<HashMap<String, Object>>selectXZContractDetails(String strContractID);
 
 		//根据存货编码查询最近日期该商品报价
 		List<HashMap<String, Object>>selectCost(String cInvCode);

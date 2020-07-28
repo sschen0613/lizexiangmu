@@ -33,6 +33,11 @@
 		SELECT * FROM
 		CM_Contract_Caluse_B WHERE strContractID = #{param}
 	</select>
+	<!-- //根据合同编号获取合同金额 收付金额 合同付款约定 合同特殊约定 -->
+	<select id="selectContractDetails" resultType="HashMap">
+		SELECT * FROM
+		CM_Contract_Item_B WHERE strContractID = #{param}
+	</select>
 	<!-- //根据合同编号获取运营设备信息 -->
 	<select id="selectshebei" resultType="HashMap">
 		SELECT
@@ -766,6 +771,7 @@
 		,CCB.cDefine14
 		,CCB.cDefine12
 		,CCB.cDefine13
+		,CCB.cDefine14
 		,B.strCode,B.strName,B.strCorrItemID,B.dblQuantity,B.dblPrice,B.dblSum,B.cDefine28
 		FROM CM_Contract_B CCB
 		LEFT JOIN Customer C ON CCB.strBisectionUnit = C.cCusCode

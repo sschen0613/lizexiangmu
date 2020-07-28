@@ -206,6 +206,19 @@ public class U8DataController {
 		return result;
 	}
 
+	// 信泽根据合同编号获取合同金额 收付金额 合同付款约定 合同特殊约定
+	@RequestMapping("/System/selectXZContractDetails.action")
+	@ResponseBody
+	public ResponseResult selectXZContractDetails(String strContractID) {
+
+		List<HashMap<String, Object>> receivables = U8DataService.selectXZContractDetails(strContractID);
+
+		ResponseResult result = new ResponseResult();
+		result.setCode(0);
+		result.setData(receivables);
+		return result;
+	}
+
 	// 根据合同编号获取运营设备信息
 	@RequestMapping("/System/selectshebei.action")
 	@ResponseBody

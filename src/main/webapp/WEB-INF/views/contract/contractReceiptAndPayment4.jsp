@@ -300,7 +300,7 @@
         });
 
         $.ajax({
-            url:'System/selectAllUser.action',
+            url:'System/selectXZAllUser.action',
             type:'post',
             data:{},
             dataType:'JSON',
@@ -345,7 +345,8 @@
                 ,{field: 'test', title: '检测比对约定', minWidth:200}*/
                 /*,{field: 'cDefine14', title: '期初合同已收款', minWidth:100}
                 ,{field: 'cDefine11', title: '期出合同已开票', minWidth:100}*/
-                ,{field: 'cPersonName', title: '业务员', minWidth:100}
+				,{field: 'cPersonName', title: '客服', minWidth:100}
+                ,{field: 'cDefine14', title: '业务员', minWidth:100}
                /* ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:100}*/
             ]]
         });
