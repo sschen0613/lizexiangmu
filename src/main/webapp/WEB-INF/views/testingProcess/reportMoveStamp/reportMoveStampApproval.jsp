@@ -66,7 +66,7 @@
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
 			<a class="layui-btn layui-btn-xs" lay-event="edit">审批</a>
-			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>
+			<%--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>--%>
 		</script>
 		<script>
 		//一般直接写在一个js文件中
@@ -151,21 +151,23 @@
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
 						,{field: 'currency_number', title: '编号', minWidth:200}
-						,{field: 'staff_name', title: '申请人', minWidth:80}
+						,{field: 'staff_name', title: '申请人', minWidth:100}
 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string3', title: '合同编号', minWidth:150}
-						,{field: 'currency_string4', title: '合同名称', minWidth:100}
+						,{field: 'currency_string15', title: '地区', minWidth:140}
+						,{field: 'currency_string17', title: '客户名称', minWidth:230}
+						,{field: 'currency_string3', title: '合同编号', minWidth:120}
+						,{field: 'currency_string4', title: '合同名称', minWidth:300}
 						,{field: 'currency_date2', title: '合同签订日期', minWidth:120, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
 						,{field: 'currency_money', title: '合同金额', minWidth:100} //, templet:'<div>{{ d.currency_money+"元" }}</div>'
 						,{field: 'currency_money2', title: '已收金额', minWidth:110}
 						,{field: 'currency_money3', title: '欠款金额', minWidth:100}
-                        ,{field: 'currency_string10', title: '合同状况', minWidth:100}
-                        ,{field: 'currency_string11', title: '报表编码', minWidth:100}
+                        ,{field: 'currency_string10', title: '合同状况', minWidth:150}
+                        ,{field: 'currency_string11', title: '报表编码', minWidth:120}
                         ,{field: 'currency_string12', title: '委托单位', minWidth:100}
                         ,{field: 'currency_string13', title: '任务内容', minWidth:100}
                         ,{field: 'currency_string7', title: '备注', minWidth:200}
-						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:230}
+						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:200}
 					]]
 				});
 
@@ -184,8 +186,8 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+currency_type //iframe的url currency_id通用审批流主键
-						}); 
+							content: 'testingProcess/reportMoveStamp/reportMoveStampApprovalDetail.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type
+						});
 					} else if(layEvent === 'del'){ //删除
 						layer.open({
 							type: 2,

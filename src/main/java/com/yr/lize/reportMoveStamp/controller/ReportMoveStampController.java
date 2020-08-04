@@ -19,7 +19,13 @@ public class ReportMoveStampController {
 	public String setupAllocationApproverView3() {
 		return "WEB-INF/views/testingProcess/reportMoveStamp/reportMoveStampApproval";
 	}
-	
+
+	//跳转检测合同发票开具审批（信泽）页面
+	@RequestMapping("testingProcess/reportMoveStamp/reportMoveStampApprovalDetail.action")
+	public String setupAllocationApproverView3Detail() {
+		return "WEB-INF/views/testingProcess/reportMoveStamp/reportMoveStampApprovalDetail";
+	}
+
 	// 跳转手机端报告流转及盖章申请界面
 	@RequestMapping("testingProcess/reportMoveStamp/mReportMoveStamp.action")
 	public String setupAllmReportMoveStamp() {

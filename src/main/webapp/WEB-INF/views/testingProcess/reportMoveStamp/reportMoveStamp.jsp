@@ -154,17 +154,17 @@
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
 						,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
- 						,{field: 'staff_name', title: '申请人', minWidth:80}
-						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string3', title: '合同编号', minWidth:150}
-						,{field: 'currency_string4', title: '合同名称', minWidth:200}
+						,{field: 'currency_string15', title: '地区', minWidth:140}
+						,{field: 'currency_string17', title: '客户名称', minWidth:230}
+						,{field: 'currency_string3', title: '合同编号', minWidth:120}
+						,{field: 'currency_string4', title: '合同名称', minWidth:300}
 						,{field: 'currency_date2', title: '签订日期', minWidth:200, sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
                         ,{field: 'currency_money', title: '合同金额', minWidth:100}
-                        ,{field: 'currency_money2', title: '已收金额', minWidth:100}
+                        ,{field: 'currency_money2', title: '已收金额', minWidth:110}
                         ,{field: 'currency_money3', title: '未收金额', minWidth:100}
-                        ,{field: 'currency_string10', title: '合同状况', minWidth:100}
-                        ,{field: 'currency_string11', title: '报表编码', minWidth:100}
+                        ,{field: 'currency_string10', title: '合同状况', minWidth:150}
+                        ,{field: 'currency_string11', title: '报表编码', minWidth:120}
                         ,{field: 'currency_string12', title: '委托单位', minWidth:100}
                         ,{field: 'currency_string13', title: '任务内容', minWidth:100}
                         ,{field: 'currency_string7', title: '备注', minWidth:200}

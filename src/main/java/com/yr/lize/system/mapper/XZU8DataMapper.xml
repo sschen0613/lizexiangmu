@@ -754,7 +754,7 @@
 	</select>
 
 	<select id="selectContractItem" resultType="HashMap">
-		SELECT  strName,dblSum FROM CM_Contract_Item_B
+		SELECT  strName,dblSum,cDefine28 FROM CM_Contract_Item_B
 		WHERE
 		strContractID = #{strContractID}
 	</select>

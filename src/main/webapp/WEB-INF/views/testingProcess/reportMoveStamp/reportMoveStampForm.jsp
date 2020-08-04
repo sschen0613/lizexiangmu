@@ -40,13 +40,17 @@
 		 			<td>申请日期</td>
 		 			<td><input type="text" name="currency_date" id="date" readonly></td>
 		 		</tr>
-				<tr>
+				<%--<tr>
 					<td>报表编码</td>
 					<td id="tdCode" class="container" colspan="9">
 						<input id='code' name="code" class="code-search-box" placeholder="直接输入报表编码调取数据，必填!!!">
 						<div class="list-container" style="display:none;">
 							<ul></ul>
 						</div>
+				</tr>--%>
+				<tr>
+					<td>报表编码</td>
+					<td><input type="text" id='code' name="code" class="layui-input" lay-verify="required"></td>
 				</tr>
 				<tr>
 					<td>委托单位</td>
@@ -54,7 +58,7 @@
 				</tr>
 				<tr>
 					<td>任务内容</td>
-					<td colspan="5"><input type="text" id="task_definition" name="task_definition"  lay-verify="required" readonly></td>
+					<td colspan="5"><input type="text" id="task_definition" name="task_definition" readonly></td>
 				</tr>
 				<tr>
 					<td>申请来源</td>
@@ -65,15 +69,24 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+					<td>区域</td>
+					<td colspan=2><select name="area" id="area" lay-filter="area" lay-search lay-verify="required"></select></td>
+					<td>客户名称</td>
+					<td colspan=2><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
+				</tr>
 				<tr class="contract_tr">
 					<td>合同编号</td>
-					<td>
-						<input type="text" id='contract_id' name="contract_id" readonly>
+					<td colspan="5">
+						<%--<input type="text" id='contract_id' name="contract_id" readonly>--%>
+						<select name="contract_id" id="contract_id" lay-filter="contract_id" lay-search lay-verify="required"></select>
 					</td>
+				</tr>
+				<tr>
 					<td>合同签订日期</td>
 					<td><input type="text" id="contract_date" name="contract_date" readonly></td>
 					<td>合同名称</td>
-					<td><input type="text" id="contract_name" name="contract_name" readonly></td>
+					<td colspan="3"><input type="text" id="contract_name" name="contract_name" readonly></td>
 				</tr>
 		 		<tr class="contract_tr">
 					<td>合同金额</td>
@@ -86,46 +99,17 @@
 				<tr class="contract_tr">
 					<td>合同状况</td>
 					<td colspan="5">
-						<input type="radio" name="state" value="已合同及付款" title="已合同及付款" checked>
+						<input type="radio" name="state" value="已到合同及付款" title="已到合同及付款" checked>
 						<input type="radio" name="state" value="未到合同及付款" title="未到合同及付款">
 					</td>
 				</tr>
-				<%--<tr>
-		 			<th colspan="6" style="text-align: center;">合同付款约定</th> <!--Payment_agreement-->
-		 		</tr>--%>
-				<tr class="contract">
-					<th colspan=1>合同条款名称</th>
-					<th colspan=5>合同条款内容</th>
-				</tr>
-		 		<%--<tr>
-					<td>项目名称</td>
-					<td>申请类型</td>
-					<td colspan="2">报告编号</td>
-					<td>报告份数</td>	
-					<td>操作</td>
-				</tr>
-				<tr class="details">
-					<td><input type="text" id="name" name="unit_name" lay-verify="required" /></td>
-					<td>
-						<select id="type" name="type" lay-verify="required">
-							<option value="">请选择</option>
-							<option value="普通检测">普通检测</option>
-							<option value="自行检测">自行检测</option>
-							<option value="环评现状检测">环评现状检测</option>
-							<option value="比对检测">比对检测</option>
-							<option value="验收检测">验收检测</option>
-						</select>
-					</td>
-					<td colspan="2"><input type="text" name="report_id" lay-verify="required"></td>
-					<td><input type="number" name="report_number" lay-verify="required"></td>
-					<td class="delete1"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>
-				</tr>
-				<tr>
-		 			<td colspan=6 class="addDetails"><span class="layui-icon layui-icon-add-1" title="添加明细信息"></span></td>
-		 		</tr>--%>
 				<tr>
 					<td>备注</td>
 					<td colspan=5><input type="text" name="remark"></td>
+				</tr>
+				<tr class="contract">
+					<th colspan=2>合同条款名称</th>
+					<th colspan=4>合同条款内容</th>
 				</tr>
 			</tbody>
 			<thead>
@@ -161,7 +145,150 @@
 				//detailsRender(1); //明细信息每行自定义渲染事件
 				inputRender();//input框自定义渲染
 
-                searchProcess_code($('#tdCode'));
+                //searchProcess_code($('#tdCode'));
+
+				//过程一:区域 - 客户名称 - 合同编号 - (合同金额+已收金额+欠款金额)+合同条款+运营设备 - 运营设备其它信息
+				// 过程一第一级 - 获取所有区域
+				$.ajax({
+					url:'System/getXZRegion.action',
+					type:'post',
+					data:{},
+					dataType:'JSON',
+					success:function(res){
+						var html = '<option value="">请选择区域</option>';
+						$.each(res.data,function(index,item){
+							html += '<option value="'+item.cDCCode+'">'+item.cDCName+'</option>';
+						});
+						$('#area').html(html);
+						form.render('select');
+					}
+				});
+				// 过程一第二级 - 根据区域获取客户名称(同时获取业务员编码)
+				form.on('select(area)', function(data){
+					var cDCCode = data.value;
+					$.ajax({
+						url:'System/selectXZUser.action',
+						type:'post',
+						data:{"cDCCode": cDCCode},
+						dataType:'JSON',
+						success:function(res){
+							var html = '<option value="">请选择客户名称</option>';
+							$.each(res.data,function(index,item){
+								html += '<option value="'+item.cCusCode+'" data-cCusPPerson="'+item.cCusPPerson+'" data-cDep="'+item.cCusDepart+'">'+item.cCusName+'</option>'
+							});
+							$('#customer_name').html(html);
+							form.render('select');
+						}
+					});
+					// 重置[客户名称]级下面的内容(销售合同编号 金额信息 合同条款 明细信息)
+					$('#contract_id').siblings().remove();
+					$('#contract_id').html('');
+					$('#contract_amount').val('');
+
+					$('#actual_receipt').val('');
+					$('#outstanding_receipt').val('');
+					$('.contract-details').remove();
+					$($('.details')[0]).siblings('.details').remove();
+					$('.details').find('input:not(input[name="number"])').val('');
+					form.render();
+				});
+				// 过程一第三级 - 根据客户名称获取销售合同编号
+				var cCusPPerson = '';//保存业务员编码
+				var cCusDepart = '';//保存业务员部门
+				form.on('select(customer_name)', function(data){
+					var cCusCode = data.value;
+					cCusPPerson = $("#customer_name").find('option:selected').attr('data-cCusPPerson');
+					cCusDepart = $("#customer_name").find('option:selected').attr('data-cDep');
+					$.ajax({
+						url:'System/selectXZContract.action',
+						type:'post',
+						//客户编号加合同类型（销售类合同）
+						data:{"cCusCode": cCusCode},
+						dataType:'JSON',
+						success:function(res){
+							var html = '<option value="">请选择' +
+									'合同编号</option>';
+							$.each(res.data,function(index,item){
+								html += '<option data-money="'+item.dblTotalCurrency+'" data-name="'+item.strContractName
+										+'" data-order="'+item.strContractOrderDate
+										+'" value="'+item.strContractID+'">名称：'+item.strContractName
+										+'；编号:'+item.strContractID+'；￥'+item.dblTotalCurrency+'；签订时间：'+item.strContractOrderDate+'</option>';
+							});
+							$('#contract_id').html(html);
+							form.render('select');
+						}
+					});
+					//重置[合同编号]级下面的内容(金额信息 合同条款 明细信息)
+					$('#contract_amount').val('');
+					$('#actual_receipt').val('');
+					$('#outstanding_receipt').val('');
+
+					$('.contract-details').remove();
+					$($('.details')[0]).siblings('.details').remove();
+					$('.details').find('input:not(input[name="number"])').val('');
+					form.render();
+				});
+				// 过程一第四级 - 根据销售合同编号设置合同金额 / 获取并计算已收金额 / 计算欠款金额(合同金额-已收金额) / 获取合同条款
+				var contract_price = 0;	//合同条款带出的价格
+				form.on('select(contract_id)', function(data){
+					//重置之前内容
+					//明细信息重置
+					$($('.details')[0]).siblings('.details').remove();
+					$('.details').find('input:not(input[name="number"])').val('');
+					form.render();
+
+					//获取新内容
+					var strContractID = data.value; //合同编号
+					var contractAmount = Number($(data.elem).find("option:selected").attr('data-money'));//合同金额
+					var strContractOrderDate = $(data.elem).find("option:selected").attr('data-order');//合同签订时间
+					var strContractName = $(data.elem).find("option:selected").attr('data-name');//合同名称
+
+					$("#contract_amount").val(contractAmount); //合同金额
+					$("#contract_date").val(strContractOrderDate); //合同签订时间
+					$("#contract_name").val(strContractName); //合同名称
+					//重置合同条款
+					$('.contract-details').remove();
+					//重置合同条款带出的价格
+					contract_price = 0;
+					//查询合同收款计划
+					$.ajax({
+						url:'System/selectXZReceivables.action',
+						type:'post',
+						data:{'strContractID':strContractID},
+						dataType:'JSON',
+						success:function(result){
+							var acceptAmount = 0;
+							$.each(result.data,function(index,item){
+								acceptAmount += Number(item.dblPayCurrency);
+							});
+							$("#contract_amount").val(contractAmount);//合同金额
+							$('#actual_receipt').val(acceptAmount);//已收金额
+							$('#outstanding_receipt').val(contractAmount-acceptAmount);//欠款金额
+
+
+						}
+					});
+
+					//查询合同条款
+					$.ajax({
+						url:'System/selectXZContractAll.action',
+						type:'post',
+						data:{'strContractID':strContractID},
+						dataType:'JSON',
+						success:function(res){
+							$.each(res.data,function(index,item){
+								contract_price = Math.max(item.cDefine26,contract_price); //number类型
+								var html = '<tr class="contract-details">'
+										+ 	'<td colspan=2><input type="text" name="contract_str_name" value="'+item.strName+'" readonly></td>'
+										+	'<td colspan=4><input type="text" name="contract_str_memo" value="'+item.strMemo+'" readonly></td>'
+										+  '</tr>';
+								$('.contract').after(html);
+								inputRender();//input框自定义渲染
+							});
+						}
+					});
+				});
+
 
 				//监听提交按钮
               	form.on('submit(submitForm)', function(data){
@@ -173,6 +300,10 @@
 					var code = data.field.code;//报表编码
                     var clientDepartment = data.field.client_department//委托单位
                     var taskDefinition = data.field.task_definition//任务内容
+					var area_id = data.field.area;													//区域编号
+					var area_name = $('#area').find('option:selected').text();						//区域名称
+					var customer_id = data.field.customer_name;										//客户编号
+					var customer_name = $('#customer_name').find('option:selected').text();			//客户名称
 					var contract_number = data.field.contract_id;//合同id
 					var contract_name = data.field.contract_name;//合同名称
 					var contract_date = data.field.contract_date;//签订日期
@@ -184,17 +315,7 @@
 					var remark = data.field.remark;//备注
 
 					var state = data.field.state;//合同状况
-					
-					/*var currentDetails = [];
-					$.each($('.details'),function(index,item){
-						var name = $(item).find('input[name="unit_name"]').val();
-						var type = $(item).find('select[name="type"]>option:selected').text();
-						var report_id = $(item).find('input[name="report_id"]').val();
-						var report_number = Number($(item).find('input[name="report_number"]').val());
 
-						var obj = {'details_string2':name,'details_string3':type,'details_string4':report_id,'details_int2':report_number};
-						currentDetails.push(obj);
-					});*/
 					if (source == 1){//信泽
                         $.ajax({
                             url : "Currency/launchCurrencyApply.action"
@@ -217,6 +338,10 @@
                                 'currency_string11':code,//报表编码
                                 'currency_string12':clientDepartment,//委托单位
                                 'currency_string13':taskDefinition//任务内容
+								,'currency_string14':area_id
+								,'currency_string15':area_name//报表编码
+								,'currency_string16':customer_id//委托单位
+								,'currency_string17':customer_name//任务内容
 
                             }
                             ,dataType : "JSON"
@@ -279,44 +404,7 @@
 				var staffName ="${sessionScope.systemStaff.staff_Name }";//获取当前登录用户名称
 				var departmentId ="${sessionScope.systemStaff.department_Id }";//获取当前登录用户部门id
 				setApplyMessage(staffName,departmentId);
-				//过程三 - 合同编号 - 合同名称+合同签订日期+(合同金额+已收金额+欠款金额)+合同条款
-                //searchXZProcessOfContract($('#contract'),1,5);
 
-                //操作
-                //点击添加明细按钮
-				var d_count = 1;
-				$('.addDetails').click(function(){
-					d_count++;
-					var html = '<tr class="details">'
-				 			 +	'<td><input type="text" id="name" name="unit_name" lay-verify="required" /></td>'
-				 			 +	'<td><select id="type'+d_count+'" name="type" lay-verify="required">'
-							 +		'<option value="">请选择</option>'
-							 +		'<option value="普通检测">普通检测</option>'
-							 +		'<option value="自行检测">自行检测</option>'
-							 +		'<option value="环评现状检测">环评现状检测</option>'
-							 +		'<option value="比对检测">比对检测</option>'
-							 +		'<option value="验收检测">验收检测</option>'
-							 +  '</select></td>'
-				 			 +	'<td colspan="2"><input type="text" name="report_id" lay-verify="required"></td>'
-				 			 +	'<td><input type="number" name="report_number" lay-verify="required"></td>'
-				 			 +	'<td class="delete'+d_count+'"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>'
-				 			 +	'</tr>';
-					$('.details').length > 0 ? $('.details:last').after(html) : $('.addDetails').parent().before(html);;
-					//渲染
-					detailsRender(d_count); //明细信息每行自定义渲染事件
-					inputRender();//input框自定义渲染
-					form.render();
-				});
-				//明细信息每行自定义渲染事件
-				function detailsRender(index){
-					deleteItem($('.delete'+index));  //每一行绑定行删除事件
-					//searchProcess($('.container'+index)); //每一行绑定即时搜索框
-				    //inputLimitNumber($('#buy_quantity'+index)); //每一行给申请数量绑定方法,限制输入内容(数字)(in function_tool.js)
-				}
-				//行删除事件
-				function deleteItem($demo){
-					deleteDetailsItem1($demo);
-				}
 				//input滑过显示内容详情 - 防止溢出情况
 				function inputRender(){
 					$('input').mouseover(function(e){

@@ -54,7 +54,7 @@
 		 			<td colspan=6><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
 		 		</tr>
 		 		<tr>
-		 			<td>销售合同编号</td>
+		 			<td>合同编号</td>
 		 			<td colspan=9><select name="contract_id" id="contract_id" lay-filter="contract_id" lay-search lay-verify="required"></select></td>
 		 		</tr>
 				<tr>
