@@ -60,27 +60,39 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">请假开始时间 :</label>
+                <label class="layui-form-label">申请项目 :</label>
+                <div class="layui-input-block">
+                    <select class="layui-select" name="apply_type" id="apply_type" lay-filter="apply_type" lay-verify="required">
+                        <option value="">请选择</option>
+                        <option value="请假">请假</option>
+                        <option value="加班">加班</option>
+                        <option value="出差">出差</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item time" style="
+            display: none">
+                <label class="layui-form-label">开始时间 :</label>
                 <div class="layui-input-block">
                     <input name="starttime" type="text" class="layui-input" id="date1" name="workovertime_start" placeholder="请选择日期">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">请假结束时间 :</label>
+            <div class="layui-form-item time" style="display: none">
+                <label class="layui-form-label">结束时间 :</label>
                 <div class="layui-input-block">
                     <input name="overtime" type="text" class="layui-input" id="date2" name="workovertime_off" placeholder="请选择日期">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">请假时长（d） :</label>
+            <div class="layui-form-item time" style="display: none">
+                <label class="layui-form-label">时长（d） :</label>
                 <div class="layui-input-block">
                     <input type="text" id="workovertime_date" name="workovertime_date" class="layui-input" readonly>
                 </div>
             </div>
-            <div class="layui-form-item">
+            <div class="layui-form-item leave" style="display: none">
                 <label class="layui-form-label">请假类型 :</label>
                 <div class="layui-input-block">
-                    <select class="layui-select" name="leave_type" id="leave_type" lay-search lay-verify="required">
+                    <select class="layui-select" name="leave_type" id="leave_type" lay-search>
                         <option value="">请选择</option>
                         <option value="事假">事假</option>
                         <option value="病假">病假</option>
@@ -90,10 +102,31 @@
                     </select>
                 </div>
             </div>
+            <div class="layui-form-item travel" style="display: none">
+                <label class="layui-form-label">出差地点 :</label>
+                <div class="layui-input-block">
+                    <input type="text" id="travel_place" name="travel_place" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item travel" style="display: none">
+                <label class="layui-form-label">是否住宿 :</label>
+                <div class="layui-input-block">
+                    <select class="layui-select" name="if_stay" id="if_stay">
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">申请事由 :</label>
                 <div class="layui-input-block">
                     <textarea class="layui-textarea" name="request_reason" placeholder="请务必填写申请事由" lay-verify="required"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注 :</label>
+                <div class="layui-input-block">
+                    <input type="text" id="remark" name="remark" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -144,23 +177,31 @@
             // console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
             // console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
             // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            var starttime = data.field.starttime;//请假开始时间
-            var overtime = data.field.overtime;//请假结束时间
-            var workovertime_date = data.field.workovertime_date;//请假时长
+            var apply_type = data.field.apply_type;//申请项目
+            var starttime = data.field.starttime;//开始时间
+            var overtime = data.field.overtime;//结束时间
+            var workovertime_date = data.field.workovertime_date == ""?0:data.field.workovertime_date;//时长
+            var leave_type = data.field.leave_type;	//请假类型
+            var travel_place = data.field.travel_place;//出差地点
+            var if_stay = data.field.if_stay;//是否住宿
             var request_reason = data.field.request_reason;//申请事由
-            var leave_type = $('#leave_type').find('option:selected').text();	//请假类型
+            var remark = data.field.remark;//申请事由
 
             var currency_type = 57;
             $.ajax({
                 url : "Currency/launchCurrencyApply.action"
                 ,type : "post"
                 ,data : {
+                    "currency_string3":apply_type,
                     "currency_date2":starttime,
                     "currency_date3":overtime,
                     "currency_string2":workovertime_date,
                     "currency_money6":workovertime_date,
                     "currency_string7":request_reason,
                     "currency_string8":leave_type,
+                    "currency_string4":travel_place,
+                    "currency_string5":if_stay,
+                    "currency_string9":remark,
                     "currency_type":currency_type
                 }
                 ,dataType : "JSON"
@@ -176,6 +217,81 @@
             });
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
+
+        form.on('select(apply_type)', function(data){
+            var apply_type = data.value; //合同编号
+            if ("请假" == apply_type){
+
+                $(".time").show();
+                $("#date1").attr("lay-verify","required");
+                $("#date2").attr("lay-verify","required");
+                $("#date1").val("");
+                $("#date2").val("");
+                $("#days").val("");
+
+                $(".leave").show();
+                $("#leave_type").attr("lay-verify","required");
+                $("#leave_type").val("");
+
+                $(".travel").hide();
+                $("#travel_place").attr("lay-verify","");
+                $("#if_stay").attr("lay-verify","");
+                $("#travel_place").val("");
+                $("#if_stay").val("");
+            }else if ("加班" == apply_type){
+                $(".time").show();
+                $("#date1").attr("lay-verify","required");
+                $("#date2").attr("lay-verify","required");
+                $("#date1").val("");
+                $("#date2").val("");
+                $("#days").val("");
+
+                $(".leave").hide();
+                $("#leave_type").attr("lay-verify","");
+                $("#leave_type").val("");
+
+                $(".travel").hide();
+                $("#travel_place").attr("lay-verify","");
+                $("#if_stay").attr("lay-verify","");
+                $("#travel_place").val("");
+                $("#if_stay").val("");
+            }else if ("出差" == apply_type){
+                $(".time").hide();
+                $("#date1").attr("lay-verify","");
+                $("#date2").attr("lay-verify","");
+                $("#date1").val("");
+                $("#date2").val("");
+                $("#days").val("");
+
+                $(".leave").hide();
+                $("#leave_type").attr("lay-verify","");
+                $("#leave_type").val("");
+
+                $(".travel").show();
+                $("#travel_place").attr("lay-verify","required");
+                $("#if_stay").attr("lay-verify","required");
+                $("#travel_place").val("");
+                $("#if_stay").val("");
+            }else{
+                $(".time").hide();
+                $("#date1").attr("lay-verify","");
+                $("#date2").attr("lay-verify","");
+                $("#date1").val("");
+                $("#date2").val("");
+                $("#days").val("");
+
+                $(".leave").hide();
+                $("#leave_type").attr("lay-verify","");
+                $("#leave_type").val("");
+
+                $(".travel").hide();
+                $("#travel_place").attr("lay-verify","");
+                $("#if_stay").attr("lay-verify","");
+                $("#travel_place").val("");
+                $("#if_stay").val("");
+            }
+        });
+
         //监听重置按钮
         $('#resetForm').click(function(e){
             window.location.reload();

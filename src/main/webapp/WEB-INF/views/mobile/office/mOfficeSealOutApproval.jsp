@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 公章外带审批-手机端 -->
+<!-- 公章使用审批-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -25,7 +25,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-storage"></use>
 	        	</svg>
-	        	公章外带审批 > 审批详情
+	        	公章使用审批 > 审批详情
 			</h2>
 			<div class="content">
 				
@@ -107,14 +107,34 @@
 							 +				'<label class="">申请日期 :</label>'
 							 +				'<input type="text" name="currency_date" id="date" value="'+Format(item.currency_date,"yyyy-MM-dd")+'" class="layui-input" readonly>'
 							 +			'</div>'
-							+			'<div>'
-							+				'<label class="">外带用途 :</label>'
-							+				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
-							+			'</div>'
-							 +			'<div>'
-							 +				'<label class="">归还日期 :</label>'
-							 +				'<input type="text" name="expectedDelivery_date" id="date1" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
-							 +			'</div>'
+								+			'<div>'
+								+				'<label class="">使用方式 :</label>'
+								+				'<input type="text" name="use_type" value="'+item.currency_string2+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">使用公司 :</label>'
+								+				'<input type="text" name="use_company" value="'+item.currency_string3+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">公章类型 :</label>'
+								+				'<input type="text" name="expectedDelivery_date" value="'+item.currency_string4+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">归还日期 :</label>'
+								+				'<input type="text" name="expectedDelivery_date" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">申请事由 :</label>'
+								+				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+item.currency_string5+'</textarea>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">备注 :</label>'
+								+				'<input type="text" name="remark"  value="'+item.currency_string7+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div><label class="label-title">图片信息 </label></div>'
+								+			'<div class="picture-detail-container">'
+								//图片
+								+			'</div>'
 							 +			'<div class="approval-opinion">'
 							 +				'<label class="">审批意见 :</label>'
 							 +				'<textarea id="approval_opinion" class="layui-textarea" placeholder="请填写审批意见"></textarea>'
@@ -136,6 +156,29 @@
 							 +		'</form>'
 							 +	'</div>';
 						$('.content').append(html);
+
+
+						//获取合同图片
+						$.ajax({
+							url:'Currency/selectContractPicture.action?currency_id='+currency_id,
+							type:'post',
+							data:{},
+							dataType:'JSON',
+							success:function(res){
+								var html1 = '';
+								$.each(res.data,function(index,item){
+									html1+=	'<div class="picture-detail" style="width: 100%">'
+											+		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
+											+		'<div class="details">'
+											+			'<div>'
+											+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+											+			'</div>'
+											+		'</div>'
+											+	'</div>';
+								});
+								$('.picture-detail-container').html(html1);
+							}
+						});
 
 						//渲染进度条
 						element.render('progress');

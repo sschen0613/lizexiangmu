@@ -123,8 +123,12 @@
 						{type: 'checkbox', fixed: 'left'}
 						,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string7', title: '外带用途', minWidth:200}
+						,{field: 'currency_string2', title: '使用方式', minWidth:200}
+						,{field: 'currency_string3', title: '使用公司', minWidth:200}
+						,{field: 'currency_string4', title: '公章类型', minWidth:120}
 						,{field: 'currency_date2', title: '归还日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_string5', title: '申请事由', minWidth:200}
+						,{field: 'currency_string7', title: '备注', minWidth:200}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
 					]]
@@ -150,7 +154,7 @@
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({
 							type: 2,
-							title: '公章外带（设施）请购申请单修改',
+							title: '公章使用申请单修改',
 							//shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
@@ -204,7 +208,7 @@
 							layer.open({
 								type: 2,
 								// skin:'layui-layer-molv', //layui-layer-lan
-								title: '公章外带申请单填写',
+								title: '公章使用申请单填写',
 								//shadeClose: true,
 								shade: 0.8,
 								maxmin: true,
@@ -226,7 +230,7 @@
 // 					layer.open({
 // 						type: 2,
 // 						// skin:'layui-layer-molv', //layui-layer-lan
-// 						title: '公章外带（设施）请购审批',
+// 						title: '公章使用审批',
 // 						shadeClose: true,
 // 						shade: 0.8,
 // 						maxmin: true,

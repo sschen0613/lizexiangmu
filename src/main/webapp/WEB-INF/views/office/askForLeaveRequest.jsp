@@ -5,7 +5,7 @@
     String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 请假申请 -->
+<!-- 请假、加班、出差申请 -->
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -51,7 +51,7 @@
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-xs" lay-event="add">添加请假申请</button>
+        <button class="layui-btn layui-btn-xs" lay-event="add">添加请假、加班、出差申请</button>
     </div>
 </script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -117,16 +117,19 @@
             ,url: 'Currency/selectApplicantCurrency.action?currency_type=57' //数据接口
             ,page: true //开启分页
             ,toolbar: '#toolbarDemo'
-            ,title: '请假申请表'
+            ,title: '请假、加班、出差申请表'
             // ,totalRow: true //开启合计行, totalRowText: '合计'
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date2', title: '请假开始日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date3', title: '请假结束日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_string2', title: '请假时长（d）', minWidth:100}
+                ,{field: 'currency_string3', title: '申请项目', minWidth:100}
+                ,{field: 'currency_date2', title: '开始日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date3', title: '结束日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_string2', title: '时长（d）', minWidth:100}
                 ,{field: 'currency_string8', title: '请假类型', minWidth:100}
+                ,{field: 'currency_string4', title: '出差地点', minWidth:100}
+                ,{field: 'currency_string5', title: '是否住宿', minWidth:100}
                 ,{field: 'currency_string7', title: '申请事由', minWidth:200}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}

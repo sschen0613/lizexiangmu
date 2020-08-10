@@ -175,7 +175,7 @@
 						var remark = $(item).find('input[name="remark"]').val();
 
 						var obj = {'details_string4':inventory_id,'details_string5':product_name,'details_string6':specifications_models
-                            ,'details_string7':unit,'details_money':buy_quantity,'details_money2 ':fAvaQuantity,'details_string11':remark};
+                            ,'details_string7':unit,'details_money':buy_quantity,'details_money2':fAvaQuantity,'details_string11':remark};
 						currentDetails.push(obj);
 					});
 					

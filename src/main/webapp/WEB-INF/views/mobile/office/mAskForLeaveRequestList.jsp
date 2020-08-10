@@ -22,7 +22,7 @@
 <div class="approval-list">
     <div class="approval-list-title">
         <a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-        <h2 class="">员工请假申请</h2>
+        <h2 class="">员工请假、加班、出差申请</h2>
         <span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>

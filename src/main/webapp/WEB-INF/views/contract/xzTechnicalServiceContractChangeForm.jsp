@@ -59,13 +59,13 @@
 		 		</tr>
 				<tr>
 					<td>合同签订日期</td>
-					<td colspan=9><input type="text" name="strContractOrderDate" id="date1" class="layui-input" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
+					<td colspan=9><input type="text" name="strContractOrderDate" id="date1" class="layui-input" readonly></td>
 				</tr>
 		 		<tr>
 					<td>合同开始日期</td>
-					<td colspan=4><input type="text" name="strContractStartDate" id="date2" class="layui-input" lay-verify="required"></td>
+					<td colspan=4><input type="text" name="strContractStartDate" id="date2" class="layui-input" readonly></td>
 		 			<td>合同结束日期</td>
-		 			<td colspan=4><input type="text" name="strContractEndDate" id="date3" class="layui-input" autocomplete="off" lay-verify="required"></td>
+		 			<td colspan=4><input type="text" name="strContractEndDate" id="date3" class="layui-input" readonly></td>
 		 		</tr>
 				<tr>
 					<td>合同开始日期变更</td>
@@ -250,7 +250,8 @@
 				 		 url : "Currency/launchCurrencyApply.action"
 				 		,type : "post"
 				 		,data : {
-				 			"currency_number":buy_number
+							'currency_type':currency_type
+				 			,"currency_number":buy_number
 				 			,"currency_string":illustration
 				 			,"currency_string2":area_id
 				 			,"currency_string3":area_name
@@ -340,6 +341,7 @@
 					$('#actual_receipt').val('');
 					$('#outstanding_receipt').val('');
 					$('.contract-details').remove();
+
 					$($('.details')[0]).siblings('.details').remove();
 					$('.details').find('input:not(input[name="number"])').val('');
 					form.render();
@@ -399,9 +401,9 @@
 					var strContractDesc = $(data.elem).find("option:selected").attr('data-desc');//合同内容描述
 
     				$("#contract_amount").val(contractAmount); //合同金额
-					$("#strContractOrderDate").val(strContractOrderDate); //合同金额
-					$("#strContractStartDate").val(strContractStartDate); //合同金额
-					$("#strContractEndDate").val(strContractEndDate); //合同金额
+					$("#date1").val(strContractOrderDate); //合同金额
+					$("#date2").val(strContractStartDate); //合同金额
+					$("#date3").val(strContractEndDate); //合同金额
 					$("#strContractDesc").val(strContractDesc); //合同金额
             		//重置合同条款
     				$('.contract-details').remove();
@@ -465,7 +467,7 @@
 				//明细信息每行自定义渲染事件
 				function detailsRender(index){
 					//给明细中数量变更框添加更改事件
-					$('#dblPriceChange'+index).bind("input propertychange",function(e){
+					$('#dblQuantityChange'+index).bind("input propertychange",function(e){
 						var dblQuantityChange =  $(e.target).val();//变更的数量值
 						if (dblQuantityChange != null && dblQuantityChange != ""){
 							var dblPriceChange = $('#dblPriceChange'+index).val();//变更的价格值
@@ -520,7 +522,7 @@
 						var dblSum = Number($(item).find('input[name="dblSum"]').val()); //销售单价
 						price += dblSum;
 					});
-					$("#contract_amount").val(price); //合同金额
+					$("#contract_amount_change").val(price); //合同金额
 				}
 			});
 		</script> 

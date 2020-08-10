@@ -51,6 +51,9 @@
 					<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 	              		检索
 					</button>
+					<%--<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
+						导出
+					</button>--%>
 				</div> 
 			</div>
 		</form>
@@ -131,6 +134,54 @@
 						,page: {curr: 1}
 					});
 	  
+					return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+				});
+
+
+				//监听导出按钮
+				form.on('submit(out)', function(data){
+					var date1 = $('input[name="currency_date2"]').val();
+					var date2 = $('input[name="currency_date3"]').val();
+					var currency_string2 = $('input[name="currency_string2"]').val();
+
+					var currency_department = $('#department').find('option:selected').val();
+
+					var url = 'Currency/selectCurrencyApprover2.action?currency_type=8&currency_string='+staffid;
+					if (date1 != null && date1 != ''){
+						url += '&currency_date2='+date1;
+					}
+					if (date2 != null && date2 != ''){
+						url += '&currency_date3='+date2;
+					}
+					if (currency_string2 != null && currency_string2 != ''){
+						url += '&currency_string2='+currency_string2;
+					}
+					if (currency_department != null && currency_department != ''){
+						url += '&currency_department='+currency_department;
+					}
+					$.ajax({
+						url: url,
+						dataType: 'json',
+						success: function(res) {
+							var data = LAY_EXCEL.filterExportData(res.data, {
+								currency_number:'currency_number',
+								staff_name:"staff_name",
+								department_name:"department_name",
+								currency_date:function (value,line,data) {
+									return Format0(value,"yyyy-MM-dd HH:mm:ss");
+								},
+								currency_date3:function (value,line,data) {
+									return Format(value,"yyyy-MM-dd");
+								}
+							});
+							data.unshift({
+								currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期',currency_date3: '期望到货日期'
+							});
+							// 3. 执行导出函数，系统会弹出弹框
+							LAY_EXCEL.exportExcel(data, '销售请购.xlsx', 'xlsx');
+						}
+					});
+
 					return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 				});
 

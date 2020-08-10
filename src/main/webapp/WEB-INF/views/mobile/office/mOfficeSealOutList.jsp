@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 公章外带申请列表-手机端 -->
+<!-- 公章使用申请列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a onclick="javascript:history.back(-1);" class="layui-icon layui-icon-left"></a>
-				<h2 class="">办公用品申请</h2>
+				<h2 class="">公章使用申请列表</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
@@ -112,13 +112,15 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="office/mOfficeSuppliesDetails.action?currency_id='+item.currency_id
+    				    		 +		'<a href="office/mOfficeSealOutDetails.action?currency_id='+item.currency_id
     				    				 +'&current_approvalCount='+item.current_approvalCount
     				    				 +'&approver_count='+item.approver_count
     				    				 +'&approvalOpinion_type=72&approval_id=72'
     				    				 +'&currency_number='+item.currency_number
     				    				 +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
-    				    				 +'&currency_date2='+Format(item.currency_date2,"yyyy-MM-dd")
+										 +'&currency_string2='+item.currency_string2+'&currency_string3='+item.currency_string3
+										 +'&currency_string4='+item.currency_string4+'&currency_string5='+item.currency_string5
+										 +'&currency_date2='+Format(item.currency_date2,"yyyy-MM-dd")
     				    				 +'&currency_string7='+item.currency_string7
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'

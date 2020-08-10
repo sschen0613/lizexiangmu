@@ -5,7 +5,7 @@
     String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 员工请假审批 -->
+<!-- 员工请假、加班、出差审批 -->
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -52,6 +52,17 @@
             <label class="layui-form-label label-revise">结束日期 :</label>
             <div class="layui-input-block">
                 <input name="currency_date3" type="text" class="layui-input input-revise date-revise" id="date2" placeholder="请选择结束日期">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label label-revise">申请项目:</label>
+            <div class="layui-input-block select-revise">
+                <select id="currency_string3" name="currency_string3" class="select-revise">
+                    <option value="">请选择申请项目</option>
+                    <option value="请假">请假</option>
+                    <option value="加班">加班</option>
+                    <option value="出差">出差</option>
+                </select>
             </div>
         </div>
         <div class="layui-inline">
@@ -149,6 +160,8 @@
             var date2 = $('input[name="currency_date3"]').val();
             var currency_string2 = $('input[name="currency_string2"]').val();
 
+            var currency_string3 = $('#currency_string3').find('option:selected').val();
+
             var currency_department = $('#department').find('option:selected').val();
 
             var currency_number = $('input[name="currency_number"]').val();
@@ -162,6 +175,9 @@
             }
             if (currency_string2 != null && currency_string2 != ''){
                 url += '&currency_string2='+currency_string2;
+            }
+            if (currency_string3 != null && currency_string3 != ''){
+                url += '&currency_string3='+currency_string3;
             }
             if (currency_department != null && currency_department != ''){
                 url += '&currency_department='+currency_department;
@@ -214,11 +230,14 @@
                 ,{field: 'staff_name', title: '申请人', minWidth:80}
                 ,{field: 'department_name', title: '申请部门', minWidth:100}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date2', title: '请假开始时间', minWidth:120, templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date3', title: '请假结束时间', minWidth:120, templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_string2', title: '请假时长(d)', minWidth:100}
+                ,{field: 'currency_string3', title: '申请项目', minWidth:100}
+                ,{field: 'currency_date2', title: '开始日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date3', title: '结束日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_string2', title: '时长（d）', minWidth:100}
                 ,{field: 'currency_string8', title: '请假类型', minWidth:100}
-                ,{field: 'currency_string7', title: '申请事由', minWidth:100}
+                ,{field: 'currency_string4', title: '出差地点', minWidth:100}
+                ,{field: 'currency_string5', title: '是否住宿', minWidth:100}
+                ,{field: 'currency_string7', title: '申请事由', minWidth:200}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
             ]]

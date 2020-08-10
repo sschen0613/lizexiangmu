@@ -10,6 +10,7 @@ public class OfficeSealOutRequestController {
 	@RequestMapping("office/officeSealOut.action")
 	public String setupAllocationApproverView1() {
 		return "WEB-INF/views/office/officeSealOut";
+		//return "WEB-INF/views/mobile/office/mOfficeSealOutList";
 	}
 	//跳转办公用品申请表界面
 	@RequestMapping("office/officeSealOutForm.action")

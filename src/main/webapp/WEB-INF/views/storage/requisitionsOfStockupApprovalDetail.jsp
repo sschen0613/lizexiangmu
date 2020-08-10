@@ -72,11 +72,11 @@
     </table>
 
 </div>
-<%--<div class="bottom">
+<div class="bottom">
     <button class="layui-btn" onclick="print()">
         <i class="layui-icon layui-icon-fonts-clear"></i> 打印
     </button>
-</div>--%>
+</div>
 <script>
     var currency_id = '${param.currency_id}';
     var currency_type = '${param.currency_type}';
@@ -161,10 +161,10 @@
 </script>
 <script language="javascript">
     // 打印页面内容
-    /*var basePath = "<%=basePath%>";
+    var basePath = "<%=basePath%>";
     function print(){
         $("#content").print(basePath,{});
-    }*/
+    }
 </script>
 </body>
 </html>

@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 公章外带申请-手机端 -->
+<!-- 公章使用申请-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -23,7 +23,7 @@
 		<div class="container-apply">
 			<div class="approval-list-title">
 				<a href="mobile/view/Mindex.action?currentTab=apply" class="layui-icon layui-icon-left"></a>
-				<h2 class="">公章外带申请</h2>
+				<h2 class="">公章使用申请</h2>
 				<span class="menu layui-icon layui-icon-more" onclick="$('.sub-menu').slideToggle();">
 					<div class="sub-menu">
 						<ul>
@@ -59,15 +59,52 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label">外带用途 :</label>
+						<label class="layui-form-label">使用方式 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="currency_string7" class="layui-input" placeholder="请务必填写外带用途" lay-verify="required">
+							<select class="layui-select" name="use_type" id="use_type" lay-filter="use_type" lay-verify="required">
+								<option value="盖章">盖章</option>
+								<option value="外带">外带</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
+						<label class="layui-form-label">使用公司 :</label>
+						<div class="layui-input-block">
+							<input type="text" name="use_company" class="layui-input" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">公章类型 :</label>
+						<div class="layui-input-block">
+							<select class="layui-select" name="seal_type" id="seal_type" lay-verify="required">
+								<option value="法人章">法人章</option>
+								<option value="合同章">合同章</option>
+								<option value="公章">公章</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item back" style="display: none">
 						<label class="layui-form-label">归还日期 :</label>
 						<div class="layui-input-block">
-							<input name="currency_date2" type="text" class="layui-input date-revise" id="date1" placeholder="请选择日期" lay-verify="required">
+							<input name="currency_date2" type="text" class="layui-input date-revise" id="date1" placeholder="请选择日期">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">申请事由 :</label>
+						<div class="layui-input-block">
+							<input type="text" name="request_reason" class="layui-input" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">备注 :</label>
+						<div class="layui-input-block">
+							<input type="text" name="remark" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">上传图片 :</label>
+						<div class="layui-input-block">
+							<input type="file" id="pics" name="pics" accept="image/*" capture="camera" multiple>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -101,33 +138,70 @@
 					// console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
 					// console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
 					// console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-					var currency_date2 = data.field.currency_date2;
-					var currency_string7 = data.field.currency_string7;
+					var use_type = data.field.use_type;//事由方式
+					var use_company = data.field.use_company;//使用公司
+					var seal_type = data.field.seal_type;//公章类型
+					var currency_date2 = data.field.currency_date2;//归还日期
+					var request_reason = data.field.request_reason;//申请事由
+					var remark = data.field.remark;
 					var currency_type = 72;//1是当前审批请求的类型,审批管理主键id;
-					
-				 	$.ajax({
-				 		 url : "Currency/launchCurrencyApply.action"
-				 		,type : "post"
-				 		,data : {'currency_date2':currency_date2,'currency_string7':currency_string7,"currency_type":currency_type}
-				 		,dataType : "JSON"
-                        ,beforeSend: function(){
-                            layer.msg('正在提交申请', {
-                                icon: 16
-                                ,shade: 0.01
-                            });
-                        }
-                        ,success : function(result){
-                            layer.msg(result.msg);
-                            $('#myForm').addClass('layui-btn-disabled');
-                            $('#myForm').attr("disabled", "disabled");
-                        }
-				 	});
+
+					var myForm = new FormData();
+					myForm.set("currency_type",currency_type);
+					myForm.set("currency_string2",use_type);
+					myForm.set("currency_string3",use_company);
+					myForm.set("currency_string4",seal_type);
+					myForm.set("currency_date2",currency_date2);
+					myForm.set("currency_string5",request_reason);
+					myForm.set("currency_string7",remark);
+					for(let i = 0;i < $("#pics")[0].files.length;i++){
+						myForm.append("pics",$("#pics")[0].files[i])
+					}
+
+					$.ajax({
+						url : "Currency/launchCurrencyApply.action"
+						,type : "post"
+						,data : myForm
+						,contentType: false
+						,processData: false
+						,cache:false
+						,dataType : "JSON"
+						,beforeSend: function(){
+							layer.msg('正在提交申请', {
+								icon: 16
+								,shade: 0.01
+							});
+						}
+						,success : function(result){
+							layer.msg(result.msg);
+							$('#myForm').addClass('layui-btn-disabled');
+							$('#myForm').attr("disabled",'disabled');
+						}
+					});
 					return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 				});
                 //监听重置按钮
     			$('#resetForm').click(function(e){
     				window.location.reload();
     			});
+
+				form.on('select(use_type)', function(data){
+					var use_type = data.value; //合同编号
+					if ("盖章" == use_type){
+
+						$(".back").hide();
+						$("#date2").attr("lay-verify","");
+						$("#date2").val("");
+					}else if ("外带" == use_type){
+						$(".back").show();
+						$("#date2").attr("lay-verify","required");
+						$("#date2").val("");
+					}else{
+						$(".back").hide();
+						$("#date2").attr("lay-verify","");
+						$("#date2").val("");
+					}
+				});
                 
                 //表单数据初始化
 				//获取请购单号
