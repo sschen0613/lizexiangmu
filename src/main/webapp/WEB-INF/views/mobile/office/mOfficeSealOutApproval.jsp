@@ -131,7 +131,7 @@
 								+				'<label class="">备注 :</label>'
 								+				'<input type="text" name="remark"  value="'+item.currency_string7+'" class="layui-input" readonly>'
 								+			'</div>'
-								+			'<div><label class="label-title">图片信息 </label></div>'
+								+			'<div><label class="label-title">文件信息 </label></div>'
 								+			'<div class="picture-detail-container">'
 								//图片
 								+			'</div>'
@@ -171,7 +171,9 @@
 											+		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
 											+		'<div class="details">'
 											+			'<div>'
-											+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+											+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+
+											//+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
 											+			'</div>'
 											+		'</div>'
 											+	'</div>';

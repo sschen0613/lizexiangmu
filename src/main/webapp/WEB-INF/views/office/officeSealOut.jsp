@@ -49,7 +49,7 @@
 
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">公章外带申请单</button>
+				<button class="layui-btn layui-btn-xs" lay-event="add">公章使用申请单</button>
 			</div>
 		</script>
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
@@ -117,7 +117,7 @@
 					,url: 'Currency/selectApplicantCurrency.action?currency_type='+ currency_type //数据接口
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '公章外带申请单'
+			    	,title: '公章使用申请单'
  			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}

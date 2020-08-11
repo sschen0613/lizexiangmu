@@ -985,14 +985,14 @@
         else if(currency_type == 72){
             //执行一个 table 实例
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
                 ,title: '图片'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '凭据图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '文件', width: 150,templet:"#system_file"}
                 ]]
             });
         }

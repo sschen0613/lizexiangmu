@@ -132,6 +132,17 @@ public class CurrencyApplyController {
 			//查询当前审批流的设置信息
 			roles = iSystemApprovalService.selectConditionApproval(approverRole);
 		}else {
+			if(currencyApply.getCurrency_type() == 2){//判断是否为普通运营请购
+				if(currencyApply.getCurrency_money3().compareTo(BigDecimal.ZERO) == 0){//判断欠款金额为0
+					approverRole.setApprover_condition(condition);
+					currencyApply.setCondition_state(2);//加入条件标识
+					//查询当前审批流的设置信息
+					roles = iSystemApprovalService.selectConditionApproval(approverRole);
+				}else {
+					currencyApply.setCondition_state(1);//加入条件标识
+					roles = iSystemApprovalService.selectConditionApproval(approverRole);
+				}
+			}else
 			//出发登记申请需要判断是公车还是私车
 			if(currencyApply.getCurrency_type() == 21 ){
 				//私车
