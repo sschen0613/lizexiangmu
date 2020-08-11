@@ -5,7 +5,7 @@
     String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 员工请假申请详情-手机端 -->
+<!-- 员工请假、加班、出差申请详情-手机端 -->
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -24,7 +24,7 @@
         <svg class="alSvgIcon" aria-hidden="true">
             <use xlink:href="#icon-office"></use>
         </svg>
-        员工请假申请详情
+        员工请假、加班、出差申请详情
     </h2>
     <div class="content">
 
@@ -52,6 +52,11 @@
         var currency_string2 = '${param.currency_string2}'; //区域
         var currency_date2 = '${param.currency_date2}';
         var currency_date3 = '${param.currency_date3}';
+        var currency_string3 = '${param.currency_string3}'; //区域
+        var currency_string4 = '${param.currency_string4}'; //区域
+        var currency_string5 = '${param.currency_string5}'; //区域
+        var currency_string9 = '${param.currency_string9}'; //区域
+        var currency_money6 = '${param.currency_money6}'; //区域
         var currency_string7 = '${param.currency_string7}'; //申请事由
         var currency_string8 = '${param.currency_string8}'; //申请事由
 
@@ -96,24 +101,47 @@
                     +				'<input type="text" name="currency_date" id="date" value="'+currency_date+'" class="layui-input" readonly>'
                     +			'</div>'
                     +			'<div>'
-                    +				'<label class="">请假开始时间 :</label>'
-                    +				'<input type="text" name="workovertime_start" value="'+currency_date2+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假结束时间:</label>'
-                    +				'<input type="text" name="workovertime_off" value="'+currency_date3+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假时长（d） :</label>'
-                    +				'<input type="text" name="workovertime_date" value="'+currency_string2+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假类型 :</label>'
-                    +				'<input type="text" name="leave_type" value="'+currency_string8+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
+                    +				'<label class="">申请项目 :</label>'
+                    +				'<input type="text" name="apply_type" value="'+currency_string3+'" class="layui-input" readonly>'
+                    +			'</div>';
+                if(currency_string3 == "请假" || currency_string3 == "加班"){
+                    html += 		'<div>'
+                        +				'<label class="">开始时间 :</label>'
+                        +				'<input type="text" name="workovertime_start" value="'+currency_date2+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">结束时间:</label>'
+                        +				'<input type="text" name="workovertime_off" value="'+currency_date3+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">时长（d） :</label>'
+                        +				'<input type="text" name="workovertime_date" value="'+currency_string2+'" class="layui-input" readonly>'
+                        +			'</div>';
+                    if(currency_string3 == "请假"){
+                        html +=			'<div>'
+                            +				'<label class="">请假类型 :</label>'
+                            +				'<input type="text" name="leave_type" value="'+currency_string8+'" class="layui-input" readonly>'
+                            +			'</div>';
+                    }
+
+                }else if(currency_string3 == '出差'){
+                    html+=			'<div>'
+                        +				'<label class="">出差地点 :</label>'
+                        +				'<input type="text" name="travel_place" value="'+currency_string4+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">是否住宿 :</label>'
+                        +				'<input type="text" name="if_stay" value="'+currency_string5+'" class="layui-input" readonly>'
+                        +			'</div>';
+                }
+
+                 html +=		'<div>'
                     +				'<label class="">申请事由 :</label>'
                     +				'<textarea name="request_reason" readonly>'+currency_string7+'</textarea>'
+                    +			'</div>'
+                    +           '<div>'
+                    +				'<label class="">备注 :</label>'
+                    +				'<textarea name="remark" readonly>'+currency_string9+'</textarea>'
                     +			'</div>'
                     +			'<div class="approval-detail-container">'
                     //明细信息

@@ -90,31 +90,50 @@
                     +				'<input type="text" name="currency_date" id="date" value="'+Format(item.currency_date,"yyyy-MM-dd")+'" class="layui-input" readonly>'
                     +			'</div>'
                     +			'<div>'
-                    +				'<label class="">请假开始时间 :</label>'
-                    +				'<input type="text" name="workovertime_start" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假结束时间:</label>'
-                    +				'<input type="text" name="workovertime_off" value="'+Format(item.currency_date3,"yyyy-MM-dd")+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假时长（d） :</label>'
-                    +				'<input type="text" name="workovertime_date" value="'+item.currency_string2+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
-                    +				'<label class="">请假类型 :</label>'
-                    +				'<input type="text" name="leave_type" value="'+item.currency_string8+'" class="layui-input" readonly>'
-                    +			'</div>'
-                    +			'<div>'
+                    +				'<label class="">申请项目 :</label>'
+                    +				'<input type="text" name="apply_type" value="'+item.currency_string3+'" class="layui-input" readonly>'
+                    +			'</div>';
+                if(item.currency_string3 == "请假" || item.currency_string3 == "加班"){
+                    html += 		'<div>'
+                        +				'<label class="">开始时间 :</label>'
+                        +				'<input type="text" name="workovertime_start" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">结束时间:</label>'
+                        +				'<input type="text" name="workovertime_off" value="'+Format(item.currency_date3,"yyyy-MM-dd")+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">时长（d） :</label>'
+                        +				'<input type="text" name="workovertime_date" value="'+item.currency_string2+'" class="layui-input" readonly>'
+                        +			'</div>';
+                    if(item.currency_string3 == "请假"){
+                        html +=			'<div>'
+                            +				'<label class="">请假类型 :</label>'
+                            +				'<input type="text" name="leave_type" value="'+item.currency_string8+'" class="layui-input" readonly>'
+                            +			'</div>';
+                    }
+
+                }else if(item.currency_string3 == '出差'){
+                    html+=			'<div>'
+                        +				'<label class="">出差地点 :</label>'
+                        +				'<input type="text" name="travel_place" value="'+item.currency_string4+'" class="layui-input" readonly>'
+                        +			'</div>'
+                        +			'<div>'
+                        +				'<label class="">是否住宿 :</label>'
+                        +				'<input type="text" name="if_stay" value="'+item.currency_string5+'" class="layui-input" readonly>'
+                        +			'</div>';
+                }
+
+                html +=		'<div>'
                     +				'<label class="">申请事由 :</label>'
                     +				'<textarea name="request_reason" readonly>'+item.currency_string7+'</textarea>'
                     +			'</div>'
+                    +           '<div>'
+                    +				'<label class="">备注 :</label>'
+                    +				'<textarea name="remark" readonly>'+item.currency_string9+'</textarea>'
+                    +			'</div>'
                     +			'<div class="approval-detail-container">'
                     //明细信息
-                    +			'</div>'
-                    +			'<div class="approval-opinion">'
-                    +				'<label class="">审批意见 :</label>'
-                    +				'<textarea id="approval_opinion" class="layui-textarea" placeholder="请填写审批意见"></textarea>'
                     +			'</div>'
                     + 			'<div class="approval-progress">'
                     +				'<label class="">审批进度 :</label>'
@@ -127,8 +146,7 @@
                 html +=				'<table id="details" lay-filter="details"></table>';
                 html +=			'</div>'
                     +			'<div class="button">'
-                    +				'<button type="button" class="layui-btn layui-btn-sm" id="agree">同意</button>'
-                    +				'<button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="disagree">拒绝</button>'
+                    +				'<button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="revokeagree">撤回</button>'
                     +			'</div>'
                     +		'</form>'
                     +	'</div>';

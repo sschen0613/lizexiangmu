@@ -112,6 +112,7 @@
                 <label class="layui-form-label">是否住宿 :</label>
                 <div class="layui-input-block">
                     <select class="layui-select" name="if_stay" id="if_stay">
+                        <option value="">请选择</option>
                         <option value="是">是</option>
                         <option value="否">否</option>
                     </select>
@@ -205,6 +206,12 @@
                     "currency_type":currency_type
                 }
                 ,dataType : "JSON"
+                ,beforeSend: function(){
+                    layer.msg('正在提交申请', {
+                        icon: 16
+                        ,shade: 0.01
+                    });
+                }
                 ,success : function(result){
                     $('#myForm').addClass('layui-btn-disabled');
                     $('#myForm').attr("disabled", "disabled");

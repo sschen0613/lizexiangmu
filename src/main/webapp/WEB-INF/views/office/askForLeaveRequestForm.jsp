@@ -81,6 +81,7 @@
             <td>是否住宿</td>
             <td>
                 <select  id='if_stay' name="if_stay">
+                    <option value="">请选择</option>
                     <option value="是">是</option>
                     <option value="否">否</option>
                 </select>
