@@ -128,11 +128,11 @@
 						var details_string7 = $(item).find('input[name="unit"]').val();
 						var details_money = Number($(item).find('input[name="buy_quantity"]').val());
 						var details_money2 = Number($(item).find('input[name="unit_price"]').val());
-						/*var details_money3 = Number($(item).find('input[name="anticipated_price"]').val());*/
+						var details_money3 = details_money2*details_money;
 						money += details_money2*details_money;
 						
 						var obj = {'details_string5':details_string5,'details_string6':details_string6,'details_string7':details_string7
-								,'details_money':details_money,'details_money2':details_money2/*,'details_money3':details_money3*/};
+								,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
 						currencyDetails.push(obj);
 					});
 					

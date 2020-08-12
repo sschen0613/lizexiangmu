@@ -111,9 +111,13 @@
 							 +				'<label class="">需求日期 :</label>'
 							 +				'<input type="text" name="expectedDelivery_date" id="date1" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
 							 +			'</div>'
+							+			'<div>'
+							+				'<label class="">总额 :</label>'
+							+				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+item.currency_money6+'</textarea>'
+							+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">申请事由 :</label>'
-							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
+							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" rows="6" style="height: 160px;" " readonly>'+item.currency_string7+'</textarea>'
 							 +			'</div>'
 							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
@@ -172,10 +176,10 @@
 							 		 	 +				'<label class="">预计单价 :</label>'
 							 		 	 +				'<input type="text" name="unit_price" value="'+item.details_money2+'" class="layui-input" readonly>'
 							 		 	 +			'</div>'
-							 		 	/* +			'<div>'
+							 		 	 +			'<div>'
 							 		 	 +				'<label class="">预计价格 :</label>'
 							 		 	 +				'<input type="text" name="anticipated_price" value="'+item.details_money3+'" class="layui-input" readonly>'
-							 		 	 +			'</div>'*/
+							 		 	 +			'</div>'
 							 		 	 +		'</div>'
 							 		 	 +	'</div>';
 								});

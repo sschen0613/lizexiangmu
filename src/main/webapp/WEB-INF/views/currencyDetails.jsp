@@ -331,7 +331,27 @@
             });
         }
         //办公用品审批
-        else if(currency_type == 1 || currency_type == 67){
+        else if(currency_type == 1){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '用户数据表'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    {fixed: 'left', field: 'details_string5', title: '物品名称', minWidth: 100}
+                    ,{field: 'details_string6', title: '规格型号', minWidth: 100}
+                    ,{field: 'details_string7', title: '单位', minWidth: 80}
+                    ,{field: 'details_money', title: '数量', minWidth: 80}
+                    ,{field: 'details_money2', title: '预计单价', minWidth: 80}
+                    ,{field: 'details_money3', title: '预计价格', minWidth: 100}
+                ]]
+            });
+        }
+
+        //办公用品审批
+        else if(currency_type == 67){
             //执行一个 table 实例
             table.render({
                 elem: '#test'
@@ -993,6 +1013,41 @@
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
                     ,{field: 'picture', title: '文件', width: 150,templet:"#system_file"}
+                ]]
+            });
+        }//信泽技术服务合同变更审批
+        else if(currency_type == 74){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '合同明细'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    {fixed: 'left', field: 'details_string4', title: '项目编码', minWidth: 100}
+                    ,{field: 'details_string5', title: '项目名称', minWidth: 100}
+                    ,{field: 'details_string6', title: '内容描述', minWidth: 200}
+                    ,{field: 'details_string7', title: '内容描述变更', minWidth: 200}
+                    ,{field: 'details_money', title: '数量', minWidth: 100}
+                    ,{field: 'details_money2', title: '数量变更', minWidth: 400}
+                    ,{field: 'details_money3', title: '含税原币单价', minWidth: 120}
+                    ,{field: 'details_money4', title: '含税原币单价变更', minWidth: 120}
+                    ,{field: 'details_money5', title: '含税原币金额', minWidth: 120}
+                ]]
+            });
+
+            table.render({
+                elem: '#test1'
+                ,url: 'selectPaymentPlan.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '收款计划'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    { fixed: 'left', field: 'strSettleStyleID', title: '合同条款名称', minWidth: 100, sort: true}
+                    ,{field: 'string', title: '合同条款名称变更', minWidth: 100}
+                    ,{field: 'strPayFactor', title: '合同条款内容', minWidth: 100}
+                    ,{field: 'string2', title: '合同条款内容变更', minWidth: 100}
                 ]]
             });
         }

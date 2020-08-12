@@ -13,11 +13,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css">
 		<link rel="stylesheet" href="css/mobile.css">
+		<link rel="stylesheet" href="formselect/formSelects-v4.css" />
 		<script src="layui/layui.js"></script>
 		<script src="js/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="js/iconfont.js"></script>
 		<script src="js/form_init.js"></script>
 		<script src="js/function_tool.js"></script>
+		<script src="formselect/formSelects-v4.min.js"></script>
 	</head>
 	<body>
 		<div class="container-apply">
@@ -62,6 +64,7 @@
 						<label class="layui-form-label">使用方式 :</label>
 						<div class="layui-input-block">
 							<select class="layui-select" name="use_type" id="use_type" lay-filter="use_type" lay-verify="required">
+								<option value="">请选择</option>
 								<option value="盖章">盖章</option>
 								<option value="外带">外带</option>
 							</select>
@@ -76,7 +79,8 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">公章类型 :</label>
 						<div class="layui-input-block">
-							<select class="layui-select" name="seal_type" id="seal_type" lay-verify="required">
+							<select name="seal_type" id="seal_type" xm-select="seal_type" xm-select-skin="default" lay-verify="required">
+								<option value="">请选择</option>
 								<option value="法人章">法人章</option>
 								<option value="合同章">合同章</option>
 								<option value="公章">公章</option>
@@ -122,10 +126,11 @@
                 ,element = layui.element
                 ,layer = layui.layer
                 ,laydate = layui.laydate;
-
+				var formSelects = layui.formSelects;
                 //表单更新渲染
 				form.render();
 				form.render('select');
+				formSelects.render('seal_type');
 				// form.render('checkbox');
 				// form.render('redio');
 				//执行一个laydate实例
@@ -140,7 +145,8 @@
 					// console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
 					var use_type = data.field.use_type;//事由方式
 					var use_company = data.field.use_company;//使用公司
-					var seal_type = data.field.seal_type;//公章类型
+					var seal_type = formSelects.value('seal_type','valStr');
+					//var seal_type = data.field.seal_type;//公章类型
 					var currency_date2 = data.field.currency_date2;//归还日期
 					var request_reason = data.field.request_reason;//申请事由
 					var remark = data.field.remark;

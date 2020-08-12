@@ -25,7 +25,7 @@
         <svg class="alSvgIcon" aria-hidden="true">
             <use xlink:href="#icon-office"></use>
         </svg>
-        员工请假审批详情
+        员工请假、加班、出差审批详情
     </h2>
     <div class="content">
 
@@ -146,7 +146,8 @@
                 html +=				'<table id="details" lay-filter="details"></table>';
                 html +=			'</div>'
                     +			'<div class="button">'
-                    +				'<button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="revokeagree">撤回</button>'
+                    +				'<button type="button" class="layui-btn layui-btn-sm" id="agree">同意</button>'
+                    +				'<button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="disagree">拒绝</button>'
                     +			'</div>'
                     +		'</form>'
                     +	'</div>';

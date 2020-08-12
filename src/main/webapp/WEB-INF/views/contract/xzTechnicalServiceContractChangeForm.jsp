@@ -233,7 +233,11 @@
 						var contract_str_name_change = $(item).find('input[name="contract_str_name_change"]').val();	//商品名称
 						var contract_str_memo = $(item).find('input[name="contract_str_memo"]').val(); //规格型号
 						var contract_str_memo_change = $(item).find('input[name="contract_str_memo_change"]').val(); 		//单位
-						var obj = {'strSettleStyleID':contract_str_name
+						var obj = {
+								'dtPayDate':currencyDate
+								,'dblPayRatio':0
+								,'dblPayCurrency':0
+							,'strSettleStyleID':contract_str_name
 							,'strPayFactor':contract_str_memo
 							,'string':contract_str_name_change
 							,'string2':contract_str_memo_change

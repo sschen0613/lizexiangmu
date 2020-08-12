@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 销售请购审批 -->
+<!-- 信泽技术服务合同变更审批 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -58,9 +58,9 @@
 					<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 	              		检索
 					</button>
-					<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
+					<%--<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
 						导出
-					</button>
+					</button>--%>
 				</div> 
 			</div>
 		</form>
@@ -68,11 +68,11 @@
 		<table id="tab" lay-filter="table"></table>
 
 		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-xs" lay-event="print">打印</a>
+			<%--<a class="layui-btn layui-btn-xs" lay-event="print">打印</a>--%>
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
 			<a class="layui-btn layui-btn-xs" lay-event="edit">审批</a>
 			<%--<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>--%>
-			<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="sign">标记</a>
+			<%--<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="sign">标记</a>--%>
 		</script>
 		<script>
 		//一般直接写在一个js文件中
@@ -85,7 +85,7 @@
 				,form = layui.form
 				,layedit = layui.layedit;
 				
-				 var currency_type = 9;
+				 var currency_type = 74;
 				 var staffid ="${sessionScope.systemStaff.dingding_staffid }";
 				 
 				//表单更新渲染
@@ -155,7 +155,7 @@
 
                     var currency_department = $('#department').find('option:selected').val();
 
-                    var url = 'Currency/selectCurrencyApprover2.action?currency_type=9&currency_string='+staffid;
+                    var url = 'Currency/selectCurrencyApprover.action?currency_type=74&currency_string='+staffid;
                     if (date1 != null && date1 != ''){
                         url += '&currency_date2='+date1;
                     }
@@ -182,9 +182,10 @@
                                 currency_date:function (value,line,data) {
                                     return Format0(value,"yyyy-MM-dd HH:mm:ss");
                                 },
-                                currency_string2:"currency_string2",
+								currency_string3:"currency_string3",//区域
+                                currency_string5:"currency_string5",//客户名称
                                 currency_string7:"currency_string7",
-                                currency_string3:"currency_string3",
+
                                 currency_date2:function (value,line,data) {
                                     return Format(value,"yyyy-MM-dd");
                                 },
@@ -208,7 +209,7 @@
                                 details_money:"请购数量",details_money3:"库存数量",details_string8:"近期商品价格"
                             });
                             // 3. 执行导出函数，系统会弹出弹框
-                            LAY_EXCEL.exportExcel(data, '销售请购.xlsx', 'xlsx');
+                            LAY_EXCEL.exportExcel(data, '信泽技术服务合同变更申请.xlsx', 'xlsx');
                         }
                     });
 
@@ -218,10 +219,10 @@
 				//创建table实例					
 				var tableInner = table.render({
 					elem: '#tab'
-					,url: 'Currency/selectCurrencyApprover1.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
+					,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
 					,page: true //开启分页
 					,toolbar: true
-			    	,title: '销售请购审批'
+			    	,title: '信泽技术服务合同变更审批'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
@@ -229,24 +230,21 @@
 						,{field: 'staff_name', title: '申请人', minWidth:80}
 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string2', title: '区域', minWidth:150}
-						,{field: 'currency_string7', title: '客户名称', minWidth:200}
-						,{field: 'currency_string3', title: '销售合同编号', minWidth:120}
-						,{field: 'currency_date2', title: '期望到货日期', minWidth:120, templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_money', title: '合同金额', minWidth:100}
-						,{field: 'currency_money2', title: '实际已收款', minWidth:110}
-						,{field: 'currency_money3', title: '未收金额', minWidth:100}
-                        ,{field: 'currency_string16', title: '期初合同已收款', minWidth:100}
+						,{field: 'currency_string3', title: '区域', minWidth:150}
+						,{field: 'currency_string5', title: '客户名称', minWidth:200}
+						,{field: 'currency_string7', title: '销售合同编号', minWidth:120}
+						,{field: 'currency_date2', title: '合同签订日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_date3', title: '合同开始日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_date4', title: '合同结束日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date4,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_date5', title: '合同开始日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date5,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_date6', title: '合同结束日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date6,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_money', title: '合同总额', minWidth:100}
+						,{field: 'currency_money2', title: '合同总额变更', minWidth:120}
+						,{field: 'currency_string8', title: '合同描述', minWidth:200}
+						,{field: 'currency_string9', title: '合同描述变更', minWidth:200}
                         ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:300}
 					]],
-                    done: function (res, curr, count) {
-                        for (var i = 0; i < res.data.length; i++) {   //遍历返回数据
-                            if (res.data[i].currency_int7 == 1) {    //设置条件
-                                $("table tbody tr").eq(i).css('background-color', 'lightgreen')    //改变满足条件行的颜色
-                            }
-                        }
-                    }
 				});
 
 				//监听工具条
@@ -294,7 +292,7 @@
                         layer.open({
                             type: 2,
                             // skin:'layui-layer-molv', //layui-layer-lan
-                            title: '销售请购打印',
+                            title: '信泽技术服务合同变更打印',
                             shadeClose: true,
                             shade: 0.8,
                             maxmin: true,

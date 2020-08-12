@@ -160,13 +160,13 @@
 						var details_string3 = $(item).find('input[name="details_string3"]').val();
 						var details_money = Number($(item).find('input[name="details_money"]').val());
 						var details_money2 = Number($(item).find('input[name="details_money2"]').val());
-						//var details_money3 = Number($(item).find('input[name="details_money3"]').val());
+						var details_money3 = details_money2*details_money;
 
 						money += details_money2*details_money;
 						console.log(money);
 						
 						var obj = {'details_string5':details_string,'details_string6':details_string2,'details_string7':details_string3
-								,'details_money':details_money,'details_money2':details_money2/*,'details_money3':details_money3*/};
+								,'details_money':details_money,'details_money2':details_money2,'details_money3':details_money3};
 						currencyDetails.push(obj);
 					});
 					

@@ -139,7 +139,7 @@
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
-						,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
+						,{field: 'currency_number', title: '编号', minWidth:210, sort:true}
 // 						,{field: 'staff_name', title: '申请人', minWidth:80}
 // 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', minWidth:100, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
@@ -151,11 +151,10 @@
 						,{field: 'currency_date4', title: '合同结束日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date4,"yyyy-MM-dd")}}</div>'}
 						,{field: 'currency_date5', title: '合同开始日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date5,"yyyy-MM-dd")}}</div>'}
 						,{field: 'currency_date6', title: '合同结束日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date6,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string7', title: '销售合同编号', minWidth:120}
-						,{field: 'currency_string7', title: '销售合同编号', minWidth:120}
 						,{field: 'currency_money', title: '合同总额', minWidth:100}
 						,{field: 'currency_money2', title: '合同总额变更', minWidth:120}
-						,{field: 'currency_money3', title: '未收总额', minWidth:100}
+						,{field: 'currency_string8', title: '合同描述', minWidth:200}
+						,{field: 'currency_string9', title: '合同描述变更', minWidth:200}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{Math.floor(d.current_approvalCount/d.approver_count*100)+"%"}}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:260}
 					]]
