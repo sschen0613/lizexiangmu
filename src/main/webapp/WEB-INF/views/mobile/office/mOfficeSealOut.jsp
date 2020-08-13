@@ -87,6 +87,16 @@
 							</select>
 						</div>
 					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">材料类型 :</label>
+						<div class="layui-input-block">
+							<select class="layui-select" name="doc_type" id="doc_type" lay-filter="doc_type" lay-verify="required">
+								<option value="">请选择</option>
+								<option value="故障报告">故障报告</option>
+								<option value="其他">其他</option>
+							</select>
+						</div>
+					</div>
 					<div class="layui-form-item back" style="display: none">
 						<label class="layui-form-label">归还日期 :</label>
 						<div class="layui-input-block">
@@ -146,7 +156,7 @@
 					var use_type = data.field.use_type;//事由方式
 					var use_company = data.field.use_company;//使用公司
 					var seal_type = formSelects.value('seal_type','valStr');
-					//var seal_type = data.field.seal_type;//公章类型
+					var doc_type = data.field.doc_type;//公章类型
 					var currency_date2 = data.field.currency_date2;//归还日期
 					var request_reason = data.field.request_reason;//申请事由
 					var remark = data.field.remark;
@@ -157,6 +167,7 @@
 					myForm.set("currency_string2",use_type);
 					myForm.set("currency_string3",use_company);
 					myForm.set("currency_string4",seal_type);
+					myForm.set("currency_string8",doc_type);
 					myForm.set("currency_date2",currency_date2);
 					myForm.set("currency_string5",request_reason);
 					myForm.set("currency_string7",remark);

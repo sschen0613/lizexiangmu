@@ -151,6 +151,7 @@
 						,{field: 'currency_string2', title: '使用方式', minWidth:200}
 						,{field: 'currency_string3', title: '使用公司', minWidth:200}
 						,{field: 'currency_string4', title: '公章类型', minWidth:120}
+						,{field: 'currency_string8', title: '材料类型', minWidth:120}
 						,{field: 'currency_date2', title: '归还日期', minWidth:100, sort: true,templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
 						,{field: 'currency_string5', title: '申请事由', minWidth:200}
 						,{field: 'currency_string7', title: '备注', minWidth:200}

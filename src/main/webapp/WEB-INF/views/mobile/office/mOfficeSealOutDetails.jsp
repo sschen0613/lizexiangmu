@@ -53,6 +53,7 @@
 				var currency_string4 = '${param.currency_string4}'; //申请事由
 				var currency_string5 = '${param.currency_string5}'; //申请事由
 				var currency_string7 = '${param.currency_string7}'; //申请事由
+				var currency_string8 = '${param.currency_string8}'; //申请事由
 
                 var currency_id = '${param.currency_id}';
     			var approvalOpinion_type = '${param.approvalOpinion_type}';
@@ -105,6 +106,10 @@
 								+			'<div>'
 								+				'<label class="">公章类型 :</label>'
 								+				'<input type="text" name="expectedDelivery_date" value="'+currency_string4+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">材料类型 :</label>'
+								+				'<input type="text" name="expectedDelivery_date" value="'+currency_string8+'" class="layui-input" readonly>'
 								+			'</div>'
 								+			'<div>'
 								+				'<label class="">归还日期 :</label>'
