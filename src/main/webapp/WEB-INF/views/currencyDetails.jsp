@@ -607,14 +607,14 @@
             });
 
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
                 ,title: '图片'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '合同图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '合同文件', width: 150,templet:"#system_file"}
                 ]]
             });
         }
@@ -799,14 +799,14 @@
             });
 
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
                 ,title: '图片'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '合同图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '合同文件', width: 150,templet:"#system_file"}
                 ]]
             });
         }
@@ -850,14 +850,14 @@
             });
 
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
                 ,title: '图片'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '合同图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '合同文件', width: 150,templet:"#system_file"}
                 ]]
             });
 		}
@@ -1030,7 +1030,7 @@
                     ,{field: 'details_string6', title: '内容描述', minWidth: 200}
                     ,{field: 'details_string7', title: '内容描述变更', minWidth: 200}
                     ,{field: 'details_money', title: '数量', minWidth: 100}
-                    ,{field: 'details_money2', title: '数量变更', minWidth: 400}
+                    ,{field: 'details_money2', title: '数量变更', minWidth: 400, templet:'<div>{{ d.details_money2==0?"":d.details_money2}}</div>'}
                     ,{field: 'details_money3', title: '含税原币单价', minWidth: 120}
                     ,{field: 'details_money4', title: '含税原币单价变更', minWidth: 120}
                     ,{field: 'details_money5', title: '含税原币金额', minWidth: 120}

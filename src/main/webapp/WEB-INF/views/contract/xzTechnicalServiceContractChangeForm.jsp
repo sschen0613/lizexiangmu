@@ -364,8 +364,7 @@
     					data:{"cCusCode": cCusCode},
     					dataType:'JSON',
     					success:function(res){
-    		 				var html = '<option value="">请选择' +
-									'合同编号</option>';
+    		 				var html = '<option value="">请选择合同编号</option>';
     						$.each(res.data,function(index,item){
     							html += '<option data-money="'+item.dblTotalCurrency+'" data-begin="'+item.strContractStartDate
 										+'" data-end="'+item.strContractEndDate
@@ -388,7 +387,6 @@
         		//获取存货编码 / 存货名称 /规格型号/单位/合同数量/库存数量
         		var runproduct_name_html = ''; //运营设备下拉列表
         		var contract_price = 0;	//合同条款带出的价格
-        		var contract_type = 2;	//设置合同类型
     			form.on('select(contract_id)', function(data){
     				//重置之前内容
     				//明细信息重置

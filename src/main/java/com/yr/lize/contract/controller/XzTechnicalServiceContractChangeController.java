@@ -8,7 +8,8 @@ public class XzTechnicalServiceContractChangeController {
     //跳转信泽技术服务合同盖章申请（丽泽）页面
 	@RequestMapping("contract/xzTechnicalServiceContractChange.action")
 	public String setupAllocationApproverView1() {
-		return "WEB-INF/views/contract/xzTechnicalServiceContractChange";
+		return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChange";
+		//return "WEB-INF/views/contract/xzTechnicalServiceContractChange";
 	}
     //跳转信泽技术服务合同盖章申请（丽泽）表页面
 	@RequestMapping("contract/xzTechnicalServiceContractChangeForm.action")

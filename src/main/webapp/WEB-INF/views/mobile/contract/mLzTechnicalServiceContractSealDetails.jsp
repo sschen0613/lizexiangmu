@@ -51,6 +51,7 @@
                 var currency_date = '${param.currency_date}'; //申请日期
 
                 var currency_string2 = '${param.currency_string2}'; //区域
+				var currency_string3 = '${param.currency_string3}'; //区域
                 var currency_string5 = '${param.currency_string5}';
                 var currency_string7 = '${param.currency_string7}'; //申请事由
                 var currency_string8 = '${param.currency_string8}';
@@ -116,6 +117,10 @@
 							 +				'<label class="">备注说明 :</label>'
 							 +				'<textarea type="text" name="remark_illustration" value="'+currency_string12+'" class="layui-textarea" readonly>无档案的客户名称请填写《客户档案建档申请流程》</textarea>'
 							 +			'</div>'
+								+			'<div>'
+								+				'<label class="">合同类型 :</label>'
+								+				'<input type="text" name="contractType" value="'+currency_string3+'" class="layui-input" readonly>'
+								+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同金额 :</label>'
 							 +				'<input type="text" name="contract_amount" value="'+currency_money+'" class="layui-input" readonly>'
@@ -255,7 +260,8 @@
                                         +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
                                         +		'<div class="details">'
                                         +			'<div>'
-                                        +				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+										+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+											//+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
                                         +			'</div>'
                                         +		'</div>'
                                         +	'</div>';

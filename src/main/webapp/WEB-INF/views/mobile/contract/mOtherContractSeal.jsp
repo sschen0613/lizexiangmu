@@ -59,6 +59,16 @@
 							<input type="text" name="currency_date" id="date" class="layui-input" readonly>
 						</div>
  					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">合同类型 :</label>
+						<div class="layui-input-block">
+							<select id="contractType" name="contractType" class="layui-select" lay-search lay-verify="required">
+								<option value="">请选择</option>
+								<option value="制式">制式</option>
+								<option value="非制式">非制式</option>
+							</select>
+						</div>
+					</div>
  					<div class="layui-form-item">
 						<label class="layui-form-label">签约单位 :</label>
 						<div class="layui-input-block">
@@ -135,6 +145,7 @@
 					// console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
                     //var illustration = data.field.illustration; //说明
 
+					var contractType = data.field.contractType;
                     var content = data.field.content; //签约内容
                     var company = data.field.company; //签约单位
 
@@ -149,6 +160,7 @@
                     var myForm = new FormData();
                     myForm.set("currency_type",currency_type);
                     myForm.set("currencyDate",currencyDate);
+					myForm.set("currency_string4",contractType);//合同类型
                     myForm.set("currency_string2",company);
                     myForm.set("currency_string3",content);
                     myForm.set("currency_string10",contract_amount);

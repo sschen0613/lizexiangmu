@@ -51,6 +51,7 @@
 
                 var currency_string2 = '${param.currency_string2}'; //区域
                 var currency_string3 = '${param.currency_string3}';
+				var currency_string4 = '${param.currency_string4}';
 
                 var currency_string10 = '${param.currency_string10}'; //已收金额
                 var currency_string11 = '${param.currency_string11}'; //已收金额
@@ -98,6 +99,10 @@
 							 +				'<label class="">申请日期 :</label>'
 							 +				'<input type="text" name="currency_date" id="date" value="'+currency_date+'" class="layui-input" readonly>'
 							 +			'</div>'
+							+			'<div>'
+							+				'<label class="">合同类型 :</label>'
+							+				'<input type="text" name="contractType" value="'+currency_string4+'" class="layui-input" readonly>'
+							+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">签约单位 :</label>'
 							 +				'<input type="text" id="customer_unit" name="customer_unit" value="'+currency_string2+'" class="layui-input" readonly>'
@@ -125,7 +130,7 @@
 							 +			'<div class="approval-detail-container">'
 											//明细信息
 							 +			'</div>'
-                            +			'<div><label class="label-title">图片信息 </label></div>'
+                            +			'<div><label class="label-title">文件信息 </label></div>'
                             +			'<div class="picture-detail-container">'
                             //图片
                             +			'</div>'

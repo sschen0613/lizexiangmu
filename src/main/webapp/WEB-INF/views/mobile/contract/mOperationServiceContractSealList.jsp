@@ -124,7 +124,7 @@
     				    				 +'&currency_string12='+item.currency_string12+'&currency_string13='+item.currency_string13+'&currency_string8='+item.currency_string8
     				    				 +'&currency_string9='+item.currency_string9+'&currency_string10='+item.currency_string10+'&currency_string11='+item.currency_string11+'&currency_string14='+item.currency_string14
     				    				 +'&currency_money6='+item.currency_money6+'&currency_int6='+item.currency_int6+'&currency_date2='+Format(item.currency_date2,"yyyy-MM-dd")
-    				    				 +'&currency_string='+item.currency_string
+    				    				 +'&currency_string='+item.currency_string+'&currency_string3='+item.currency_string3
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'
     				    		 +			'<span class="layui-icon layui-icon-right"></span>'

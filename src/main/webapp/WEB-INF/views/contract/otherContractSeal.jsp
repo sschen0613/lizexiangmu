@@ -143,7 +143,8 @@
 // 						,{field: 'staff_name', title: '申请人', minWidth:80}
 // 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                        ,{field: 'currency_string2', title: '签约单位', minWidth:80}
+						,{field: 'currency_string4', title: '合同类型', minWidth:100}
+						,{field: 'currency_string2', title: '签约单位', minWidth:80}
  						,{field: 'currency_string3', title: '签约内容', minWidth:100}
                         ,{field: 'currency_string10', title: '合同总金额', minWidth:100}
                         ,{field: 'currency_string11', title: '已收/付金额', minWidth:100}

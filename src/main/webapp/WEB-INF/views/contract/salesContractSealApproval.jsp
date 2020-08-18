@@ -157,6 +157,7 @@
 						,{field: 'currency_string5', title: '客户名称', minWidth:100}
                         ,{field: 'currency_string11', title: '客户编码', minWidth:100}
 						,{field: 'currency_string12', title: '备注说明', minWidth:100}
+						,{field: 'currency_string3', title: '合同类型', minWidth:100}
 						,{field: 'currency_money', title: '合同金额', minWidth:100}
 						,{field: 'currency_string13', title: '合同金额大写', minWidth:120}
 						//,{field: 'currency_int2', title: '是否包含设备验收报告', minWidth:160,templet:'<div>{{d.currency_int2 == "1" ?"是":"否"}}</div>'}

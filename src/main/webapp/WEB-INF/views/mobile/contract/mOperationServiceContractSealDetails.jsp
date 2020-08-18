@@ -51,6 +51,7 @@
                 var currency_date = '${param.currency_date}'; //申请日期
 
                 var currency_string2 = '${param.currency_string2}'; //区域
+				var currency_string3 = '${param.currency_string3}'; //区域
                 var currency_money6 = '${param.currency_money6}'; //合同金额
                 var currency_string15 = '${param.currency_string15}'; //申请事由
                 var currency_string5 = '${param.currency_string5}'; //申请事由
@@ -121,6 +122,10 @@
 							 +				'<label class="">合同期间 :</label>'
 							 +				'<textarea name="time-ranges" value="" class="layui-textarea" readonly>'+currency_string14+'</textarea>'
 							 +			'</div>'
+								+			'<div>'
+								+				'<label class="">合同类型 :</label>'
+								+				'<input type="text" name="contractType" value="'+currency_string3+'" class="layui-input" readonly>'
+								+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同金额 :</label>'
 							 +				'<input type="text" name="contract_amount" value="'+currency_money6+'" class="layui-input" readonly>'
@@ -300,7 +305,8 @@
                                         +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
                                         +		'<div class="details">'
                                         +			'<div>'
-                                        +				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+										+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+										//+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
                                         +			'</div>'
                                         +		'</div>'
                                         +	'</div>';

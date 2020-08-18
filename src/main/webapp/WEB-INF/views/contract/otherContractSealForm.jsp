@@ -46,10 +46,18 @@
 		 			<td><input type="text" name="currency_date" id="date" readonly></td>
 		 		</tr>
 		 		<tr>
+					<td>合同类型</td>
+					<td>
+						<select id="contractType" name="contractType" lay-search lay-verify="required">
+							<option value="">请选择</option>
+							<option value="制式">制式</option>
+							<option value="非制式">非制式</option>
+						</select>
+					</td>
 					<td>签约单位</td>
 					<td><input type="text" name="company" id="company"></td>
 					<td>签约内容</td>
-					<td colspan="3"><input type="text" name="content" id="content"></td>
+					<td><input type="text" name="content" id="content"></td>
 		 		</tr>
 				<tr>
 					<td>合同总金额</td>
@@ -109,6 +117,7 @@
 					//var buy_number = data.field.buy_number; //请购单号
 					var illustration = data.field.illustration; //说明
 
+					var contractType = data.field.contractType;//合同类型
                     var content = data.field.content; //签约内容
                     var company = data.field.company; //签约单位
 
@@ -124,6 +133,7 @@
                     myForm.set("currency_type",currency_type);
                     myForm.set("currencyDate",currencyDate);
                     myForm.set("currency_string",illustration);
+					myForm.set("currency_string4",contractType);//合同类型
                     myForm.set("currency_string2",company);
                     myForm.set("currency_string3",content);
                     myForm.set("currency_string10",contract_amount);

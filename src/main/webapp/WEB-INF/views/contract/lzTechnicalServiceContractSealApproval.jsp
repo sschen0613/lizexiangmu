@@ -157,6 +157,7 @@
 						,{field: 'currency_string2', title: '所属区域', minWidth:150}
 						,{field: 'currency_string5', title: '客户名称', minWidth:100}
                         ,{field: 'currency_string11', title: '客户编码', minWidth:100}
+						,{field: 'currency_string3', title: '合同类型', minWidth:100}
 						,{field: 'currency_money', title: '合同总额', minWidth:100}
 						,{field: 'currency_string13', title: '合同金额大写', minWidth:120}
 						//,{field: 'contract_versons', title: '合同版本', minWidth:100}

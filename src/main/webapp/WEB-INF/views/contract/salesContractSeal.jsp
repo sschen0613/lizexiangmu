@@ -130,6 +130,7 @@
 						,{field: 'currency_string2', title: '所属区域', minWidth:150}
 						,{field: 'currency_string11', title: '客户编码', minWidth:100}
 						,{field: 'currency_string5', title: '客户名称', minWidth:200}
+						,{field: 'currency_string3', title: '合同类型', minWidth:100}
 						,{field: 'currency_money', title: '合同金额', minWidth:100}
 						//,{field: 'currency_int2', title: '是否包含验证报告', minWidth:140, templet:'<div>{{d.currency_int2 == "1" ? "是" : "否"}}</div>'}
 // 						,{field: 'currency_int4', title: '合同版本', minWidth:100, templet:'<div>{{d.currency_int4 == "1" ? "我方" : "对方"}}</div>'}

@@ -50,10 +50,18 @@
 					<td colspan=8><input type="text" name="remark" value="无档案的客户名称请填写《客户档案建档申请流程》" readonly></td>
 				</tr>
 				<tr>
+					<td>合同类型</td>
+					<td>
+						<select id="contractType" name="contractType" lay-search lay-verify="required">
+							<option value="">请选择</option>
+							<option value="制式">制式</option>
+							<option value="非制式">非制式</option>
+						</select>
+					</td>
 					<td>合同金额</td>
-					<td colspan=3><input id="amount" type="text" name="contract_amount" lay-verify="required" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+					<td colspan=2><input id="amount" type="text" name="contract_amount" lay-verify="required" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
 					<td>合同金额大写</td>
-					<td colspan=4><input id="amountCapitals" type="text" name="contract_ChineseAmount" readonly></td>
+					<td colspan=3><input id="amountCapitals" type="text" name="contract_ChineseAmount" readonly></td>
 				</tr>
 
 				<tr>
@@ -208,6 +216,7 @@
                     var customer_name = $('#customer_name').find('option:selected').text();
                     var cCusCode = $('#customer_number').val();
                     var remark_illustration = data.field.remark;//备注说明
+					var contractType = data.field.contractType;
                     var contract_amount = Number(data.field.contract_amount);
                     var contract_ChineseAmount = data.field.contract_ChineseAmount;
                     var payment = data.field.payment;
@@ -259,6 +268,7 @@
                     myForm.set("currency_string5",customer_name);
                     myForm.set("currency_string11",cCusCode);
                     myForm.set("currency_string12",remark_illustration);
+					myForm.set("currency_string3",contractType);//合同类型
                     myForm.set("currency_money",contract_amount);
                     myForm.set("currency_string13",contract_ChineseAmount);
                     myForm.set("currency_int6",payment);

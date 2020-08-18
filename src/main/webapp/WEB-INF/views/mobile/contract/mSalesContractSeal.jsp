@@ -81,6 +81,16 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
+						<label class="layui-form-label">合同类型 :</label>
+						<div class="layui-input-block">
+							<select id="contractType" name="contractType" class="layui-select" lay-search lay-verify="required">
+								<option value="">请选择</option>
+								<option value="制式">制式</option>
+								<option value="非制式">非制式</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
 						<label class="layui-form-label">合同金额 :</label>
 						<div class="layui-input-block">
 							<input type="text" id="amount" name="contract_amount" class="layui-input" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" lay-verify="required">
@@ -325,6 +335,7 @@
                     var customer_name = $('#customer_name').find('option:selected').text();
                     var cCusCode = $('#customer_number').val();
                     var remark_illustration = data.field.remark_illustration;//备注说明
+					var contractType = data.field.contractType;
                     var contract_amount = Number(data.field.contract_amount);
                     var contract_ChineseAmount = data.field.contract_ChineseAmount;
                     var inspection_report = data.field.inspection_report;//是否包含设备报告
@@ -386,6 +397,7 @@
                     myForm.set("currency_string5",customer_name);
                     myForm.set("currency_string11",cCusCode);
                     myForm.set("currency_string12",remark_illustration);
+					myForm.set("currency_string3",contractType);//合同类型
                     myForm.set("currency_money",contract_amount);
                     myForm.set("currency_string13",contract_ChineseAmount);
                     myForm.set("currency_int6",payment);
