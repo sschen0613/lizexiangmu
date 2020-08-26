@@ -35,7 +35,7 @@ public interface ICurrencyApplyService {
 
 	//销售请购审批人查询自己需要审批的申请
 	List<HashMap<String, Object>> selectCurrencyApprover1(Page page2, CurrencyApply currencyApply);
-	
+
 	//审批人查询自己需要审批的申请记录条数
 	Integer getCurrencyApproverRows(CurrencyApply currencyApply);
 
@@ -142,4 +142,12 @@ public interface ICurrencyApplyService {
 	//更新天人报备流程（通知人钉钉id和通知人名称）
 	void sendMessage69(CurrencyApply currencyApply) throws ApiException ;
 
+	//审批人查询自己需要审批的申请
+	List<HashMap<String, Object>> selectCurrencyList(Page page2, CurrencyApply currencyApply);
+
+	//审批人查询自己需要审批的申请记录条数
+	Integer getCurrencyListRows(CurrencyApply currencyApply);
+
+	//用于导出
+	List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply);
 }

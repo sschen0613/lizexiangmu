@@ -117,7 +117,7 @@
 							+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">申请事由 :</label>'
-							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" rows="6" style="height: 160px;" " readonly>'+item.currency_string7+'</textarea>'
+							 +				'<textarea type="text" name="apply_reason" class="layui-textarea" rows="6" style="height: 160px;" readonly>'+item.currency_string7+'</textarea>'
 							 +			'</div>'
 							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'

@@ -143,4 +143,13 @@ public interface CurrencyApplyMapper {
 	void updateRefused();
 
 	List<HashMap<String,Object>> getCurrencyApply69ForRemind();
+
+	//审批人查询自己需要审批的申请
+	List<HashMap<String, Object>> selectCurrencyList(Page page2, CurrencyApply currencyApply);
+
+	//审批人查询自己需要审批的申请条数
+	Integer getCurrencyListRows(CurrencyApply currencyApply);
+
+	//用于导出
+	List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply);
 }

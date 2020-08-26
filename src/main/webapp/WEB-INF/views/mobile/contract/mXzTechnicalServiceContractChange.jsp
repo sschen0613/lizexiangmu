@@ -174,8 +174,6 @@
 				laydate.render({
 					elem: '#date5'
 				});
-
-                detailsRender(1); //明细信息第一行自定义渲染事件
                 
                 //监听提交按钮
               	form.on('submit(submitForm)', function(data){
@@ -465,8 +463,9 @@
 						success:function(res){
 							$('.details').remove();
 							var n_count = 0;
+							var d_count = 0;
 							$.each(res.data,function(index,item){
-								var d_count=1;
+								d_count++;
 								var html = ''
 										+  '<div class="apply-detail">'
 										+    '<div class="details-title details-title'+d_count+'">明细信息#'+(++n_count)+'<span class="layui-icon layui-icon-up"></span></div>'
@@ -525,11 +524,9 @@
 										+          '<input type="text" id="dblSum'+d_count+'" name="dblSum" class="layui-input" readonly>'
 										+        '</div>'
 										+      '</div>'
-										+    '<div class="delete delete'+d_count+'">'
-										+      '<button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>'
-										+    '</div>'
 										+  '</div>';
 								$('.apply-detail-container').append(html);
+								detailsRender(d_count);
 							});
 						}
 					});

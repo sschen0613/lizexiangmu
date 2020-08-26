@@ -1,6 +1,5 @@
 package com.yr.lize.dingding.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.*;
@@ -8,7 +7,6 @@ import com.dingtalk.api.response.*;
 import com.dingtalk.api.response.OapiDepartmentListResponse.Department;
 import com.dingtalk.api.response.OapiRoleSimplelistResponse.OpenEmpSimple;
 import com.dingtalk.api.response.OapiUserSimplelistResponse.Userlist;
-import com.st.rbac.util.Page;
 import com.taobao.api.ApiException;
 import com.yr.lize.currencyapply.mapper.CurrencyApplyMapper;
 import com.yr.lize.dingding.service.IDingDingUtilsService;
@@ -22,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
@@ -218,11 +219,35 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			String accessToken = response.getAccessToken();
 
 
-            /*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
+            DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
             OapiUserGetRequest request1 = new OapiUserGetRequest();
-            request1.setUserid("18306515071");
+            request1.setUserid("263121380229572986");
             request.setHttpMethod("GET");
-            OapiUserGetResponse response1 = client1.execute(request1, accessToken);*/
+            OapiUserGetResponse response1 = client1.execute(request1, accessToken);
+			JSONObject leader = new JSONObject(response1.getIsLeaderInDepts());
+            if (leader.getBoolean("29646320")){
+            	System.out.println("111");
+				System.out.println("222");
+			}
+			//JSONObject userDetailsObj = JSONObject.  .parseObject(response1.getIsLeaderInDepts());
+
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/role/list");
+			OapiRoleListRequest req = new OapiRoleListRequest();
+			req.setOffset(0L);
+			req.setSize(100L);
+
+			OapiRoleListResponse rsp = client1.execute(req, accessToken);*/
+
+
+			//149693651
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/role/simplelist");
+			OapiRoleSimplelistRequest req = new OapiRoleSimplelistRequest();
+			req.setRoleId(149693651L);
+			req.setOffset(0L);
+			req.setSize(100L);
+
+			OapiRoleSimplelistResponse res = client1.execute(req, accessToken);*/
+
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
 			OapiUserGetDeptMemberRequest req = new OapiUserGetDeptMemberRequest();
@@ -231,14 +256,14 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			OapiUserGetDeptMemberResponse rsp = client1.execute(req, accessToken);
 			System.out.println(rsp.getBody());*/
 
-			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
 			OapiUserListbypageRequest request1 = new OapiUserListbypageRequest();
 			request1.setDepartmentId(107655743L);
 			request1.setOffset(0L);
 			request1.setSize(100L);
 			request1.setOrder("entry_desc");
 			request1.setHttpMethod("GET");
-			OapiUserListbypageResponse execute = client1.execute(request1,accessToken);
+			OapiUserListbypageResponse execute = client1.execute(request1,accessToken);*/
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
 			OapiDepartmentListRequest request1 = new OapiDepartmentListRequest();
@@ -626,7 +651,8 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
 		System.err.println(response.getBody());
 	}
-	
+
+	//获取所有上级部门路径
 	@Override
 	public List<Long> getDingDepartmentSup(String department_id) throws ApiException {
 		String accessToken = getAccessToken();

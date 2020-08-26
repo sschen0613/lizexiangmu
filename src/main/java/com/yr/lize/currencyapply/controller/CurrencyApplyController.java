@@ -1640,4 +1640,182 @@ public class CurrencyApplyController {
 		}
 		return result;
 	}
+
+
+	//查看某流程列表
+	@RequestMapping("/Currency/selectCurrencyList.action")
+	@ResponseBody
+	public ResponseResult selectCurrencyList(Integer limit,Integer page,CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		Page page2 = new Page();
+		if (limit != null) {
+			page2.setPagerows(limit);
+			page2.setCurpage(page);
+		}
+		currencyApply.setCurrency_string(currencyApply.getCurrency_string());
+
+		List<HashMap<String, Object>> list = iCurrencyApplyService.selectCurrencyList(page2,currencyApply);
+		//如果为合同相关的
+		String[] strL1 = {"10","2","13"};
+		String[] strL2 = {"23","28"};
+		String[] strX1 = {"50"};
+		String[] strX2 = {"29"};
+
+		if (list != null){
+			//判断当前流程是否需要动态获取合同实际已收款
+			if (Arrays.asList(strL1).contains(String.valueOf(currencyApply.getCurrency_type()))){//丽泽合同编号为3
+				for(HashMap<String,Object> h:list){
+					String strContractID = String.valueOf(h.get("currency_string3"));//合同编号
+					BigDecimal contractAmount = new BigDecimal(String.valueOf(h.get("currency_money")));//合同总金额
+					BigDecimal receiveAmount = u8DataMapper.findReceiveAmountByCContractId(strContractID);//已付款金额
+					if (receiveAmount == null){
+						receiveAmount = new BigDecimal("0");
+					}
+					BigDecimal owingAmount = contractAmount.subtract(receiveAmount);//欠款金额
+					h.put("currency_money2",receiveAmount);
+					h.put("currency_money3",owingAmount);
+				}
+			}else if (Arrays.asList(strL2).contains(String.valueOf(currencyApply.getCurrency_type()))){//丽泽合同编号为4
+				for(HashMap<String,Object> h:list){
+					String strContractID = String.valueOf(h.get("currency_string4"));//合同编号
+					BigDecimal contractAmount = new BigDecimal(String.valueOf(h.get("currency_money")));//合同总金额
+					BigDecimal receiveAmount = u8DataMapper.findReceiveAmountByCContractId(strContractID);//已付款金额
+					if (receiveAmount == null){
+						receiveAmount = new BigDecimal("0");
+					}
+					BigDecimal owingAmount = contractAmount.subtract(receiveAmount);//欠款金额
+					h.put("currency_money2",receiveAmount);
+					h.put("currency_money3",owingAmount);
+				}
+			}else if (Arrays.asList(strX1).contains(String.valueOf(currencyApply.getCurrency_type()))){//信泽合同编号为3
+				for(HashMap<String,Object> h:list){
+					String strContractID = String.valueOf(h.get("currency_string3"));//合同编号
+					BigDecimal contractAmount = new BigDecimal(String.valueOf(h.get("currency_money")));//合同总金额
+					BigDecimal receiveAmount = xzu8DataMapper.findReceiveAmountByCContractId(strContractID);//已付款金额
+					if (receiveAmount == null){
+						receiveAmount = new BigDecimal("0");
+					}
+					BigDecimal owingAmount = contractAmount.subtract(receiveAmount);//欠款金额
+					h.put("currency_money2",receiveAmount);
+					h.put("currency_money3",owingAmount);
+				}
+			}else if (Arrays.asList(strX2).contains(String.valueOf(currencyApply.getCurrency_type()))){//信泽合同编号为4
+				for(HashMap<String,Object> h:list){
+					String strContractID = String.valueOf(h.get("currency_string4"));//合同编号
+					BigDecimal contractAmount = new BigDecimal(String.valueOf(h.get("currency_money")));//合同总金额
+					BigDecimal receiveAmount = xzu8DataMapper.findReceiveAmountByCContractId(strContractID);//已付款金额
+					if (receiveAmount == null){
+						receiveAmount = new BigDecimal("0");
+					}
+					BigDecimal owingAmount = contractAmount.subtract(receiveAmount);//欠款金额
+					h.put("currency_money2",receiveAmount);
+					h.put("currency_money3",owingAmount);
+				}
+			}
+		}
+
+		Integer count = iCurrencyApplyService.getCurrencyListRows(currencyApply);
+
+		result.setCode(0);
+		result.setCount(count);
+		result.setData(list);
+		return result;
+	}
+
+	//领取审批导出
+	@RequestMapping("/Currency/doCurrencyListExcel.action")
+	public String doCurrencyListExcel(CurrencyApply currencyApply,HttpServletResponse response) throws IOException {
+
+		List<HashMap<String, Object>> list = iCurrencyApplyService.selectAllCurrencyList(currencyApply);
+
+		//2.通过IO写出到客户端。。。。
+		//1.内存中组装一个Workbook
+		XSSFWorkbook wb = new XSSFWorkbook();
+		//2.添加sheet
+		XSSFSheet ws = wb.createSheet();
+		//3.添加单元格  表头 编号  名字  作者 价格
+		XSSFRow wr = ws.createRow(0);
+		XSSFCell xc0 = wr.createCell(0);
+		xc0.setCellValue("申请编号");
+		XSSFCell xc1 = wr.createCell(1);
+		xc1.setCellValue("申请人");
+		XSSFCell xc2 = wr.createCell(2);
+		xc2.setCellValue("申请部门");
+		XSSFCell xc3 = wr.createCell(3);
+		xc3.setCellValue("申请类型");
+		XSSFCell xc4 = wr.createCell(4);
+		xc4.setCellValue("申请日期");
+		XSSFCell xc5 = wr.createCell(5);
+		xc5.setCellValue("需求日期");
+		XSSFCell xc6 = wr.createCell(6);
+		xc6.setCellValue("试剂/标液名称");
+		XSSFCell xc7 = wr.createCell(7);
+		xc7.setCellValue("单位");
+		XSSFCell xc8 = wr.createCell(8);
+		xc8.setCellValue("数量");
+		XSSFCell xc9 = wr.createCell(9);
+		xc9.setCellValue("区域");
+		XSSFCell xc10 = wr.createCell(10);
+		xc10.setCellValue("使用企业");
+		XSSFCell xc11 = wr.createCell(11);
+		xc11.setCellValue("备注");
+		XSSFCell xc12 = wr.createCell(12);
+		xc12.setCellValue("规格型号");
+		SimpleDateFormat s= new SimpleDateFormat("yyyy-MM-dd");
+		int k=1;
+
+		for(HashMap<String, Object> map:list){
+
+			XSSFRow xrs = ws.createRow(k);
+			XSSFCell xc0s = xrs.createCell(0);
+			xc0s.setCellValue(map.get("currency_number").toString());
+			XSSFCell xc1s = xrs.createCell(1);
+			xc1s.setCellValue(map.get("staff_name").toString());
+			XSSFCell xc2s = xrs.createCell(2);
+			xc2s.setCellValue(map.get("department_name").toString());
+			XSSFCell xc3s = xrs.createCell(3);
+			xc3s.setCellValue(map.get("currency_string10").toString());
+			XSSFCell xc4s = xrs.createCell(4);
+			xc4s.setCellValue(map.get("currency_date").toString());
+			XSSFCell xc1s5 = xrs.createCell(5);
+			if (map.get("currency_date2") == null) {
+				xc1s5.setCellValue("无");
+			} else {
+				xc1s5.setCellValue(map.get("currency_date2").toString());
+			}
+			XSSFCell xc1s6 = xrs.createCell(6);
+			xc1s6.setCellValue(map.get("details_string5").toString());
+			XSSFCell xc1s7 = xrs.createCell(7);
+			xc1s7.setCellValue(map.get("details_string7").toString());
+			XSSFCell xc1s8 = xrs.createCell(8);
+			if (map.get("details_money") == null){
+				xc1s8.setCellValue(0);
+			}else {
+				xc1s8.setCellValue(map.get("details_money").toString());
+			}
+			XSSFCell xc1s9 = xrs.createCell(9);
+			xc1s9.setCellValue(map.get("details_string8").toString());
+			XSSFCell xc1s10 = xrs.createCell(10);
+			xc1s10.setCellValue(map.get("details_string9").toString());
+			XSSFCell xc1s11 = xrs.createCell(11);
+			if (map.get("details_string11") == null){
+				xc1s11.setCellValue("无");
+			}else {
+				xc1s11.setCellValue(map.get("details_string11").toString());
+			}
+			XSSFCell xc1s12 = xrs.createCell(12);
+			if (map.get("details_string6") == null){
+				xc1s12.setCellValue("无");
+			}else {
+				xc1s12.setCellValue(map.get("details_string6").toString());
+			}
+			k++;
+		}
+		response.setHeader("Content-Disposition","filename=lizeList.xlsx");
+		wb.write(response.getOutputStream());
+		response.getOutputStream().close();
+
+		return "WEB-INF/views/onlineOperation/reagentGetList";
+
+	}
 }

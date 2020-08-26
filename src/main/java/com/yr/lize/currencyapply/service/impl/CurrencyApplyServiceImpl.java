@@ -10,6 +10,7 @@ import com.yr.lize.dingding.service.IDingDingUtilsService;
 import com.yr.lize.pojo.*;
 import com.yr.lize.system.mapper.*;
 import org.apache.commons.io.FilenameUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,10 +126,25 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 					return res;
 				}
 
-			}else if (approverRole.getRole_type() == 2) {
+			}else if (approverRole.getRole_type() == 2) { 
+				//判断当前流程是否属于要专门设置主管审批的流程
+				Integer index2 = 1;//取第几级主管 默认直接主管
+				String[] str = {"10000"};
+				if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
+					//查询当前申请人身份信息
+					OapiUserGetResponse userDetilsRes = dingDingUtilsService.selectDingUserDetils(staff.getDingding_staffid());
+					JSONObject userDetailsObj = new JSONObject(userDetilsRes.getIsLeaderInDepts());
+					//判断当前发起人是否为主管身份
+					if (userDetailsObj.getBoolean(staff.getDepartment_Id())){
+						index2 = 2;
+					}
+				}else {
+					//查询是几级主管
+					//1直接 2二级 一般都是1
+					index2 = Integer.parseInt(approverRole.getApprover_id());
+				}
 				//查询主管的部门id
 				List<Long> parentIds = dingDingUtilsService.getDingDepartmentSup(staff.getDepartment_Id());
-				Integer index2 = Integer.parseInt(approverRole.getApprover_id());
 				//获取道当前部门主管的id集合
 				ResponseResult result = dingDingUtilsService.selectDepartmRole(parentIds.get(index2-1).toString());
 				if (!"".equals(result.getMsg())) {//如果查询到的部门主管不为空字符串
@@ -2622,5 +2638,20 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
         }
         //发送通知
         dingDingUtilsService.sendMessage69(currencyApply.getCurrency_string10(),currencyApply2);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectCurrencyList(Page page2, CurrencyApply currencyApply) {
+		return currencyApplyMapper.selectCurrencyList(page2,currencyApply);
+	}
+
+	@Override
+	public Integer getCurrencyListRows(CurrencyApply currencyApply) {
+		return currencyApplyMapper.getCurrencyListRows(currencyApply);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply) {
+		return currencyApplyMapper.selectAllCurrencyList(currencyApply);
 	}
 }

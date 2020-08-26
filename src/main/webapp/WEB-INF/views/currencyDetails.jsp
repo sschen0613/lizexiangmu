@@ -565,14 +565,14 @@
             });
 
             table.render({
-                elem: '#test2'
+                elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '图片'
+                ,title: '文件'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
-                    ,{field: 'picture', title: '合同图片', width: 150,templet:"#system_img"}
+                    ,{field: 'picture', title: '合同文件', width: 150,templet:"#system_file"}
                 ]]
             });
         }
@@ -610,7 +610,7 @@
                 elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '图片'
+                ,title: '文件'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
@@ -802,7 +802,7 @@
                 elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '图片'
+                ,title: '文件'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
@@ -853,7 +853,7 @@
                 elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '图片'
+                ,title: '文件'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }
@@ -868,7 +868,7 @@
                 elem: '#test3'
                 ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '图片'
+                ,title: '文件'
                 ,totalRow: true
                 ,cols: [[ //表头
                     { type: 'numbers', title: '序号', width: 180  }

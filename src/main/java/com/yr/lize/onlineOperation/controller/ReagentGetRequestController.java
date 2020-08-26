@@ -21,6 +21,12 @@ public class ReagentGetRequestController {
 	public String setupAllocationApproverView3() {
 		return "WEB-INF/views/onlineOperation/reagentGetRequestApproval";
 	}
+
+	// 跳转试剂标液配置领取列表界面
+	@RequestMapping("onlineOperation/reagentGetList.action")
+	public String setupAllocationApproverView4() {
+		return "WEB-INF/views/onlineOperation/reagentGetList";
+	}
 	
 	// 跳转手机端试剂标液配置领取申请界面
 	@RequestMapping("onlineOperation/mReagentGetRequest.action")

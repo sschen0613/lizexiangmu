@@ -130,7 +130,7 @@
 							 +			'<div>'
 							 +				'<label class="">招待事由 :</label>'
 							 //+				'<input name="serve_reason" value="'+item.currency_string7+'" class="layui-input" readonly>'
-							 +				'<textarea id="serve_reason" name="serve_reason" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
+							 +				'<textarea id="serve_reason" name="serve_reason" style="height: 160px;" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">申请金额 :</label>'
