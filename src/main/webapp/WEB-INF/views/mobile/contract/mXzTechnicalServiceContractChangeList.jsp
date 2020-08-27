@@ -114,7 +114,7 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="contract/mTechnicalServiceContractSealDetails.action?currency_id='+item.currency_id
+    				    		 +		'<a href="contract/mXzTechnicalServiceContractChangeDetails.action?currency_id='+item.currency_id
     				    				 +'&current_approvalCount='+item.current_approvalCount
     				    				 +'&approver_count='+item.approver_count
     				    				 +'&approvalOpinion_type=74&approval_id=74'

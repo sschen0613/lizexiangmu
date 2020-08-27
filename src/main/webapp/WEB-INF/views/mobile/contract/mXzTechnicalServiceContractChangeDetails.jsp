@@ -153,30 +153,14 @@
 							+				'<input type="text" name="currency_string9" value="'+currency_string9+'" class="layui-input" readonly>'
 							+			'</div>'
 
-                             +			'<div><label class="label-title">收款计划 </label></div>'
+                             +			'<div><label class="label-title">合同付款约定 </label></div>'
                              +			'<div class="pay-detail-container">'
                              				//收款计划
                              +			'</div>'
-							 +			'<div>'
-							 +				'<label class="">条款名称 :</label>'
-							 +				'<input type="text" name="name" value="'+currency_string8+'" class="layui-input" readonly>'
-							 +			'</div>'
-							 +			'<div>'
-							 +				'<label class="">条款内容 :</label>'
-							 +				'<input type="text" name="condition" value="'+currency_string9+'" class="layui-input" readonly>'
-							 +			'</div>'
-							 +			'<div>'
-							 +				'<label class="" style="width: 40%;">签订日期 :</label>'
-							 +				'<input type="text" name="predictGetsum_date" value="'+currency_date2+'" class="layui-input" readonly>'
-							 +			'</div>'
- 							 +			'<div><label class="label-title">检测内容 </label></div>'
+ 							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
 							 +			'</div>'
-                             +			'<div><label class="label-title">图片信息 </label></div>'
-                             +			'<div class="picture-detail-container">'
-                            				//图片
-                             +			'</div>'
 							 + 			'<div class="approval-progress">'
 							 +				'<label class="">审批进度 :</label>'
 							 +				'<div class="layui-progress layui-progress-big" lay-filter="progress_bar" lay-showPercent="true">'
@@ -195,7 +179,7 @@
 						$('.content').append(html);
 						//获取明细信息
  						$.ajax({
- 							url:'Currency/selectProgramDetails.action?currency_id='+currency_id,
+ 							url:'Currency/selectCurrencyDetails.action?currency_id='+currency_id,
  							type:'post',
  							data:{},
  							dataType:'JSON',
@@ -206,16 +190,40 @@
  							  		 	 +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
  							  		 	 +		'<div class="details">'
                                         +			'<div>'
-                                        +				'<label class="">检测名称 :</label>'
-                                        +				'<input type="text" name="remark" value="'+item.string2+'" class="layui-input" readonly>'
+                                        +				'<label class="">项目编码 :</label>'
+                                        +				'<input type="text" name="details_string4" value="'+item.details_string4+'" class="layui-input" readonly>'
                                         +			'</div>'
+										+			'<div>'
+										+				'<label class="">项目名称 :</label>'
+										+				'<input type="text" name="details_string5" value="'+item.details_string5+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">内容描述 :</label>'
+										+				'<input type="text" name="details_string6" value="'+item.details_string6+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">内容描述变更 :</label>'
+										+				'<input type="text" name="details_string7" value="'+item.details_string7+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">数量 :</label>'
+										+				'<input type="text" name="details_money" value="'+item.details_money+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">数量变更 :</label>'
+										+				'<input type="text" name="details_money2" value="'+item.details_money2+'" class="layui-input" readonly>'
+										+			'</div>'
+										+			'<div>'
+										+				'<label class="">含税原币单价 :</label>'
+										+				'<input type="text" name="details_money3" value="'+item.details_money3+'" class="layui-input" readonly>'
+										+			'</div>'
  							 		 	 +			'<div>'
- 							 		 	 +				'<label class="">检测内容 :</label>'
- 							 		 	 +				'<input type="text" name="remark" value="'+item.program+'" class="layui-input" readonly>'
+ 							 		 	 +				'<label class="">含税原币单价变更 :</label>'
+ 							 		 	 +				'<input type="text" name="details_money4" value="'+item.details_money4+'" class="layui-input" readonly>'
  							 		 	 +			'</div>'
                                          +			'<div>'
-                                         +				'<label class="">金额 :</label>'
-                                         +				'<input type="text" name="remark" value="'+item.money+'" class="layui-input" readonly>'
+                                         +				'<label class="">含税原币金额 :</label>'
+                                         +				'<input type="text" name="details_money5" value="'+item.details_money5+'" class="layui-input" readonly>'
                                          +			'</div>'
  							 		 	 +		'</div>'
  							 		 	 +	'</div>';
@@ -237,55 +245,25 @@
                                         +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
                                         +		'<div class="details">'
                                         +			'<div>'
-                                        +				'<label class="">收款日期 :</label>'
-                                        +				'<input type="text" name="dtPayDate" value="'+Format(item.dtPayDate,"yyyy-MM-dd")+'" class="layui-input" readonly>'
-                                        +			'</div>'
-                                        +			'<div>'
-                                        +				'<label class="">收款比例 :</label>'
-                                        +				'<input type="text" name="dblPayRatio" value="'+item.dblPayRatio+'" class="layui-input" readonly>'
-                                        +			'</div>'
-                                        +			'<div>'
-                                        +				'<label class="">收款金额 :</label>'
-                                        +				'<input type="text" name="dblPayCurrency" value="'+item.dblPayCurrency+'" class="layui-input" readonly>'
-                                        +			'</div>'
-                                        +			'<div>'
-                                        +				'<label class="">结算方式 :</label>'
+                                        +				'<label class="">合同条款名称 :</label>'
                                         +				'<input type="text" name="strSettleStyleID" value="'+item.strSettleStyleID+'" class="layui-input" readonly>'
                                         +			'</div>'
                                         +			'<div>'
-                                        +				'<label class="">条件 :</label>'
+                                        +				'<label class="">合同条款名称变更 :</label>'
+                                        +				'<input type="text" name="string" value="'+item.string+'" class="layui-input" readonly>'
+                                        +			'</div>'
+                                        +			'<div>'
+                                        +				'<label class="">合同条款内容 :</label>'
                                         +				'<input type="text" name="strPayFactor" value="'+item.strPayFactor+'" class="layui-input" readonly>'
                                         +			'</div>'
                                         +			'<div>'
-                                        +				'<label class="">说明 :</label>'
-                                        +				'<input type="text" name="strExp" value="'+item.strExp+'" class="layui-input" readonly>'
+                                        +				'<label class="">合同条款内容变更 :</label>'
+                                        +				'<input type="text" name="string" value="'+item.string2+'" class="layui-input" readonly>'
                                         +			'</div>'
                                         +		'</div>'
                                         +	'</div>';
                                 });
                                 $('.pay-detail-container').html(html0);
-                            }
-                        });
-
-                        //获取合同图片
-                        $.ajax({
-                            url:'Currency/selectContractPicture.action?currency_id='+currency_id,
-                            type:'post',
-                            data:{},
-                            dataType:'JSON',
-                            success:function(res){
-                                var html1 = '';
-                                $.each(res.data,function(index,item){
-                                    html1+=	'<div class="picture-detail" style="width: 100%">'
-                                        +		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
-                                        +		'<div class="details">'
-                                        +			'<div>'
-                                        +				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
-                                        +			'</div>'
-                                        +		'</div>'
-                                        +	'</div>';
-                                });
-                                $('.picture-detail-container').html(html1);
                             }
                         });
 

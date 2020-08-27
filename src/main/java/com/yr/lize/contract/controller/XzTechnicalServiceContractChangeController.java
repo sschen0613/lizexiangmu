@@ -8,8 +8,9 @@ public class XzTechnicalServiceContractChangeController {
     //跳转信泽技术服务合变更章申请变更页面
 	@RequestMapping("contract/xzTechnicalServiceContractChange.action")
 	public String setupAllocationApproverView1() {
-		return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChange";
-		//return "WEB-INF/views/contract/xzTechnicalServiceContractChange";
+		//return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChange";
+		//return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChangeList";
+		return "WEB-INF/views/contract/xzTechnicalServiceContractChange";
 	}
     //跳转信泽技术服务合变更章申请变更表页面
 	@RequestMapping("contract/xzTechnicalServiceContractChangeForm.action")
@@ -20,6 +21,7 @@ public class XzTechnicalServiceContractChangeController {
 	@RequestMapping("contract/xzTechnicalServiceContractChangeApproval.action")
 	public String setupAllocationApproverView3() {
 		return "WEB-INF/views/contract/xzTechnicalServiceContractChangeApproval";
+		//return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChangeApprovalList";
 	}
 	
 	// 跳转手机端信泽技术服务合变更章申请变更界面
