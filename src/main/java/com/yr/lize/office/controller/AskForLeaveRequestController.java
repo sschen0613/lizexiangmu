@@ -20,7 +20,8 @@ public class AskForLeaveRequestController {
 	//跳转员工请假审批界面
 	@RequestMapping("office/askForLeaveRequestApproval.action")
 	public String setupAllocationApproverView3() {
-		return "WEB-INF/views/office/askForLeaveRequestApproval";
+		//return "WEB-INF/views/office/askForLeaveRequestApproval";
+		return "WEB-INF/views/mobile/office/mAskForLeaveRequestApprovalList";
 	}
 	
 	// 跳转手机端员工请假申请界面

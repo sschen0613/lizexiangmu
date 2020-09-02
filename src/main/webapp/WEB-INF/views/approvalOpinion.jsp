@@ -12,13 +12,22 @@
 <form class="layui-form form_revise">
 	<div class="layui-form-item">
 	    <div class="layui-input-block">
-	      <textarea name="approvalOpinion" placeholder="请填写审批意见" class="layui-textarea" lay-verify="required"></textarea>
+			<select  id='ifAgree' name="ifAgree" lay-verify="required">
+				<option value="">请选择</option>
+				<option value="同意">同意</option>
+				<option value="拒绝">拒绝</option>
+			</select>
 	    </div>
 	</div>
 	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<textarea name="approvalOpinion" placeholder="备注" class="layui-textarea"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
 	    <div class="layui-input-block">
-	      <button class="layui-btn" id="myForm" lay-submit="" lay-filter="agree" type="submit">同意</button>
-	      <button class="layui-btn layui-btn-primary" id="myForm1" lay-submit="" lay-filter="refuse" type="submit">拒绝</button>
+	      <button class="layui-btn" id="myForm" lay-submit="" lay-filter="agree" type="submit">审批</button>
+	      <%--<button class="layui-btn layui-btn-primary" id="myForm1" lay-submit="" lay-filter="refuse" type="submit">拒绝</button>--%>
 	    </div>
 	 </div>  
 </form>
@@ -71,51 +80,39 @@
             $('#myForm1').addClass('layui-btn-disabled');
             $('#myForm1').attr("disabled",'disabled');
 
+            var ifAgree = data2.ifAgree;
+            var approver_state = 1;
+            if (ifAgree == "拒绝"){
+				approver_state = -300;
+			}
+            var approvalOpinion = ifAgree+"。"+data2.approvalOpinion;
+
 			$.ajax({
 			 		url : "../Currency/approvalCurrencyApply.action"
 			 		,type : "post"
-			 		,data : {"approvalOpinion":data2.approvalOpinion,"currency_string":staffid,"currency_type":approval_id,"approver_state":1,"currency_id":currency_id}
+			 		,data : {"approvalOpinion":approvalOpinion,"currency_string":staffid,"currency_type":approval_id,"approver_state":approver_state,"currency_id":currency_id}
 			 		,dataType : "JSON"
 			 		,success : function(result){
 						layer.msg(result.msg);
 
-						if (result.msg == '操作成功' && approval_id == 9 && position == 62){
-							var delivery_type = data.field.delivery_type;
-							$.ajax({
-								url : "../Currency/launchWork.action"
-								,type : "post"
-								,data : {"currency_id":currency_id,"currency_string":delivery_type}
-								,dataType : "JSON"
-								,success:function (result) {
-									layer.msg(result.msg);
-								}
-							});
+						if (ifAgree == "同意"){
+							if (result.msg == '操作成功' && approval_id == 9 && position == 62){
+								var delivery_type = data.field.delivery_type;
+								$.ajax({
+									url : "../Currency/launchWork.action"
+									,type : "post"
+									,data : {"currency_id":currency_id,"currency_string":delivery_type}
+									,dataType : "JSON"
+									,success:function (result) {
+										layer.msg(result.msg);
+									}
+								});
+							}
 						}
 			 		}
 			  });
-
-			
 			return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 		}); 
-		
-		form.on('submit(refuse)', function(data){//拒绝
-			var data2 = data.field //当前容器的全部表单字段，名值对形式：{name: value
-            $('#myForm').addClass('layui-btn-disabled');
-            $('#myForm').attr("disabled",'disabled');
-            $('#myForm1').addClass('layui-btn-disabled');
-            $('#myForm1').attr("disabled",'disabled');
-			 	
-			$.ajax({
-			 		url : "../Currency/approvalCurrencyApply.action"
-			 		,type : "post"
-			 		,data : {"approvalOpinion":data2.approvalOpinion,"currency_string":staffid,"currency_type":approval_id,"approver_state":-300,"currency_id":currency_id}
-			 		,dataType : "JSON"
-			 		,success : function(result){
-			 				layer.msg(result.msg);
-			 		}
-			  });
-			
-			return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-		});
+
 	});
 </script>

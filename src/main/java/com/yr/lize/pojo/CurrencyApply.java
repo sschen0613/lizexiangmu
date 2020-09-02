@@ -311,7 +311,7 @@ public class CurrencyApply {
 	}
 
 	public void setCurrency_date2(String currency_date2) {
-		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 		  Date date = null;
 		try {
@@ -330,7 +330,7 @@ public class CurrencyApply {
 	}
 
 	public void setCurrency_date3(String currency_date3) {
-		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd");
+		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 		  Date date = null;
 		try {

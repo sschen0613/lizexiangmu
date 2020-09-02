@@ -213,7 +213,7 @@
 							shadeClose: true,
 							shade: 0.8,
 							maxmin: true,
-							area: ['30%', '40%'],
+							area: ['30%', '50%'],
 							content: 'Currency/approvalOpinion.action?approval_id=35&currency_id='+data.currency_id
 						});
 					}
