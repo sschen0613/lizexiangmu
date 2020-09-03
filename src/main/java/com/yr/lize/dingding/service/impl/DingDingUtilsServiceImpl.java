@@ -219,7 +219,7 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			String accessToken = response.getAccessToken();
 
 
-            DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
+            /*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/get");
             OapiUserGetRequest request1 = new OapiUserGetRequest();
             request1.setUserid("263121380229572986");
             request.setHttpMethod("GET");
@@ -228,7 +228,7 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
             if (leader.getBoolean("29646320")){
             	System.out.println("111");
 				System.out.println("222");
-			}
+			}*/
 			//JSONObject userDetailsObj = JSONObject.  .parseObject(response1.getIsLeaderInDepts());
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/role/list");
@@ -249,12 +249,12 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			OapiRoleSimplelistResponse res = client1.execute(req, accessToken);*/
 
 
-			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
+			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
 			OapiUserGetDeptMemberRequest req = new OapiUserGetDeptMemberRequest();
-			req.setDeptId("107773833");
+			req.setDeptId("107846063");
 			req.setHttpMethod("GET");
 			OapiUserGetDeptMemberResponse rsp = client1.execute(req, accessToken);
-			System.out.println(rsp.getBody());*/
+			System.out.println(rsp.getBody());
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
 			OapiUserListbypageRequest request1 = new OapiUserListbypageRequest();

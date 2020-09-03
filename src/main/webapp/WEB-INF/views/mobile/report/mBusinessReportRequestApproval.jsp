@@ -16,7 +16,7 @@
     <script src="layui/layui.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/iconfont.js"></script>
-    <script src="js/approval_button.js"></script>
+    <script src="js/approval_button.js?v="+Math.random()></script>
     <script src="js/function_tool.js"></script>
 </head>
 <body>
@@ -126,16 +126,7 @@
                     +			'</div>'
                     +			'<div class="approval-opinion">'
                     +				'<label class="">审批意见 :</label>'
-                    +				'<select class="layui-select" name="ifAgree" id="ifAgree">'
-                    +				'<option value="">请选择</option>'
-                    +				'<option value="同意">同意</option>'
-                    +				'<option value="拒绝">拒绝</option>'
-                    +				'</select>'
-                    +				'<label class="" style="padding-right: 30%">&nbsp;</label>'
-                    +			'</div>'
-                    +			'<div class="approval-opinion">'
-                    +				'<label class="">备注 :</label>'
-                    +				'<textarea id="approval_opinion" class="layui-textarea"></textarea>'
+                    +				'<textarea id="approval_opinion" class="layui-textarea" placeholder="请填写审批意见"></textarea>'
                     +			'</div>'
                     +			'<div class="">'
                     +				'<label class="">通知责任人 :</label>'
@@ -153,7 +144,8 @@
                 html +=				'<table id="details" lay-filter="details"></table>';
                 html +=			'</div>'
                     +			'<div class="button">'
-                    +				'<button type="button" class="layui-btn layui-btn-sm" id="agree">审批</button>'
+                    +				'<button type="button" class="layui-btn layui-btn-sm" id="agree">同意</button>'
+                    +				'<button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="disagree">拒绝</button>'
                     +			'</div>'
                     +		'</form>'
                     +	'</div>';

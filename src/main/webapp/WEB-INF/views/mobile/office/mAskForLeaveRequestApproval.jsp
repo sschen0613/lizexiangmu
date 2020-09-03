@@ -16,7 +16,7 @@
     <script src="layui/layui.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/iconfont.js"></script>
-    <script src="js/approval_button.js"></script>
+    <script src="js/approval_button.js?v="+Math.random()></script>
     <script src="js/function_tool.js"></script>
 </head>
 <body>
