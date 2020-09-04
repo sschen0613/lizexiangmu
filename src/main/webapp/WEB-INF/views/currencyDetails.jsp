@@ -1002,7 +1002,7 @@
             });
         }//合同管理
         //公章使用审批
-        else if(currency_type == 72){
+        else if(currency_type == 72 || currency_type == 75){
             //执行一个 table 实例
             table.render({
                 elem: '#test3'

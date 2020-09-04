@@ -249,12 +249,23 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			OapiRoleSimplelistResponse res = client1.execute(req, accessToken);*/
 
 
-			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getDeptMember");
 			OapiUserGetDeptMemberRequest req = new OapiUserGetDeptMemberRequest();
 			req.setDeptId("107846063");
 			req.setHttpMethod("GET");
 			OapiUserGetDeptMemberResponse rsp = client1.execute(req, accessToken);
-			System.out.println(rsp.getBody());
+			System.out.println(rsp.getBody());*/
+
+
+			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/simplelist");
+			OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
+			req.setDepartmentId(107846063L);
+			req.setOffset(0L);
+			req.setSize(10L);
+			req.setHttpMethod("GET");
+
+			OapiUserSimplelistResponse res = client1.execute(req, accessToken);
+			System.out.println(res.getUserlist());
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
 			OapiUserListbypageRequest request1 = new OapiUserListbypageRequest();

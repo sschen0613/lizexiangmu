@@ -191,7 +191,7 @@
 							 		 	 +			'</div>'
 							 		 	 +			'<div>'
 							 		 	 +				'<label class="">备注 :</label>'
-							 		 	 +				'<input type="text" name="remark" value="" class="layui-input" readonly>'
+										 +				'<textarea id="remark" class="layui-textarea">'+item.details_string11+'</textarea>'
 							 		 	 +			'</div>'
 							 		 	 +		'</div>'
 							 		 	 +	'</div>';
