@@ -143,18 +143,17 @@
 // 						,{field: 'staff_name', title: '申请人', minWidth:80}
 // 						,{field: 'department_name', title: '申请部门', minWidth:100}
 						,{field: 'currency_date', title: '申请日期', minWidth:100, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string3', title: '区域', minWidth:150}
-						,{field: 'currency_string5', title: '客户名称', minWidth:200}
+						,{field: 'currency_string2', title: '区域', minWidth:150}
+						,{field: 'currency_string3', title: '客户名称', minWidth:200}
 						,{field: 'currency_string7', title: '销售合同编号', minWidth:120}
-						,{field: 'currency_date2', title: '合同签订日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_date3', title: '合同开始日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_date4', title: '合同结束日期', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date4,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_date5', title: '合同开始日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date5,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_date6', title: '合同结束日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date6,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_string9', title: '合同签订日期', minWidth:180}
+						,{field: 'currency_string4', title: '合同开始日期', minWidth:180}
+						,{field: 'currency_string5', title: '合同结束日期', minWidth:180}
+						,{field: 'currency_date2', title: '合同开始日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_date3', title: '合同结束日期变更', minWidth:180, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd")}}</div>'}
 						,{field: 'currency_money', title: '合同总额', minWidth:100}
 						,{field: 'currency_money2', title: '合同总额变更', minWidth:120}
-						,{field: 'currency_string8', title: '合同描述', minWidth:200}
-						,{field: 'currency_string9', title: '合同描述变更', minWidth:200}
+						,{field: 'currency_string8', title: '合同变更说明', minWidth:200}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{Math.floor(d.current_approvalCount/d.approver_count*100)+"%"}}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:260}
 					]]
@@ -175,7 +174,8 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url currency_id通用审批流主键
+							content: 'contract/xzTechnicalServiceContractChangeApprovalDetail.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type
+							//content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url currency_id通用审批流主键
 						});
 					} else if(layEvent === 'edit'){ //编辑
 						layer.open({

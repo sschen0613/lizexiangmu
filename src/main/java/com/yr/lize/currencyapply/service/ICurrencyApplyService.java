@@ -150,4 +150,10 @@ public interface ICurrencyApplyService {
 
 	//用于导出
 	List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply);
+
+	//发起通用审批
+	Integer launchpurchase74(HttpServletRequest request,CurrencyApply currencyApply, SystemStaff staff, List<ApproverRole> roles,
+						   List<CurrencyDetails> currencyDetailss,List<PaymentPlan> paymentPlans,MultipartFile[] files1,MultipartFile[] files2) throws ApiException;
+
+	Integer uploadFiles(HttpServletRequest request,MultipartFile[] files, Integer currency_id,String flag);
 }

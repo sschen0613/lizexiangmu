@@ -80,10 +80,8 @@
 					<td colspan=4><input type="text" id="contract_amount_change" name="contract_amount_change" readonly></td>
 				</tr>
 				<tr>
-					<td>合同描述</td>
-					<td colspan=4><input type="text" id="strContractDesc" name="strContractDesc" readonly></td>
-					<td>合同描述变更</td>
-					<td colspan=4><input type="text" id="strContractDescChange" name="strContractDescChange"></td>
+					<td>变更说明</td>
+					<td colspan=4><input type="text" id="strContractDesc" name="strContractDesc"></td>
 				</tr>
 				<tr>
 		 			<th colspan="10" style="text-align: center;">合同付款约定</th> <!--payment_agreement-->
@@ -110,21 +108,20 @@
 		 			<td>操作</td>
 		 		</tr>
 		 		<tr class="details">
-		 			<td><input type="text" name="strCode" readonly></td>
-		 			<td><input type="text" name="strName" readonly></td>
-		 			<td><input type="text" name="cDefine28" readonly></td>
-		 			<td><input type="text" name="cDefine28Change"></td>
-		 			<td><input type="text" id="dblQuantity1" name="dblQuantity" readonly></td>
-		 			<td><input type="text" id="dblQuantityChange1" name="dblQuantityChange"></td>
-		 			<td><input type="text" id="dblPrice1" name="dblPrice" readonly></td>
-					<td><input type="text" id="dblPriceChange1" name="dblPriceChange"></td>
-		 			<td><input type="text" name="dblSum" readonly></td>
-		 			<td class="delete1"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>
+
 		 		</tr>
 		 	</tbody>
 		 	<thead>
 	 			<tr>
 	 				<th colspan=10></th>
+				</tr>
+				<tr>
+					<td>上传原合同</td>
+					<td><input type="file" id="pics1" name="pics1" multiple="multiple"></td>
+				</tr>
+				<tr>
+					<td>上传变更合同</td>
+					<td><input type="file" id="pics2" name="pics2" multiple="multiple"></td>
 				</tr>
 		 	</thead>
 		</table>
@@ -155,18 +152,6 @@
 				// form.render('checkbox');
 				form.render('radio');
 				//执行一个laydate实例
-				laydate.render({
-					elem: '#date1' //指定元素
-					//,type: 'datetime' //yyyy-MM-dd HH:mm:ss
-				});
-				laydate.render({
-					elem: '#date2' //指定元素
-					//,type: 'datetime' //yyyy-MM-dd HH:mm:ss
-				});
-				laydate.render({
-					elem: '#date3' //指定元素
-					//,type: 'datetime' //yyyy-MM-dd HH:mm:ss
-				});
 				laydate.render({
 					elem: '#date4' //指定元素
 					//,type: 'datetime' //yyyy-MM-dd HH:mm:ss
@@ -200,15 +185,14 @@
 					var contract_amount = Number(data.field.contract_amount);						//合同总额
 					var contract_amount_change = Number(data.field.contract_amount_change);			//合同总额变更
 					var strContractDesc = data.field.strContractDesc;								//合同描述
-					var strContractDescChange = data.field.strContractDescChange;					//合同描述变更
 					
 					var currency_type = 74;
 					var currentDetails = [];
 					$.each($('.details'),function(index,item){
 						var strCode = $(item).find('input[name="strCode"]').val();				//序号
 						var strName = $(item).find('input[name="strName"]').val();	//存货编码
-						var cDefine28 = $(item).find('input[name="cDefine28"]').val();	//商品名称
-						var cDefine28Change = $(item).find('input[name="cDefine28Change"]').val(); //规格型号
+						var cDefine28 = $(item).find('textarea[name="cDefine28"]').val();	//商品名称
+						var cDefine28Change = $(item).find('textarea[name="cDefine28Change"]').val(); //规格型号
 						var dblQuantity = Number($(item).find('input[name="dblQuantity"]').val());
 						var dblQuantityChange = Number($(item).find('input[name="dblQuantityChange"]').val()); //合同数量
 						var dblPrice = Number($(item).find('input[name="dblPrice"]').val());	//请购数量
@@ -244,36 +228,38 @@
 						};
 						payDetails.push(obj);
 					});
-					//价格判断不符合要求,表单不提交
-// 					if(flag == 0){
-// 						layer.msg('商品单价大于合同条款规定价格('+contract_price+'元)');
-// 						return false;
-// 					}
+					var myForm = new FormData();
+					myForm.set("currency_type",currency_type);
+					myForm.set("currency_number",buy_number);
+					myForm.set("currency_string",illustration);
+					myForm.set("currency_string2",area_name);
+					myForm.set("currency_string3",customer_name);
+					myForm.set("currency_string4",strContractStartDate);
+					myForm.set("currency_string5",strContractEndDate);
+					myForm.set("currency_string7",contract_id);
+					myForm.set("currency_string8",strContractDesc);
+					myForm.set("currency_string9",strContractOrderDate);
+					myForm.set("currency_date",currencyDate);
+					myForm.set("currency_date2",strContractStartDateChange);
+					myForm.set("currency_date3",strContractEndDateChange);
+					myForm.set("currency_money",contract_amount);//合同金额
+					myForm.set("currency_money2",contract_amount_change);//合同金额变更
+					myForm.set("payDetails",JSON.stringify(payDetails));
+					myForm.set("currencyDetails",JSON.stringify(currentDetails));
+					for(let i = 0;i < $("#pics1")[0].files.length;i++){
+						myForm.append("pics1",$("#pics1")[0].files[i])
+					}
+					for(let i = 0;i < $("#pics2")[0].files.length;i++){
+						myForm.append("pics2",$("#pics2")[0].files[i])
+					}
 					//表单提交
 				 	$.ajax({
-				 		 url : "Currency/launchCurrencyApply.action"
+				 		 url : "Currency/launchCurrencyApply74.action"
 				 		,type : "post"
-				 		,data : {
-							'currency_type':currency_type
-				 			,"currency_number":buy_number
-				 			,"currency_string":illustration
-				 			,"currency_string2":area_id
-				 			,"currency_string3":area_name
-				 			,"currency_string4":customer_id
-				 			,"currency_string5":customer_name
-				 			,"currency_string7":contract_id
-							,"currency_string8":strContractDesc
-							,"currency_string9":strContractDescChange
-						    ,"currency_date":currencyDate
-						 	,"currency_date2":strContractOrderDate
-						 	,"currency_date3":strContractStartDate
-							,"currency_date4":strContractEndDate
-							,"currency_date5":strContractStartDateChange
-							,"currency_date6":strContractEndDateChange
-						 	,"currency_money":contract_amount//合同总额
-						 	,"currency_money2":contract_amount_change//合同总额变更
-							,"payDetails":JSON.stringify(payDetails)
-				 			,'currencyDetails':JSON.stringify(currentDetails)}
+				 		,data : myForm
+						,contentType: false
+						,processData: false
+						,cache:false
 				 		,dataType : "JSON"
 				 		,beforeSend: function(){
 					 		layer.msg('正在提交申请', {
@@ -400,13 +386,11 @@
 					var strContractOrderDate = $(data.elem).find("option:selected").attr('data-order');//合同签订时间
 					var strContractStartDate = $(data.elem).find("option:selected").attr('data-begin');//合同开始时间
 					var strContractEndDate = $(data.elem).find("option:selected").attr('data-end');//合同结束时间
-					var strContractDesc = $(data.elem).find("option:selected").attr('data-desc');//合同内容描述
 
     				$("#contract_amount").val(contractAmount); //合同金额
 					$("#date1").val(strContractOrderDate); //合同金额
 					$("#date2").val(strContractStartDate); //合同金额
 					$("#date3").val(strContractEndDate); //合同金额
-					$("#strContractDesc").val(strContractDesc); //合同金额
             		//重置合同条款
     				$('.contract-details').remove();
     				//重置合同条款带出的价格
@@ -445,8 +429,8 @@
 								var html = '<tr class="details">'
 										+	'<td><input type="text" name="strCode" value="'+item.strCode+'" readonly></td>'
 										+	'<td><input type="text" name="strName" value="'+item.strName+'" readonly></td>'
-										+	'<td><input type="text" name="cDefine28" value="'+item.cDefine28+'" readonly></td>'
-										+	'<td><input type="text" name="cDefine28Change"></td>'
+										+	'<td><textarea name="cDefine28" class="layui-textarea" readonly>'+item.cDefine28+'</textarea></td>'
+										+	'<td><textarea name="cDefine28Change" class="layui-textarea"></textarea></td>'
 										+	'<td><input type="text" id="dblQuantity'+d_count+'" name="dblQuantity" value="'+item.dblQuantity+'" readonly></td>'
 										+	'<td><input type="text" id="dblQuantityChange'+d_count+'" name="dblQuantityChange"></td>'
 										+	'<td><input type="text" id="dblPrice'+d_count+'" name="dblPrice" value="'+item.dblPrice+'" readonly></td>'

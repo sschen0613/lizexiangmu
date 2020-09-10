@@ -53,7 +53,15 @@
 						</select>
 					</td>
 					<td>使用公司</td>
-					<td><input type="text" id="use_company" name="use_company" class="layui-input" lay-verify="required"></td>
+					<td>
+						<select  id='use_company' name="use_company" lay-filter="use_company" class="layui-select" lay-verify="required">
+							<option value="">请选择</option>
+							<option value="丽泽">丽泽</option>
+							<option value="信泽">信泽</option>
+							<option value="天人">天人</option>
+							<option value="菏泽">菏泽</option>
+							<option value="滨州">滨州</option>
+						</select>
 					<td>公章类型</td>
 					<td>
 						<select  id='seal_type' name="seal_type" xm-select="seal_type" xm-select-skin="default" lay-verify="required">

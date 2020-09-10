@@ -275,6 +275,21 @@ public class CurrencyApplyController {
 				}
 
 			}else if(currencyApply.getCurrency_type() == 72) {//销售采购、销售出库，合同全付款不走总经理
+				//如果是天人集团直属
+				if ("66".equals(staff.getCompany_Id())){
+					if ("丽泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(49);
+					}else if ("菏泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(51);
+					}else if ("滨州".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(52);
+					}else if ("信泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(53);
+					}else if ("天人".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(65);
+					}
+				}
+
 				if ("故障报告".equals(currencyApply.getCurrency_string8())) {//走条件审批
 					approverRole.setApprover_condition(condition);
 					currencyApply.setCondition_state(2);//加入条件标识
@@ -1818,4 +1833,125 @@ public class CurrencyApplyController {
 		return "WEB-INF/views/onlineOperation/reagentGetList";
 
 	}
+
+    //发起通用审批流
+    @RequestMapping("/Currency/launchCurrencyApply74.action")
+    @ResponseBody
+    public ResponseResult launchCurrencyApply74(HttpServletRequest request,HttpSession session
+												, String currencyDetails, CurrencyApply currencyApply, String payDetails
+												, @RequestParam(value="pics1",required=false) MultipartFile[] files1
+												, @RequestParam(value="pics2",required=false) MultipartFile[] files2) {
+
+        SystemStaff staff = (SystemStaff) session.getAttribute("systemStaff");//从session中获取当前登录用户,也就是发起人的信息//*
+
+        //查询当前审批流的审批条件*固定 传入参数(当前登录用户信息的公司Id,和审批管理主表对应的审批类型的主键)
+        Integer money2 = iSystemCompanyService.selectApprovalCondition(staff.getCompany_Id(), currencyApply.getCurrency_type());//*
+
+        //审批条件属性
+        Integer condition = 2;//2含义就是条件审批//*
+        ApproverRole approverRole = new ApproverRole();//*
+        approverRole.setApproval_id(currencyApply.getCurrency_type());//申请管理id//*
+        approverRole.setCompany_id(staff.getCompany_Id());//公司id//*
+        List<ApproverRole> roles;//*
+
+        //将前台传入的数组,转化成list，使用的是alibaba的com.alibaba.fastjson.JSONArray//表单中附带的从表详情信息
+        List<CurrencyDetails> currencyDetailss = JSONArray.parseArray(currencyDetails, CurrencyDetails.class);//*
+
+		//收款计划
+		List<PaymentPlan> paymentPlans = JSONArray.parseArray(payDetails, PaymentPlan.class);
+
+        //添加不需要条件判定的数组
+
+        String[] str = {"8","11","14","15","16","17","18","19","24","23","28","29","32","37","20","61","38","39","40","41","42","43",
+                "44","45","46","55","58","59","62","63","66","67","68","69","70","71","74","75"};
+        //判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
+        if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
+
+            //如果流程为69，天人报备流程，那么审批人为集团审批
+            if(currencyApply.getCurrency_type() == 69){
+                approverRole.setCompany_id(65);
+            }
+//            approverRole.setApprover_condition(condition);
+
+            currencyApply.setCondition_state(1);//加入条件标识
+            //查询当前审批流的设置信息
+            roles = iSystemApprovalService.selectConditionApproval(approverRole);
+        }else {
+            if(currencyApply.getCurrency_type() == 2){//判断是否为普通运营请购
+                if(currencyApply.getCurrency_money3().compareTo(BigDecimal.ZERO) == 0){//判断欠款金额为0
+                    approverRole.setApprover_condition(condition);
+                    currencyApply.setCondition_state(2);//加入条件标识
+                    //查询当前审批流的设置信息
+                    roles = iSystemApprovalService.selectConditionApproval(approverRole);
+                }else {
+                    currencyApply.setCondition_state(1);//加入条件标识
+                    roles = iSystemApprovalService.selectConditionApproval(approverRole);
+                }
+			} else {
+				//判断是否达到设置的条件金额
+				if (currencyApply.getCurrency_money6().doubleValue() >= money2) {//达到条件金额//*
+
+					approverRole.setApprover_condition(condition);
+
+					currencyApply.setCondition_state(2);//加入条件标识
+					//查询当前审批流的设置信息
+					roles = iSystemApprovalService.selectConditionApproval(approverRole);
+				} else {//
+					currencyApply.setCondition_state(1);//加入条件标识
+					roles = iSystemApprovalService.selectConditionApproval(approverRole);
+				}//*
+
+            }
+
+        }
+        //修改编码字段
+        iSystemCompanyService.updateCode(currencyApply.getCurrency_type());
+        //查询修改后的值
+        SystemCode code2 = iSystemCompanyService.selectCode(currencyApply.getCurrency_type());
+        Calendar now = Calendar.getInstance();
+
+        Integer code3 = code2.getNumber();
+        int num = 10;
+        String result = "";
+
+        result = String.format("%0" + num + "d", code3);
+
+        System.err.println(now.get(Calendar.YEAR)+((now.get(Calendar.MONTH) + 1) + "")+now.get(Calendar.DAY_OF_MONTH)+"-"+result);
+        String code4 = now.get(Calendar.YEAR)+((now.get(Calendar.MONTH) + 1) + "")+now.get(Calendar.DAY_OF_MONTH)+"-"+result;
+        //生成编号并保存进数据库
+
+        String currency_number = code2.getCode()+code4;
+        currencyApply.setCurrency_string6(result);
+        currencyApply.setCurrency_applicant(staff.getStaff_Id());
+        currencyApply.setApprover_count(roles.size());//记录一共有几层审批
+        currencyApply.setCurrency_applicant(staff.getStaff_Id());//申请人id
+        currencyApply.setCurrency_number(currency_number);
+        Integer res = null;
+
+        //发起通用申请并记录
+        try {
+            res = iCurrencyApplyService.launchpurchase74(request,currencyApply,staff,roles,currencyDetailss,paymentPlans,files1,files2);
+        } catch (ApiException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        ResponseResult result2 = new ResponseResult();
+
+        if (res > 0) {
+            result2.setCode(1);
+            result2.setMsg("添加成功");
+        }else if (res == -2){
+            result2.setCode(-1);
+            result2.setMsg("该条数据已被操作，请刷新表单");
+        }else if (res == -3){
+            result2.setCode(-1);
+            result2.setMsg("添加失败,无对应审批人信息！");
+        }else {
+            result2.setCode(-1);
+            result2.setMsg("添加失败");
+        }
+        return result2;
+
+    }
 }

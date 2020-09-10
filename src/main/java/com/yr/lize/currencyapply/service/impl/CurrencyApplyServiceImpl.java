@@ -2654,4 +2654,202 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 	public List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply) {
 		return currencyApplyMapper.selectAllCurrencyList(currencyApply);
 	}
+
+	@Override
+	public Integer launchpurchase74(HttpServletRequest request
+			, CurrencyApply currencyApply, SystemStaff staff, List<ApproverRole> roles, List<CurrencyDetails> currencyDetailss
+			, List<PaymentPlan> paymentPlans, MultipartFile[] files1, MultipartFile[] files2) throws ApiException {
+		// 发起通用审批流
+		//循环遍历审批组
+		Integer approval_id = currencyApply.getCurrency_type();//*
+		int count = 0;//*
+		ApproverManage approverManage = systemApprovalMapper.selectManage(approval_id);//查询当前审批的管理信息//*
+		Date date = new Date();//获取当前发起申请的时间
+		currencyApply.setCurrency_date(date);
+
+		for (ApproverRole approverRole : roles) {//遍历审批组//*
+			//循环第一遍进入第一个要发送消息的审批组如果第一个审批组中没有人进行第二次循环
+			if (approverRole.getRole_type() == 1) {//判断是否为角色
+				ResponseResult result = dingDingUtilsService.selectDingRoleStaff(approverRole.getApprover_id());//查询钉钉角色下的人员
+				if (!"".equals(result.getMsg())) {//如果查询到的角色不为空字符串
+					//添加调拨审批请求
+					Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+
+					List<String> list = new ArrayList<>();
+					String[]  strs2=result.getMsg().split(",");
+					int index = 0;
+					for(int i=0,len=strs2.length;i<len;i++){
+						//区域经理角色只针对申请人所在区域的区域经理发送消息
+						if ("区域经理".equals(approverRole.getApprover_name())){
+							SystemStaff systemStaff = systemStaffMapper.selectStaffByDingdingStaffIdAndDepartmentId(strs2[i],staff.getDepartment_Id());
+							if (systemStaff == null){
+								continue;
+							}else if (systemStaff.getDepartment_Id().equals(staff.getDepartment_Id())){
+								index++;
+								//发送工作消息
+								dingDingUtilsService.sendoOutNotice2(strs2[i],staff,approverManage,currencyApply);
+								list.add(strs2[i]);
+							}
+						}else {
+							index++;
+							//发送工作消息
+							dingDingUtilsService.sendoOutNotice2(strs2[i], staff, approverManage, currencyApply);
+							list.add(strs2[i]);
+						}
+					}
+
+					currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+					if (approverRole.getRole_state() == 1) {//添加当前审批组有多少人要进行审批 如果是或签为一
+						currencyApply.setApprover_state(1);
+					}else {//如果当前审批为会签把要审批的人的数量加到审批中
+						currencyApply.setApprover_state(index);
+					}
+					Integer update = currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+					if(currencyDetailss != null) {
+						//添加当前通用审批的详情
+						currencyApplyMapper.addCurrencyApplyDetais(currencyDetailss,currencyApply.getCurrency_id());
+					}
+					if (paymentPlans != null){
+						currencyApplyMapper.addPaymentPlans(paymentPlans,currencyApply.getCurrency_id());
+					}
+					//合同添加图片
+					if (files1 != null && files1.length > 0){
+						this.uploadFiles(request,files1,currencyApply.getCurrency_id(),"1");
+					}
+					if (files2 != null && files2.length > 0){
+						this.uploadFiles(request,files2,currencyApply.getCurrency_id(),"2");
+					}
+					//记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+					systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+					//将审批人添加到审批列表中
+					systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+					return res;
+				}
+
+			}else if (approverRole.getRole_type() == 2) {
+				//判断当前流程是否属于要专门设置主管审批的流程
+				Integer index2 = 1;//取第几级主管 默认直接主管
+				String[] str = {"10000"};
+				if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
+					//查询当前申请人身份信息
+					OapiUserGetResponse userDetilsRes = dingDingUtilsService.selectDingUserDetils(staff.getDingding_staffid());
+					JSONObject userDetailsObj = new JSONObject(userDetilsRes.getIsLeaderInDepts());
+					//判断当前发起人是否为主管身份
+					if (userDetailsObj.getBoolean(staff.getDepartment_Id())){
+						index2 = 2;
+					}
+				}else {
+					//查询是几级主管
+					//1直接 2二级 一般都是1
+					index2 = Integer.parseInt(approverRole.getApprover_id());
+				}
+				//查询主管的部门id
+				List<Long> parentIds = dingDingUtilsService.getDingDepartmentSup(staff.getDepartment_Id());
+				//获取道当前部门主管的id集合
+				ResponseResult result = dingDingUtilsService.selectDepartmRole(parentIds.get(index2-1).toString());
+				if (!"".equals(result.getMsg())) {//如果查询到的部门主管不为空字符串
+					//添加审批请求
+					Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+
+					List<String> list = new ArrayList<>();
+					String[]  strs2=result.getMsg().split(",");
+					int index = 0;
+					for(int i=0,len=strs2.length;i<len;i++){
+						index++;
+						//发送工作消息
+						dingDingUtilsService.sendoOutNotice2(strs2[i],staff,approverManage,currencyApply);
+						list.add(strs2[i]);
+					}
+
+					currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+					if (approverRole.getRole_state() == 1) {//添加当前审批组有多少人要进行审批 如果是或签为一
+						currencyApply.setApprover_state(1);
+					}else {
+						currencyApply.setApprover_state(index);
+					}
+					//添加审批请求
+					Integer update = currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+					if (currencyDetailss != null) {
+						//添加当前调拨的商品
+						currencyApplyMapper.addCurrencyApplyDetais(currencyDetailss, currencyApply.getCurrency_id());
+					}
+					if (paymentPlans != null){
+						currencyApplyMapper.addPaymentPlans(paymentPlans,currencyApply.getCurrency_id());
+					}
+					//合同添加图片
+					if (files1 != null && files1.length > 0){
+						this.uploadFiles(request,files1,currencyApply.getCurrency_id(),"1");
+					}
+					if (files2 != null && files2.length > 0){
+						this.uploadFiles(request,files2,currencyApply.getCurrency_id(),"2");
+					}
+					//记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+					systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+					//将审批人添加到审批列表中
+					systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+					return res;
+				}
+			}else if (approverRole.getRole_type() == 3) {
+
+				List<String> list = new ArrayList<>();
+				list.add(approverRole.getApprover_id());
+				currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+				currencyApply.setApprover_state(1);
+				//添加审批请求
+				Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+				//添加当前调拨的商品
+				if(currencyDetailss!=null) {
+					currencyApplyMapper.addCurrencyApplyDetais(currencyDetailss, currencyApply.getCurrency_id());
+				}
+				//合同添加图片
+				if (files1 != null && files1.length > 0){
+					this.uploadFiles(request,files1,currencyApply.getCurrency_id(),"1");
+				}
+				if (files2 != null && files2.length > 0){
+					this.uploadFiles(request,files2,currencyApply.getCurrency_id(),"2");
+				}
+				//记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+				systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+				//将审批人添加到审批列表中
+				systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+				dingDingUtilsService.sendoOutNotice2(approverRole.getApprover_id(),staff,approverManage,currencyApply);//发送工作消息
+				return res;
+			}
+			count++;
+		}
+
+		return -1;
+	}
+
+	@Override
+	public Integer uploadFiles(HttpServletRequest request, MultipartFile[] files, Integer currency_id, String flag) {
+		String filePath = request.getServletContext().getRealPath("/");
+			Integer i = 0;
+			for (MultipartFile file : files) {
+				// 获取文件的原始名称
+				String originalFilename = file.getOriginalFilename();
+
+				// 获取文件后缀
+				String suffix = FilenameUtils.getExtension(originalFilename);
+
+				//新名字
+				UUID uuid = UUID.randomUUID();
+				String newName = uuid.toString().replaceAll("-", "") + "." + suffix;
+				File newFile = new File(filePath+"/pics/", newName);
+				try {
+					file.transferTo(newFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				ContractPicture contractPicture = new ContractPicture();
+				contractPicture.setCurrency_id(currency_id);
+				contractPicture.setPicture(newName);
+				contractPicture.setCoverpath("/lizexiangmu/pics/" + newName);
+				contractPicture.setString(flag);
+				Integer res = currencyApplyMapper.uploadFiles(contractPicture);
+				i+=res;
+			}
+			return i;
+	}
 }

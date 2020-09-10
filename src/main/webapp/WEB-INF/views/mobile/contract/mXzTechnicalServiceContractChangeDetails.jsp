@@ -52,9 +52,6 @@
                 var currency_date = '${param.currency_date}'; //申请日期
                 var currency_date2 = '${param.currency_date2}';
                 var currency_date3 = '${param.currency_date3}';
-                var currency_date4 = '${param.currency_date4}';
-				var currency_date5 = '${param.currency_date5}';
-				var currency_date6 = '${param.currency_date6}';
 
 				var currency_string = '${param.currency_string}';
                 var currency_string2 = '${param.currency_string2}'; //区域
@@ -106,11 +103,11 @@
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">区域 :</label>'
-							 +				'<input type="text" name="customer_number" value="'+currency_string3+'" class="layui-input" readonly>'
+							 +				'<input type="text" name="customer_number" value="'+currency_string2+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">客户名称 :</label>'
-							 +				'<input type="text" name="customer_name" value="'+currency_string5+'" class="layui-input" readonly>'
+							 +				'<input type="text" name="customer_name" value="'+currency_string3+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同编号 :</label>'
@@ -118,23 +115,23 @@
 							 +			'</div>'
 							+			'<div>'
 							+				'<label class="">合同签订日期 :</label>'
-							+				'<input type="text" name="time-ranges" value="'+currency_date2+'" class="layui-input" readonly>'
+							+				'<input type="text" name="time-ranges" value="'+currency_string9+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
 							+				'<label class="">合同开始日期 :</label>'
-							+				'<input type="text" name="currency_date3" value="'+currency_date3+'" class="layui-input" readonly>'
+							+				'<input type="text" name="currency_date3" value="'+currency_string4+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
 							+				'<label class="">合同结束日期 :</label>'
-							+				'<input type="text" name="currency_date4" value="'+currency_date4+'" class="layui-input" readonly>'
+							+				'<input type="text" name="currency_date4" value="'+currency_string5+'" class="layui-input" readonly>'
 							+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同开始日期变更 :</label>'
-							 +				'<input type="text"  name="person" value="'+currency_date5+'" class="layui-input" readonly>'
+							 +				'<input type="text"  name="person" value="'+currency_date2+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同结束日期变更 :</label>'
-							 +				'<input type="text" name="time-ranges" value="'+currency_date6+'" class="layui-input" readonly>'
+							 +				'<input type="text" name="time-ranges" value="'+currency_date3+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同总额 :</label>'
@@ -145,18 +142,22 @@
 							+				'<input type="text" name="currency_money2" value="'+currency_money2+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
-							+				'<label class="">合同描述 :</label>'
+							+				'<label class="">变更说明 :</label>'
 							+				'<input type="text" name="currency_string8" value="'+currency_string8+'" class="layui-input" readonly>'
-							+			'</div>'
-							+			'<div>'
-							+				'<label class="">合同描述变更 :</label>'
-							+				'<input type="text" name="currency_string9" value="'+currency_string9+'" class="layui-input" readonly>'
 							+			'</div>'
 
                              +			'<div><label class="label-title">合同付款约定 </label></div>'
                              +			'<div class="pay-detail-container">'
                              				//收款计划
                              +			'</div>'
+							+			'<div><label class="label-title">原合同图片 </label></div>'
+							+			'<div class="picture1-detail-container">'
+							//图片
+							+			'</div>'
+							+			'<div><label class="label-title">变更合同图片 </label></div>'
+							+			'<div class="picture2-detail-container">'
+							//图片
+							+			'</div>'
  							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
@@ -266,6 +267,43 @@
                                 $('.pay-detail-container').html(html0);
                             }
                         });
+
+						//获取合同图片
+						$.ajax({
+							url:'Currency/selectContractPicture.action?currency_id='+currency_id,
+							type:'post',
+							data:{},
+							dataType:'JSON',
+							success:function(res){
+								var html1 = '';
+								var html2 = '';
+								$.each(res.data,function(index,item){
+									if (item.string == "1"){
+										html1+=	'<div class="picture-detail" style="width: 100%">'
+												+		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
+												+		'<div class="details">'
+												+			'<div>'
+												//+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+												+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+												+			'</div>'
+												+		'</div>'
+												+	'</div>';
+									}else if (item.string == "2"){
+										html2+=	'<div class="picture-detail" style="width: 100%">'
+												+		'<div class="details-title details-title'+(index+1)+'">#'+(index+1)+'</div>'
+												+		'<div class="details">'
+												+			'<div>'
+												//+				'&nbsp;&nbsp;<a href="'+item.coverpath+'" download="'+item.picture+'"><span style="color: #8b211e">点此查看文件</span></a>'
+												+				'<img src="'+item.coverpath+'" style="display: block;height: auto;max-width: 100%;">'
+												+			'</div>'
+												+		'</div>'
+												+	'</div>';
+									}
+								});
+								$('.picture1-detail-container').html(html1);
+								$('.picture2-detail-container').html(html2);
+							}
+						});
 
 						//渲染进度条
 						element.render('progress');

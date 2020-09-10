@@ -128,9 +128,6 @@
 										 +'&currency_date='+Format(item.currency_date,"yyyy-MM-dd")
 										 +'&currency_date2='+Format(item.currency_date2,"yyyy-MM-dd")
 										 +'&currency_date3='+Format(item.currency_date3,"yyyy-MM-dd")
-										 +'&currency_date4='+Format(item.currency_date4,"yyyy-MM-dd")
-										 +'&currency_date5='+Format(item.currency_date5,"yyyy-MM-dd")
-										 +'&currency_date6='+Format(item.currency_date6,"yyyy-MM-dd")
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'
     				    		 +			'<span class="layui-icon layui-icon-right"></span>'

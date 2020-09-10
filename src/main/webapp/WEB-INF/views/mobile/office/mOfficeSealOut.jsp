@@ -73,7 +73,14 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">使用公司 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="use_company" class="layui-input" lay-verify="required">
+							<select class="layui-select" name="use_company" id="use_company" lay-filter="use_company" lay-verify="required">
+								<option value="">请选择</option>
+								<option value="丽泽">丽泽</option>
+								<option value="信泽">信泽</option>
+								<option value="天人">天人</option>
+								<option value="菏泽">菏泽</option>
+								<option value="滨州">滨州</option>
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">

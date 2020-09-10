@@ -23,6 +23,12 @@ public class XzTechnicalServiceContractChangeController {
 		return "WEB-INF/views/contract/xzTechnicalServiceContractChangeApproval";
 		//return "WEB-INF/views/mobile/contract/mXzTechnicalServiceContractChangeApprovalList";
 	}
+
+	//山东丽泽销售请购审批详情界面
+	@RequestMapping("contract/xzTechnicalServiceContractChangeApprovalDetail.action")
+	public String setupAllocationApproverDetail() {
+		return "WEB-INF/views/mobile/contract/xzTechnicalServiceContractChangeDetail";
+	}
 	
 	// 跳转手机端信泽技术服务合变更章申请变更界面
 	@RequestMapping("contract/mXzTechnicalServiceContractChange.action")

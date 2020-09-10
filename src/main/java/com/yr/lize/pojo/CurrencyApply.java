@@ -312,11 +312,15 @@ public class CurrencyApply {
 
 	public void setCurrency_date2(String currency_date2) {
 		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			
+		 SimpleDateFormat bDate= new SimpleDateFormat("yyyy-MM-dd");
 		  Date date = null;
 		try {
 			if (!"".equals(currency_date2) && !" - ".equals(currency_date2)) {
-				date = aDate.parse(currency_date2);
+				if (currency_date2.contains(":")){
+					date = aDate.parse(currency_date2);
+				}else {
+					date = bDate.parse(currency_date2);
+				}
 			}
 			this.currency_date2 =date;
 		} catch (ParseException e) {
@@ -331,11 +335,16 @@ public class CurrencyApply {
 
 	public void setCurrency_date3(String currency_date3) {
 		 SimpleDateFormat aDate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			
-		  Date date = null;
+		 SimpleDateFormat bDate= new SimpleDateFormat("yyyy-MM-dd");
+
+		 Date date = null;
 		try {
-			if (!"".equals(currency_date3)) {
-				date = aDate.parse(currency_date3);
+			if (!"".equals(currency_date3) && !" - ".equals(currency_date3)) {
+				if (currency_date3.contains(":")){
+					date = aDate.parse(currency_date3);
+				}else {
+					date = bDate.parse(currency_date3);
+				}
 			}
 			this.currency_date3 =date;
 		} catch (ParseException e) {
