@@ -126,7 +126,7 @@
 							 +			'</div>'
                              +			'<div>'
                              +				'<label class="">异常情况描述 :</label>'
-                             +				'<input type="text" name="abnormity_describe" id="abnormity_describe" value="'+item.currency_string7+'" class="layui-input" readonly>'
+							+				'<textarea name="abnormity_describe" class="layui-textarea" readonly>'+item.currency_string7+'</textarea>'
                              +			'</div>'
                             +			'<div>'
                             +				'<label class="">备注 :</label>'

@@ -213,7 +213,7 @@
                                         +			'</div>'
                                         +			'<div>'
                                         +				'<label class="">检测内容 :</label>'
-                                        +				'<input type="text" name="remark" value="'+item.program+'" class="layui-input" readonly>'
+										+				'<textarea name="remark" class="layui-textarea" readonly>'+item.program+'</textarea>'
                                         +			'</div>'
                                         +			'<div>'
                                         +				'<label class="">金额 :</label>'
