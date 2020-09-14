@@ -405,10 +405,10 @@
             				$.each(res.data,function(index,item){
             					contract_price = Math.max(item.cDefine26,contract_price); //number类型
             					var html = '<tr class="contract-details">'
-										+ 	'<td colspan=2><input type="text" name="contract_str_name" value="'+item.strName+'" readonly></td>'
-										+ 	'<td colspan=2><input type="text" name="contract_str_name_change"></td>'
-										+	'<td colspan=3><input type="text" name="contract_str_memo" value="'+item.strMemo+'" readonly></td>'
-										+ 	'<td colspan=3><input type="text" name="contract_str_memo_change"></td>'
+										+	'<td colspan=2><textarea name="contract_str_name" class="layui-textarea" readonly>'+item.strName+'</textarea></td>'
+										+	'<td colspan=2><textarea name="contract_str_name_change" class="layui-textarea"></textarea></td>'
+										+	'<td colspan=2><textarea name="contract_str_memo" class="layui-textarea" readonly>'+item.strMemo+'</textarea></td>'
+										+	'<td colspan=2><textarea name="contract_str_memo_change" class="layui-textarea"></textarea></td>'
 										+  '</tr>';
             					$('.contract').after(html);
             					inputRender();//input框自定义渲染

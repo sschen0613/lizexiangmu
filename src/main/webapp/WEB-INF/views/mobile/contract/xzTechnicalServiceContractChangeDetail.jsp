@@ -18,17 +18,17 @@
     <script src="js/function_tool.js"></script>
     <script src="js/form_init.js"></script>
     <script src="layui/layui.js"></script>
-    <style type="text/css">
-        img{cursor: pointer;}
-        #pic{position: absolute; display: none;}
-        #pic1{ width: 400px; height: 300px; border-radius: 5px; -webkit-box-shadow: 5px 5px 5px 5px hsla(0,0%,5%,1.00); box-shadow: 5px 5px 5px 0px hsla(0,0%,5%,0.3); }
-    </style>
 </head>
 <body>
 <div id="content" class="content">
     <div class="sign"><i id="number"></i></div>
     <div class="title">
-        <h2>信泽技术服务合同变更申请详情<</h2>
+        <h2>信泽技术服务合同变更申请详情</h2>
+    </div>
+    <div id="outerdiv" style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:2;width:100%;height:100%;display:none;">
+        <div id="innerdiv" style="position:absolute;">
+            <img id="bigimg" style="border:5px solid #fff;" src="" />
+        </div>
     </div>
     <table border="1" class="layui-table">
         <colgroup>
@@ -111,10 +111,10 @@
             <td>含税原币单价变更</td>
             <td>含税原币金额</td>
         </tr>
-        <tr class="pics1">>
+        <tr class="pics1">
             <td colspan="10">原合同</td>
         </tr>
-        <tr class="pics2">>
+        <tr class="pics2">
             <td colspan="10">变更合同</td>
         </tr>
         <tr>
@@ -130,28 +130,7 @@
     </table>
 
 </div>
-<%--<div class="bottom">
-    <button class="layui-btn" onclick="print()">
-        <i class="layui-icon layui-icon-fonts-clear"></i> 打印
-    </button>
-</div>--%>
 <script>
-
-    $(function(){
-        $(".imgA").hover(function(){
-            $(this).append("<p id='pic'><img src='"+this.href+"' id='pic1'></p>");
-            $(".imgA").mousemove(function(e){
-                $("#pic").css({
-                    "top":(e.pageY+10)+"px",
-                    "left":(e.pageX+20)+"px"
-                }).fadeIn("fast");
-                // $("#pic").fadeIn("fast");
-            });
-        },function(){
-            $("#pic").remove();
-        });
-    });
-
     var currency_id = '${param.currency_id}';
     var currency_type = '${param.currency_type}';
     var position_Id = "${sessionScope.systemStaff.position_Id }";//获取当前登录人角色信息
@@ -267,16 +246,16 @@
                 if (item.string == "1"){
                     picNum1++;
                     if (picNum1 % 10 != 0){//
-                        html1 += '<td><a class="imgA" target="_Blank" href="'+item.coverpath+'"><img src='+item.coverpath+'></a></td>';
+                        html1 += '<td><img src='+item.coverpath+' class="pimg"></td>';
                     }else {
-                        html1 += '<td><a class="imgA" target="_Blank" href="'+item.coverpath+'"><img src='+item.coverpath+'></a></td></tr><tr>';
+                        html1 += '<td><img src='+item.coverpath+' class="pimg"></td></tr><tr>';
                     }
                 }else if(item.string == "2"){
                     picNum2++;
                     if (picNum2 % 10 != 0){//
-                        html2 += '<td><a class="imgA" target="_Blank" href="'+item.coverpath+'"><img src='+item.coverpath+'></a></td>';
+                        html2 += '<td><img src='+item.coverpath+' class="pimg"></td>';
                     }else {
-                        html2 += '<td><a class="imgA" target="_Blank" href="'+item.coverpath+'"><img src='+item.coverpath+'></a></td></tr><tr>';
+                        html2 += '<td><img src='+item.coverpath+' class="pimg"></td></tr><tr>';
                     }
                 }
             });
@@ -284,9 +263,51 @@
             html2 += '</tr>';
             $('.pics1').after(html1);
             $('.pics2').after(html2);
+
+            $(".pimg").on('click',function(){
+                var _this = $(this);//将当前的pimg元素作为_this传入函数
+                imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+            });
         }
     });
+    function imgShow(outerdiv, innerdiv, bigimg, _this){
+        var src = _this.attr("src");//获取当前点击的pimg元素中的src属性
+        $(bigimg).attr("src", src);//设置#bigimg元素的src属性
 
+        /*获取当前点击图片的真实大小，并显示弹出层及大图*/
+        $("<img/>").attr("src", src).on('load',function(){
+            var windowW = $(window).width();//获取当前窗口宽度
+            var windowH = $(window).height();//获取当前窗口高度
+            var realWidth = this.width;//获取图片真实宽度
+            var realHeight = this.height;//获取图片真实高度
+            var imgWidth, imgHeight;
+            var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
+            if(realHeight>windowH*scale) {//判断图片高度
+                imgHeight = windowH*scale;//如大于窗口高度，图片高度进行缩放
+                imgWidth = imgHeight/realHeight*realWidth;//等比例缩放宽度
+                if(imgWidth>windowW*scale) {//如宽度扔大于窗口宽度
+                    imgWidth = windowW*scale;//再对宽度进行缩放
+                }
+            } else if(realWidth>windowW*scale) {//如图片高度合适，判断图片宽度
+                imgWidth = windowW*scale;//如大于窗口宽度，图片宽度进行缩放
+                imgHeight = imgWidth/realWidth*realHeight;//等比例缩放高度
+            } else {//如果图片真实高度和宽度都符合要求，高宽不变
+                imgWidth = realWidth;
+                imgHeight = realHeight;
+            }
+            $(bigimg).css("width",imgWidth);//以最终的宽度对图片缩放
+
+            var w = (windowW-imgWidth)/2;//计算图片与窗口左边距
+            var h = (windowH-imgHeight)/2;//计算图片与窗口上边距
+            $(innerdiv).css({"top":h, "left":w});//设置#innerdiv的top和left属性
+            $(outerdiv).fadeIn("fast");//淡入显示#outerdiv及.pimg
+        });
+
+        $(outerdiv).on('click',function(){//再次点击淡出消失弹出层
+            $(this).fadeOut("fast");
+        });
+    }
 
 </script>
 </body>

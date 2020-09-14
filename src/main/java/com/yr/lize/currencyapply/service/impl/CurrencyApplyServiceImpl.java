@@ -1947,6 +1947,21 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				}
 
 			}else if(currencyApply.getCurrency_type() == 72) {//销售采购、销售出库，合同全付款不走总经理
+				//如果是天人集团直属
+				if ("66".equals(staff.getCompany_Id())){
+					if ("丽泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(49);
+					}else if ("菏泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(51);
+					}else if ("滨州".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(52);
+					}else if ("信泽".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(53);
+					}else if ("天人".equals(currencyApply.getCurrency_string3())){
+						approverRole.setCompany_id(65);
+					}
+				}
+
 				if ("故障报告".equals(currencyApply.getCurrency_string8())) {//走条件审批
 					approverRole.setApprover_condition(condition);
 					currencyApply.setCondition_state(2);//加入条件标识
@@ -2800,6 +2815,9 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				//添加当前调拨的商品
 				if(currencyDetailss!=null) {
 					currencyApplyMapper.addCurrencyApplyDetais(currencyDetailss, currencyApply.getCurrency_id());
+				}
+				if (paymentPlans != null){
+					currencyApplyMapper.addPaymentPlans(paymentPlans,currencyApply.getCurrency_id());
 				}
 				//合同添加图片
 				if (files1 != null && files1.length > 0){
