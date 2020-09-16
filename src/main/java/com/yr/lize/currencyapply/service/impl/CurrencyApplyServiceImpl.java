@@ -129,7 +129,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 			}else if (approverRole.getRole_type() == 2) { 
 				//判断当前流程是否属于要专门设置主管审批的流程
 				Integer index2 = 1;//取第几级主管 默认直接主管
-				String[] str = {"10000"};
+				String[] str = {"76"};
 				if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 					//查询当前申请人身份信息
 					OapiUserGetResponse userDetilsRes = dingDingUtilsService.selectDingUserDetils(staff.getDingding_staffid());
@@ -1782,7 +1782,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		//添加不需要条件判定的数组
 
 		String[] str = {"8","11","14","15","16","17","18","19","24","22","23","28","29","32","37","20","61","38","39","40","41","42"
-                ,"44","45","46","55","58","59","62","63","66","67","68","69","70","71","74","75"};
+                ,"44","45","46","55","58","59","62","63","66","67","68","69","70","71","74","75","76"};
 		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
 		if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 

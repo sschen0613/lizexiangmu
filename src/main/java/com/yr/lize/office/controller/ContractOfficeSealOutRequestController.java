@@ -10,6 +10,7 @@ public class ContractOfficeSealOutRequestController {
 	@RequestMapping("office/contractOfficeSealOut.action")
 	public String setupAllocationApproverView1() {
 		return "WEB-INF/views/office/contractOfficeSealOut";
+		//return "WEB-INF/views/mobile/office/mContractOfficeSealOut";
 		//return "WEB-INF/views/mobile/office/mOfficeSealOutList";
 	}
 	//跳转办公用品申请表界面
