@@ -31,28 +31,28 @@
 		</thead>
 		<tbody >
 		<tr>
-			<td>说明</td>
-			<td colspan=9><input type="illustration" name="illustration" value="用于信泽有限公司业务科办理采样业务的下达任务表单" readonly></td>
+			<td colspan="2">说明</td>
+			<td colspan="8"><input type="illustration" name="illustration" value="用于信泽有限公司业务科办理采样业务的下达任务表单" readonly></td>
 		</tr>
 		<tr>
-			<td>下发部门</td>
+			<td colspan="2">下发部门</td>
 			<td colspan="2"><input id='department' name="issued_department" class="layui-select" lay-filter="issued_department" lay-verify="required"  readonly/></td>
 			<td>下发人</td>
-			<td colspan="1"><input type="text" id='staffName' name="issued_person" lay-verify="required" readonly></td>
+			<td colspan="2"><input type="text" id='staffName' name="issued_person" lay-verify="required" readonly></td>
 			<td>下发日期</td>
-			<td colspan="4"><input type="text" name="issued_date" class="layui-input" id="date" placeholder="请选择日期" autocomplete="off" lay-verify="required" readonly></td>
+			<td colspan="2"><input type="text" name="issued_date" class="layui-input" id="date" placeholder="请选择日期" autocomplete="off" lay-verify="required" readonly></td>
 		</tr>
 		<tr>
-			<td style="background-color: lightskyblue">数据回调</td>
+			<td colspan="2" style="background-color: lightskyblue">数据回调</td>
 			<td id="contractBack" class="container" colspan="9">
-				<input id='contract_id' name="contract_id" class="contract-search-box back" placeholder="输入关键字查询,调取历史通知信息,也可自行填写,非必填!!!">
+				<input id='contract_id' name="contract_id" class="contract-search-box back" placeholder="输入关键字查询,调取历史下发信息,也可自行填写,非必填!!!">
 				<div class="list-container back" style="display:none;">
 					<ul></ul>
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td>下发来源</td>
+			<td colspan="2">下发来源</td>
 			<td colspan="2">
 				<select name="source" id="source" lay-filter="source" lay-verify="required">
 					<option value="1">信泽</option>
@@ -61,8 +61,8 @@
 			</td>
 		</tr>
 		<tr id="contract_tr">
-			<td>合同编号</td>
-			<td colspan="9" id="contractNumber" class="container">
+			<td colspan="2">合同编号</td>
+			<td colspan="8" id="contractNumber" class="container">
 				<input id='contract_number' name="contract_number" class="contract-search-box number" placeholder="输入关键字查询" lay-verify="required">
 				<div class="list-container number" style="display:none;">
 					<ul></ul>
@@ -70,7 +70,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>项目名称</td>
+			<td colspan="2">项目名称</td>
 			<td colspan="2"><input type="text" name="program_name" id="program_name" lay-verify="required"></td>
 			<%--<td>联系人</td>
             <td colspan="1"><input type="text" name="contact_person" id="contact_person" lay-verify="required"></td>
@@ -85,12 +85,12 @@
            </tr>--%>
 			<%--<tr>--%>
 			<td>采样完成时间</td>
-			<td colspan="1"><input name="date1" type="text" class="layui-input" id="date1" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
-			<td>报表编码</td>
-			<td colspan="4"><input type="text" id="code" name="code" placeholder="请务必填写报表编码" autocomplete="off" lay-verify="required"></td>
+			<td colspan="2"><input name="date1" type="text" class="layui-input" id="date1" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
+			<td>报告编码</td>
+			<td colspan="2"><input type="text" id="code" name="code" placeholder="请务必填写报告编码" autocomplete="off" lay-verify="required"></td>
 		</tr>
 		<tr>
-			<td>样品来源</td>
+			<td colspan="2">样品来源</td>
 			<td colspan="2">
 				<select  id='specimen_source' name="specimen_source" lay-verify="required">
 					<option value="1">现场采样</option>
@@ -98,7 +98,7 @@
 				</select>
 			</td>
 			<td>检测类型</td>
-			<td colspan="1"><select id="type" name="type" lay-filter="type" lay-search lay-verify="required">
+			<td colspan="2"><select id="type" name="type" lay-filter="type" lay-search lay-verify="required">
 				<option value="">==请选择类型==</option>
 				<option value="自行检测">自行检测</option>
 				<option value="常规检测">常规检测</option>
@@ -112,7 +112,7 @@
             <td colspan="1"><input name="date3" type="text" class="layui-input" id="date3" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
             --%>
 			<td>报告完成时间</td>
-			<td colspan="4"><input name="date2" type="text" class="layui-input" id="date2" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
+			<td colspan="2"><input name="date2" type="text" class="layui-input" id="date2" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
 		</tr>
 
 		<%--<tr>
@@ -132,16 +132,16 @@
             <td colspan="9"><input type="text" id="standard" name="standard" placeholder="请务必填写执行标准" lay-verify="required"></td>
         </tr>--%>
 		<tr>
-			<td>备注</td>
-			<td colspan="9"><input type="text" id="remark" name="remark" autocomplete="off"></td>
+			<td colspan="2">备注</td>
+			<td colspan="8"><input type="text" id="remark" name="remark" autocomplete="off"></td>
 		</tr>
 
 		<tr>
 			<th colspan="10" style="text-align: center;">采样任务明细</th>
 		</tr>
 		<tr>
-			<td >序号</td>
-			<td colspan="2">检测项目类别</td>
+			<%--<td >序号</td>--%>
+			<td colspan="3">检测项目类别</td>
 			<%--<td>检测点位</td>--%>
 			<td>点位个数</td>
 			<%--<td>检测项目</td>--%>
@@ -154,16 +154,22 @@
 			<td>操作</td>
 		</tr>
 		<tr class="details">
-			<td><input type="text" name="number" value="1" readonly></td>
-			<td colspan="2">
-				<select id="program_type" name="program_type" lay-filter="program_type" lay-search lay-verify="required">
+			<%--<td><input type="text" name="number" value="1" readonly></td>--%>
+			<td colspan="3">
+				<select id="program_type1" name="program_type" lay-filter="program_type" lay-search lay-verify="required">
 					<option value="">==请选择==</option>
-					<option value="超低有组织废气">超低有组织废气</option>
-					<option value="非超低有组织废气">非超低有组织废气</option>
+					<option value="烟气常规检测">烟气常规检测</option>
+					<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>
+					<option value="水的比对检测">水的比对检测</option>
+					<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>
+					<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>
+					<option value="水质在线设备验收检测">水质在线设备验收检测</option>
+					<option value="环评现状检测">环评现状检测</option>
+					<option value="竣工验收检测">竣工验收检测</option>
+					<option value="无组织土壤">无组织土壤</option>
+					<option value="无组织噪声">无组织噪声</option>
 					<option value="无组织废气">无组织废气</option>
-					<option value="水和废水">水和废水</option>
-					<option value="噪声">噪声</option>
-					<option value="土壤和固废">土壤和固废</option>
+					<option value="采水">采水</option>
 				</select>
 			</td>
 			<%--<td><input type="text" name="detection_site" data-subItems="1" lay-verify="required"></td>--%>
@@ -232,6 +238,7 @@
         laydate.render({
             elem: '#date1' //指定元素
             ,type: 'datetime' //yyyy-MM-dd HH:mm:ss
+			,trigger: 'click'
             ,done: function(value, date, endDate){
                 // console.log(value); //得到日期生成的值
                 //开始日选好后，判断结束日期是否合法
@@ -243,6 +250,7 @@
         laydate.render({
             elem: '#date2' //指定元素
             ,type: 'datetime' //yyyy-MM-dd HH:mm:ss
+			,trigger: 'click'
             ,done: function (value, date, endDate) {
                 // console.log(value); //得到日期生成的值
                 //结束日选好后，判断开始日期是否合法
@@ -264,6 +272,7 @@
             }
         });*/
         inputRender();//input框自定义渲染
+		var d_count = 1;
 
 
         //业务来源添加事件
@@ -299,7 +308,7 @@
             //var entrust_adress =  data.field.entrust_adress;//委托单位地址
             var sampleType = data.field.specimen_source;//样品来源
             var date1 =  data.field.date1;//采样完成时间
-            var specimen_name =  data.field.code;//报表编码
+            var specimen_name =  data.field.code;//报告编码
             var type =  $('#type').find('option:selected').text();//检测类型
             //var type =  data.field.type;//检测类型
             //var date3 = data.field.date3;//检测完成时间
@@ -315,7 +324,7 @@
 
             var currentDetails = [];
             $.each($('.details'),function(index,item){
-                var number = $(item).find('input[name="number"]').val();//序号
+               /* var number = $(item).find('input[name="number"]').val();//序号*/
                 //var detection_site = $(item).find('input[name="detection_site"]').val();//检测点位
                 var program_type = $(item).find('select[name="program_type"]').find('option:selected').text();//检测项目类别
                 var site_number = $(item).find('input[name="site_number"]').val();//点位个数
@@ -337,7 +346,7 @@
                 var remark = $(item).find('input[name="remark"]').val();
 
                 var obj = {
-                    'details_int2':number,
+                    //'details_int2':number,
                     //'details_string':detection_site,
                     'details_string':program_type,//检测项目类别
                     'details_money3':program_number,//检测项目个数
@@ -362,7 +371,7 @@
             myForm.set("currency_string2",program_name);//项目名称
             myForm.set("currency_int2",sampleType);//样品来源
             myForm.set("currency_date2",date1);//采样完成时间
-            myForm.set("currency_string7",specimen_name);//报表编码
+            myForm.set("currency_string7",specimen_name);//报告编码
             myForm.set("currency_string8",type);//检测类型
             myForm.set("currency_date3",date2);//报告完成时间
             myForm.set("currency_string9",remarkA);
@@ -410,11 +419,12 @@
             var contract_number = data.field.contract_number;//合同编号
             var program_name =  data.field.program_name;//项目名称
             var date1 =  data.field.date1;//采样完成时间
-            var specimen_name =  data.field.code;//报表编码
+            var specimen_name =  data.field.code;//报告编码
             var type =  $('#type').find('option:selected').text();//检测类型
             var date2 =  data.field.date2;//报告完成时间
             var remarkA = data.field.remark;//备注
 
+			//采样为0，送样为1
             var flag = 0;
             if(sampleType == 2){//送样则flag为1，直接让采样员检测业务下发进行操作。
                 flag = 1;
@@ -422,7 +432,7 @@
 
             var currentDetails = [];
             $.each($('.details'),function(index,item){
-                var number = $(item).find('input[name="number"]').val();//序号
+                //var number = $(item).find('input[name="number"]').val();//序号
                 //var detection_site = $(item).find('input[name="detection_site"]').val();//检测点位
                 var program_type = $(item).find('select[name="program_type"]').find('option:selected').text();//检测项目类别
                 var site_number = $(item).find('input[name="site_number"]').val();//点位个数
@@ -454,7 +464,7 @@
             myForm.set("currency_string2",program_name);//项目名称
             myForm.set("currency_int2",sampleType);//样品来源
             myForm.set("currency_date2",date1);//采样完成时间
-            myForm.set("currency_string7",specimen_name);//报表编码
+            myForm.set("currency_string7",specimen_name);//报告编码
             myForm.set("currency_string8",type);//检测类型
             myForm.set("currency_date3",date2);//报告完成时间
             myForm.set("currency_string9",remarkA);
@@ -603,7 +613,7 @@
                         },
                         dataType:'JSON',
                         success:function(res){
-                            var html = '<li value="" class="list-this">请选择历史通知任务书</li>';
+                            var html = '<li value="" class="list-this">请选择历史业务下发表</li>';
                             $.each(res.data,function(index,item){
                                 html += '<li value="'+item.currency_id+'" data-program="'+item.currency_string2
                                     +'" data-person="'+item.currency_string3
@@ -650,7 +660,7 @@
                 //$('#contact_person').val(person);//联系人
                 //$('#contact_phone').val(phone);//联系电话
                 //$('#entrust_adress').val(adress);//委托单位地址
-                $('#specimen_name').val(code);//报表编码
+                $('#specimen_name').val(code);//报告编码
                 //('#client_department').val(department);//委托单位
                 $('#type').val(type);//客户名称
                 $('#standard').val(standard);//客户名称
@@ -668,16 +678,24 @@
                                 remark = item.details_string6;
                             }
                             var html = '<tr class="details">'
-                                +	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
-                                +	'<td colspan="2"><select id="program_type" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'+
-								'<option value="">==请选择==</option>' +
-                                '<option value="超低有组织废气">超低有组织废气</option>' +
-								'<option value="非超低有组织废气">非超低有组织废气</option>'+
-                                '<option value="无组织废气">无组织废气</option>' +
-                                '<option value="水和废水">水和废水</option>' +
-                                '<option value="噪声">噪声</option>' +
-                                '<option value="土壤和固废">土壤和固废</option>' +
-                                '</select></td>'
+                                //+	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
+                                +	'<td colspan="3">'
+								+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
+								+			'<option value="">==请选择==</option>' +
+								+			'<option value="烟气常规检测">烟气常规检测</option>'
+								+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
+								+			'<option value="水的比对检测">水的比对检测</option>'
+								+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
+								+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
+								+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
+								+			'<option value="环评现状检测">环评现状检测</option>'
+								+			'<option value="竣工验收检测">竣工验收检测</option>'
+								+			'<option value="无组织土壤">无组织土壤</option>'
+								+			'<option value="无组织噪声">无组织噪声</option>'
+								+			'<option value="无组织废气">无组织废气</option>'
+								+			'<option value="采水">采水</option>'
+								+		'</select>'
+								+ 	'</td>'
                                 //+	'<td><input type="text" name="detection_site" value="'+item.details_string+'" data-subItems="1" lay-verify="required"></td>'
                                 +	'<td><input type="number" name="site_number" value="'+item.details_money5+'" lay-verify="required"></td>'
                                 +	'<td><input type="number" name="program_number" value="'+item.details_money3+'" lay-verify="required"></td>'
@@ -687,7 +705,9 @@
                                 +	'<td class="delete'+d_count+'"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>'
                                 +	'</tr>';
                             $('table.table-open>tbody').append(html);
-                            form.render();
+							$("#program_type"+d_count).find("option:contains('"+item.details_string+"')").attr("selected",true);
+							form.render();
+							form.render('select');
                             //渲染
                             detailsRender(d_count); //明细信息每行自定义渲染事件
                             inputRender();//input框自定义渲染
@@ -774,20 +794,27 @@
 
         //操作
         //点击添加明细按钮
-        var d_count = 1;
         $('.addDetails').click(function(){
             d_count++;
             var html = '<tr class="details">'
-                +	'<td><input type="text" name="number" value="'+(++n_count)+'" readonly></td>'
-                +	'<td colspan="2"><select id="program_type" name="program_type" lay-filter="program_type" lay-search lay-verify="required">' +
-                '<option value="">==请选择==</option>' +
-                '<option value="超低有组织废气">超低有组织废气</option>' +
-				'<option value="非超低有组织废气">非超低有组织废气</option>'+
-                '<option value="无组织废气">无组织废气</option>' +
-                '<option value="水和废水">水和废水</option>' +
-                '<option value="噪声">噪声</option>' +
-                '<option value="土壤和固废">土壤和固废</option>' +
-                '</select></td>'
+                //+	'<td><input type="text" name="number" value="'+(++n_count)+'" readonly></td>'
+				+	'<td colspan="3">'
+				+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
+				+			'<option value="">==请选择==</option>' +
+				+			'<option value="烟气常规检测">烟气常规检测</option>'
+				+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
+				+			'<option value="水的比对检测">水的比对检测</option>'
+				+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
+				+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
+				+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
+				+			'<option value="环评现状检测">环评现状检测</option>'
+				+			'<option value="竣工验收检测">竣工验收检测</option>'
+				+			'<option value="无组织土壤">无组织土壤</option>'
+				+			'<option value="无组织噪声">无组织噪声</option>'
+				+			'<option value="无组织废气">无组织废气</option>'
+				+			'<option value="采水">采水</option>'
+				+		'</select>'
+				+ 	'</td>'
                 //+	'<td><input type="text" name="detection_site" data-subItems="1" lay-verify="required"></td>'
                 +	'<td><input type="number" name="site_number" lay-verify="required"></td>'
                 +	'<td><input type="number" name="program_number" lay-verify="required"></td>'
@@ -910,7 +937,7 @@
                 $('#contract_number').val(res.data.currency_string18);//合同编号
                 $("#program_name").val(res.data.currency_string2);//项目名称
                 $("#date1").val(Format0(res.data.currency_date2,"yyyy-MM-dd HH:mm:ss"));//采样完成时间
-                $('#code').val(res.data.currency_string7);//报表编码
+                $('#code').val(res.data.currency_string7);//报告编码
                 $('#type').val(res.data.currency_string8);//检测类型
                 $("#date2").val(Format0(res.data.currency_date3,"yyyy-MM-dd HH:mm:ss"));//报告完成时间
                 $('#remark').val(res.data.currency_string9);//备注
@@ -930,28 +957,24 @@
                                 remark = item.details_string6;
                             }
                             var html = '<tr class="details">'
-                                +	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
-                                +	'<td colspan="2"><select id="program_type" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'+
-                                '<option value="">==请选择==</option>';
-                            html += '<option value="超低有组织废气" ';
-                            if(item.details_string == '超低有组织废气'){html += 'selected';}
-                            html += '>超低有组织废气</option>';
-                            html += '<option value="非超低有组织废气" ';
-                            if(item.details_string == '非超低有组织废气'){html += 'selected';}
-                            html += '>非超低有组织废气</option>';
-                            html += '<option value="无组织废气" ';
-                            if(item.details_string == '无组织废气'){html += 'selected';}
-                            html += '>无组织废气</option>';
-                            html += '<option value="水和废水" ';
-                            if(item.details_string == '水和废水'){html += 'selected';}
-                            html += '>水和废水</option>';
-                            html += '<option value="噪声" ';
-                            if(item.details_string == '噪声'){html += 'selected';}
-                            html += '>噪声</option>';
-                            html += '<option value="土壤和固废" ';
-                            if(item.details_string == '土壤和固废'){html += 'selected';}
-                            html += '>土壤和固废</option>'+
-                                '</select></td>'
+                                //+	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
+								+	'<td colspan="3">'
+								+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
+								+			'<option value="">==请选择==</option>' +
+								+			'<option value="烟气常规检测">烟气常规检测</option>'
+								+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
+								+			'<option value="水的比对检测">水的比对检测</option>'
+								+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
+								+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
+								+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
+								+			'<option value="环评现状检测">环评现状检测</option>'
+								+			'<option value="竣工验收检测">竣工验收检测</option>'
+								+			'<option value="无组织土壤">无组织土壤</option>'
+								+			'<option value="无组织噪声">无组织噪声</option>'
+								+			'<option value="无组织废气">无组织废气</option>'
+								+			'<option value="采水">采水</option>'
+								+		'</select>'
+								+ 	'</td>'
                                 //+	'<td><input type="text" name="detection_site" value="'+item.details_string+'" data-subItems="1" lay-verify="required"></td>'
                                 +	'<td><input type="number" name="site_number" value="'+item.details_money5+'" lay-verify="required"></td>'
                                 +	'<td><input type="number" name="program_number" value="'+item.details_money3+'" lay-verify="required"></td>'
@@ -961,7 +984,9 @@
                                 +	'<td class="delete'+d_count+'"><button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button></td>'
                                 +	'</tr>';
                             $('table.table-open>tbody').append(html);
-                            form.render();
+							$("#program_type"+d_count).find("option:contains('"+item.details_string+"')").attr("selected",true);
+							form.render();
+							form.render('select');
                             //渲染
                             detailsRender(d_count); //明细信息每行自定义渲染事件
                             inputRender();//input框自定义渲染

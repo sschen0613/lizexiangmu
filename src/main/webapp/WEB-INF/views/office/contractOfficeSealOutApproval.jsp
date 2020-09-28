@@ -156,7 +156,7 @@
 						,{field: 'currency_string5', title: '申请事由', minWidth:200}
 						,{field: 'currency_string7', title: '备注', minWidth:200}
 						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
-						,{title:'操作', toolbar: '#barDemo', minWidth:250}
+						,{title:'操作', fixed: 'right', toolbar: '#barDemo', minWidth:250}
 					]]
 				});
 
@@ -176,7 +176,8 @@
 							maxmin: true,
 							area: ['80%', '80%'],
 							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+currency_type //iframe的url currency_id通用审批流主键
-						}); 
+							//content: 'office/contractOfficeSealOutApprovalDetail.action?currency_id='+data.currency_id+'&currency_type='+currency_type //iframe的url currency_id通用审批流主键
+						});
 					} else if(layEvent === 'del'){ //删除
 						layer.open({
 							type: 2,

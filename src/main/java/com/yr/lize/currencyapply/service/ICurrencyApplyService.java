@@ -49,7 +49,7 @@ public interface ICurrencyApplyService {
 	List<HashMap<String, Object>> selectCurrencyDetails(CurrencyApply currencyApply);
 	
 	//查询审批意见
-	List<HashMap<String, Object>> selectApprovalOpinion(ApprovalOpinion approvalOpinions);
+	List<HashMap<String, Object>> selectApprovalOpinion(ApprovalOpinion approvalOpinions) throws ApiException;
 
 	//更改商品明细
 	Integer updateCurrencyDetailsByCurrencyId(CurrencyDetails currencyDetails);

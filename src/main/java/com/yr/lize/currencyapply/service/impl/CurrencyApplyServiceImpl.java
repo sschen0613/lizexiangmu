@@ -129,7 +129,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 			}else if (approverRole.getRole_type() == 2) { 
 				//判断当前流程是否属于要专门设置主管审批的流程
 				Integer index2 = 1;//取第几级主管 默认直接主管
-				String[] str = {"76"};
+				String[] str = {"1","57","76"};
 				if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 					//查询当前申请人身份信息
 					OapiUserGetResponse userDetilsRes = dingDingUtilsService.selectDingUserDetils(staff.getDingding_staffid());
@@ -1138,7 +1138,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 
 							for (ApproverCopy approverCopy : aCopies) {
 								userlist=approverCopy.getCopy_person();
-								dingDingUtilsService.sendmessageCopy(userlist,systemStaff,approverManage);
+								dingDingUtilsService.sendmessageCopy4(userlist,systemStaff,approverManage,currencyApply,"1");
 							}
 							userlist =systemStaff.getDingding_staffid();
 							System.err.println(userlist);
@@ -1320,7 +1320,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 
 					for (ApproverCopy approverCopy : aCopies) {
 						userlist=approverCopy.getCopy_person();
-						dingDingUtilsService.sendmessageCopy2(userlist,systemStaff,approverManage);
+						dingDingUtilsService.sendmessageCopy4(userlist,systemStaff,approverManage,currencyApply,"2");
 					}
 					userlist =systemStaff.getDingding_staffid();
 					System.err.println(userlist);
@@ -1764,7 +1764,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 	}
 
 	@Override
-	public List<HashMap<String, Object>> selectApprovalOpinion(ApprovalOpinion approvalOpinions) {
+	public List<HashMap<String, Object>> selectApprovalOpinion(ApprovalOpinion approvalOpinions) throws ApiException {
 		//查询申请信息
 		CurrencyApply currencyApply = currencyApplyMapper.selectCurrencyApplyById(approvalOpinions.getApproval_id());
 		SystemStaff staff = systemStaffMapper.selectStaffById(currencyApply.getCurrency_applicant());
@@ -1782,7 +1782,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		//添加不需要条件判定的数组
 
 		String[] str = {"8","11","14","15","16","17","18","19","24","22","23","28","29","32","37","20","61","38","39","40","41","42"
-                ,"44","45","46","55","58","59","62","63","66","67","68","69","70","71","74","75","76"};
+                ,"44","45","46","55","58","59","62","63","66","67","68","69","70","71","74","75","76","77"};
 		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
 		if (Arrays.asList(str).contains(String.valueOf(currencyApply.getCurrency_type()))){
 
@@ -2020,6 +2020,19 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				}
 
 			}else if (approverRole1.getRole_type() == 2){
+				//判断当前流程是否属于要专门设置主管审批的流程
+				Integer index2 = 1;//取第几级主管 默认直接主管
+				String[] strApply = {"1","57","76"};
+				if (Arrays.asList(strApply).contains(String.valueOf(currencyApply.getCurrency_type()))){
+					//查询当前申请人身份信息
+					OapiUserGetResponse userDetilsRes = dingDingUtilsService.selectDingUserDetils(staff.getDingding_staffid());
+					JSONObject userDetailsObj = new JSONObject(userDetilsRes.getIsLeaderInDepts());
+					//判断当前发起人是否为主管身份
+					if (userDetailsObj.getBoolean(staff.getDepartment_Id())){
+						index2 = 2;
+					}
+				}
+
 				//查询主管的部门id
 				List<Long> parentIds = null;
 				try {
@@ -2027,7 +2040,6 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 				} catch (ApiException e) {
 					e.printStackTrace();
 				}
-				Integer index2 = Integer.parseInt(approverRole1.getApprover_id());
 				//获取道当前部门主管的id集合
 				ResponseResult result = null;
 				try {

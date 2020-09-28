@@ -34,7 +34,7 @@
 
 <script type="text/html" id="system_file">
     <%--<img src="{{d.coverpath}}" class="layui-nav-img">--%>
-    <a href="{{d.coverpath}}">查看文件</a>
+    <a target="_blank" href="{{d.coverpath}}">查看文件</a>
 </script>
 
 <script type="text/javascript">
@@ -620,7 +620,7 @@
         }
         //检测过程管理
         //采样任务通知审批
-        else if(currency_type == 43){
+        else if(currency_type == 41 || currency_type == 43){
             //执行一个 table 实例
             table.render({
                 elem: '#test'
@@ -876,6 +876,19 @@
                 ]]
             });
         }
+        else if(currency_type == 77){
+            table.render({
+                elem: '#test3'
+                ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '文件'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    { type: 'numbers', title: '序号', width: 180  }
+                    ,{field: 'picture', title: '文件', width: 150,templet:"#system_file"}
+                ]]
+            });
+        }
         //现场科绩效
         else if(currency_type == 58){
             //执行一个 table 实例
@@ -1002,7 +1015,22 @@
             });
         }//合同管理
         //公章使用审批
-        else if(currency_type == 72 || currency_type == 75){
+        else if(currency_type == 72){
+            //执行一个 table 实例
+            table.render({
+                elem: '#test3'
+                ,url: 'selectContractPicture.action?currency_id='+currency_id //数据接口
+                ,page: false
+                ,title: '图片'
+                ,totalRow: true
+                ,cols: [[ //表头
+                    { type: 'numbers', title: '序号', width: 180  }
+                    ,{field: 'picture', title: '文件', width: 150,templet:"#system_file"}
+                ]]
+            });
+        }
+        //公章使用审批
+        else if(currency_type == 75){
             //执行一个 table 实例
             table.render({
                 elem: '#test3'

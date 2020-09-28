@@ -62,6 +62,11 @@ public class PartsMaintainRequestController {
 	public String setupAllocationApproverView13() {
 		return "WEB-INF/views/onlineOperation/outPartsMaintainRequestApproval";
 	}
+	//跳转信泽设备维修审批打印界面
+	@RequestMapping("onlineOperation/outPartsMaintainRequestApprovalPrint.action")
+	public String setupAllocationApproverPrint() {
+		return "WEB-INF/views/onlineOperation/outPartsMaintainRequestApprovalPrint";
+	}
 
 	// 跳转手机端配件内部维修申请界面
 	@RequestMapping("onlineOperation/mOutPartsMaintainRequest.action")

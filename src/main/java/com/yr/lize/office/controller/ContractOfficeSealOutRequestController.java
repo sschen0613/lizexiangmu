@@ -24,6 +24,12 @@ public class ContractOfficeSealOutRequestController {
 		return "WEB-INF/views/office/contractOfficeSealOutApproval";
 	}
 
+	//山东丽泽销售请购审批详情界面
+	@RequestMapping("office/contractOfficeSealOutApprovalDetail.action")
+	public String setupAllocationApproverDetail() {
+		return "WEB-INF/views/office/contractOfficeSealOutApprovalDetail";
+	}
+
 	// 跳转手机端办公用品申请界面
 	@RequestMapping("office/mContractOfficeSealOut.action")
 	public String setupAllmContractOfficeSealOut() {

@@ -66,7 +66,9 @@
 <!-- 			</div> -->
 <!-- 		</script> -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="next">样品管理员登记</a>
+	<a class="layui-btn layui-btn-xs" lay-event="get">样品接收</a>
+	<a class="layui-btn layui-btn-xs" lay-event="next">样品流转</a>
+	<a class="layui-btn layui-btn-xs" lay-event="register">样品登记</a>
 	<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看明细</a>
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">结束流程</a>
 </script>
@@ -211,16 +213,15 @@
             ,title: '检测任务登记'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'currency_number', title: '采样单号', minWidth:200, sort:true}
+                {field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:200, sort:true}
                 ,{field: 'currency_string2', title: '项目名称', minWidth:150}
                 ,{field: 'currency_string7', title: '报表编码', minWidth:100}
-                ,{field: 'currency_date2', title: '采样完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date2', title: '采样完成时间', minWidth:120, sort: true, templet:'<div>{{ Format0(d.currency_date,"yyyy-MM-dd HH:ss:mm")}}</div>'}
                 ,{field: 'currency_string8', title: '检测类型', minWidth:100}
-                ,{field: 'currency_date3', title: '报告完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date3', title: '报告完成时间', minWidth:120, sort: true, templet:'<div>{{ Format0(d.currency_date,"yyyy-MM-dd HH:ss:mm")}}</div>'}
                 //,{field: 'currency_string9', title: '执行标准', minWidth:200}
-                ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:300}
+                //,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:400}
             ]]
         });
 
@@ -284,7 +285,7 @@
                     content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
                     +data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type="+data.currency_type
                 });
-            } else if(layEvent === 'next'){ //采样任务交接
+            } else if(layEvent === 'register'){ //采样任务交接
                 layer.open({
                     type: 2,
                     // skin:'layui-layer-molv', //layui-layer-lan

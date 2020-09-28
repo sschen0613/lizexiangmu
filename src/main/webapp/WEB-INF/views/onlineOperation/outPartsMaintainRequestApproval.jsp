@@ -68,6 +68,7 @@
 		<table id="tab" lay-filter="table"></table>
 
 		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="print">打印</a>
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
 			<a class="layui-btn layui-btn-xs" lay-event="edit">审批</a>
 			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del">审批进度</a>
@@ -221,7 +222,7 @@
 						,{field: 'currency_string4', title: '故障描述', minWidth:200}
 						,{field: 'currency_string5', title: '申请原因', minWidth:200}
                         ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
-						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:230}
+						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:270}
 					]]
 				});
 				
@@ -230,8 +231,19 @@
 					var data = obj.data; //获得当前行数据
 					var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 					var tr = obj.tr; //获得当前行 tr 的DOM对象
-				 
-					if(layEvent === 'detail'){ //查看
+
+					if(layEvent === 'print'){ //打印
+						layer.open({
+							type: 2,
+							// skin:'layui-layer-molv', //layui-layer-lan
+							title: '外部维修及售后打印',
+							shadeClose: true,
+							shade: 0.8,
+							maxmin: true,
+							area: ['80%', '80%'],
+							content: 'onlineOperation/outPartsMaintainRequestApprovalPrint.action?currency_id='+data.currency_id+'&currency_type='+currency_type //iframe的url currency_id通用审批流主键
+						});
+					} else if(layEvent === 'detail'){ //查看
 						layer.open({
 							type: 2,
 							// skin:'layui-layer-molv', //layui-layer-lan

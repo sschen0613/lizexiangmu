@@ -41,6 +41,9 @@ public interface IDingDingUtilsService {
 	
 	//发送工作消息通知通用
 	void sendoOutNotice2(String dingStaffid, SystemStaff staff, ApproverManage approverManage, CurrencyApply currencyApply) throws ApiException;
+
+	//发送工作消息通知通用
+	void sendmessageCopy4(String dingStaffid, SystemStaff staff, ApproverManage approverManage, CurrencyApply currencyApply,String flag) throws ApiException;
 	
 	//查询当前部门的上级部门路径
 	List<Long> getDingDepartmentSup(String department_id) throws ApiException;

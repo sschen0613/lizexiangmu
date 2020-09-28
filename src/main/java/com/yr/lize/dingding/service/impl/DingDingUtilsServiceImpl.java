@@ -571,6 +571,41 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 
 
 	@Override
+	public void sendmessageCopy4(String dingStaffid, SystemStaff staff,ApproverManage approverManage,CurrencyApply currencyApply,String flag) throws ApiException {
+		//发送工作消息
+		//1.获取token
+		String accessToken = getAccessToken();
+		//发送办公设施调拨工作消息
+		Date date = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		String date2 = df.format(currencyApply.getCurrency_date());
+		String date3 = df.format(date);
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+		OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+
+		request.setUseridList(dingStaffid); //接收者的用户userid列表，最大列表长度：20
+		request.setAgentId(251250837L);
+		request.setToAllUser(false); //	是否发送给企业全部用户(ISV不能设置true) 83307209
+
+		OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+		msg.setActionCard(new OapiMessageCorpconversationAsyncsendV2Request.ActionCard());
+		msg.getActionCard().setTitle(approverManage.getApproval_name()); //首页显示内容
+		if ("1".equals(flag)){
+			msg.getActionCard().setMarkdown(staff.getStaff_Name()+"发起的"+approverManage.getApproval_name()+"审批已经通过。通过时间："+date2); //进入工作通知后的标题内容
+		}else {
+			msg.getOa().getBody().setContent(staff.getStaff_Name()+"发起的"+approverManage.getApproval_name()+"审批未通过!。驳回时间"+date2);
+		}
+		msg.getActionCard().setSingleTitle("点击查看详情"); //进入工作通知后标题下面的内容部分
+		msg.getActionCard().setSingleUrl("http://60.213.41.162:6819/lizexiangmu/"+approverManage.getApproval_action()+"?currency_id="+currencyApply.getCurrency_id()+"&dingStaffid="+staff.getDingding_staffid()); //点击内容跳转链接
+		msg.setMsgtype("action_card");
+
+		request.setMsg(msg);
+		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
+		System.err.println(response.getBody());
+	}
+
+
+	@Override
 	public void sendMessage69(String flag,CurrencyApply currencyApply) throws ApiException {
 		//1.获取token
 		String accessToken = getAccessToken();

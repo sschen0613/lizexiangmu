@@ -78,11 +78,11 @@
             <td colspan=13><input type="text" id="standard" name="standard"  readonly></td>
         </tr>--%>
 		<tr>
-			<th colspan="15" style="text-align: center;">采样任务明细</th>
+			<th colspan="14" style="text-align: center;">采样任务明细</th>
 		</tr>
 		<tr>
-			<td>序号</td>
-			<td colspan="3">检测项目类别</td>
+			<%--<td>序号</td>--%>
+			<td colspan="5">检测项目类别</td>
 			<td>点位个数</td>
 			<td>检测项目个数</td>
 			<%--<td>检测点位</td>--%>
@@ -95,13 +95,13 @@
             <td>已采样数量</td>--%>
 			<td>采样数量</td>
 			<%--<td>未交接数量</td>--%>
-			<td>备注</td>
+			<td colspan="5">备注</td>
 			<%--<td>采样种类</td>--%>
-			<td>流转</td>
+			<%--<td>流转</td>--%>
 		</tr>
 		<tr class="details">
-			<td><input type="text" name="number" value="1" readonly></td>
-			<td colspan="3"><input type="text" id="program_type" name="program_type" readonly></td>
+			<%--<td><input type="text" name="number" value="1" readonly></td>--%>
+			<td colspan="5"><input type="text" id="program_type" name="program_type" readonly></td>
 			<td><input type="number" id="site_number" name="site_number" lay-verify="required" readonly></td>
 			<td><input type="number" id="program_number" name="program_number" lay-verify="required" readonly></td>
 			<%--<td><input type="text" name="detection_site" readonly></td>--%>
@@ -114,7 +114,7 @@
             <td><input type="text" id="already_number1" name="already_number"></td>--%>
 			<td><input type="text" id="thatday_number1" name="thatday_number"></td>
 			<%--<td><input type="text" id="sal" name="sal"></td>--%>
-			<td><input type="text" name="remark"></td>
+			<td colspan="5"><input type="text" name="remark"></td>
 			<%--<td>
 				<select id="sampleType" name="sampleType" lay-search lay-verify="required">
 					<option value="">请选择采样种类</option>
@@ -125,19 +125,19 @@
 					<option value="无组织、土壤、噪声采样">无组织、土壤、噪声采样</option>
 				</select>
 			</td>--%>
-			<td class="radio">
+			<%--<td class="radio">
 				<input type="radio" name="circulation" value="1" title="是" checked>
 				<input type="radio" name="circulation" value="2" title="否">
-			</td>
+			</td>--%>
 		</tr>
 
 		</tbody>
-		<thead>
+		<%--<thead>
 		<tr>
 			<td>注意</td>
 			<td colspan="13"><span style="color: red">采样种类与绩效相关，请谨慎填写。其他检测只能当检测类型为环评现状检测/建设项目竣工验收检测时才能选择</span></td>
 		</tr>
-		</thead>
+		</thead>--%>
 		<%--<thead>
             <tr>
                 <td colspan=11 class="addDetails"><span class="layui-icon layui-icon-add-1" title="添加明细信息"></span></td>
@@ -194,6 +194,7 @@
             var date2 =  data.field.date2;//要求完成时间
 			var test_content = $("#test_content").val();//气还是水
             var samplePerson = formSelects.value('selectId', 'valStr');//采样人员
+			var samplePersonName = formSelects.value('selectId', 'nameStr');//采样人员
             //var standard =  data.field.standard;//执行标准
 
 
@@ -228,7 +229,7 @@
                 var thatday_number = Number($(item).find('input[name="thatday_number"]').val());
                 var remark = $(item).find('input[name="remark"]').val();
                 //var sampleType = $(item).find('select[name="sampleType"]>option:selected').text();//检测种类
-                var circulation =  $(item).find('input[name^="circulation"]:checked').val();//是否流转
+                //var circulation =  $(item).find('input[name^="circulation"]:checked').val();//是否流转
                 var obj = {
                     'details_int2':number,
                     /*'details_string':detection_site,*/
@@ -236,7 +237,7 @@
                     //'details_string2':itemsDetails,
                     'details_int3':detection_frequency,
                     'details_int4':detection_days,
-                    'details_string10':circulation,
+                    //'details_string10':circulation,//是否流转
                     //'details_money2':should_number,
                     //'details_money3':already_number+thatday_number,
                     'details_money3':program_number,//检测项目个数
@@ -267,7 +268,8 @@
                     'currency_date3':date2,
                     //'currency_string9':standard,
                     'currency_int':1,
-                    'currency_string13':samplePerson,//采样人员
+                    'currency_string13':samplePerson,//采样人员samplePersonName
+					'currency_string14':samplePersonName,//采样人员
                     'currency_string17':currency_id,//每个阶段传入任务通知的id，用户业务跟踪
                     'currencyDetails':JSON.stringify(currentDetails)
                 }
@@ -349,14 +351,14 @@
 
                     $('.details').remove();
                     var html = '<tr class="details">'
-                        +	'<td><input type="text" name="number" value="'+d_count+'" readonly></td>'
-                        +	'<td colspan="3"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+result.data.currency_string7+'" readonly></td>'
+                        //+	'<td><input type="text" name="number" value="'+d_count+'" readonly></td>'
+                        +	'<td colspan="5"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+result.data.currency_string7+'" readonly></td>'
                         +	'<td><input type="text" id="site_number'+d_count+'" name="site_number" value="1"></td>'
                         +	'<td><input type="text" id="program_number'+d_count+'" name="program_number" value="1" readonly></td>'
                         +	'<td><input type="text" id="detection_frequency'+d_count+'" name="detection_frequency" value="1" readonly></td>'
                         +	'<td><input type="text" id="detection_days'+d_count+'" name="detection_days" value="1" readonly></td>'
                         +	'<td><input type="text" id="thatday_number'+d_count+'" name="thatday_number" value="1" lay-verify="required"></td>'
-                        +	'<td><input type="text" name="remark"></td>'
+                        +	'<td colspan="4"><input type="text" name="remark"></td>'
                        /* +	'<td>'
                         +		'<select id="sampleType'+d_count+'" name="sampleType" lay-search lay-verify="required">'
                         +			'<option value="">请选择采样种类</option>'
@@ -367,10 +369,10 @@
                         +			'<option value="无组织、土壤、噪声采样">无组织、土壤、噪声采样</option>'
                         +		'</select>'
                         +	'</td>'*/
-                        +	'<td class="radio">'
+                        /*+	'<td class="radio">'
                         +		'<input type="radio" name="circulation'+d_count+'" value="1" title="是">'
                         +		'<input type="radio" name="circulation'+d_count+'" value="2" title="否" checked>'
-                        +	'</td>'
+                        +	'</td>'*/
                         +	'</tr>';
                     $('table.table-open>tbody').append(html);
 
@@ -388,14 +390,14 @@
                             $('.details').remove();
                             $.each(res.data,function (index,item) {
                                 var html = '<tr class="details">'
-                                    +	'<td><input type="text" name="number" value="'+item.details_int2+'" readonly></td>'
-                                    +	'<td colspan="3"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+item.details_string+'" readonly></td>'
+                                    //+	'<td><input type="text" name="number" value="'+item.details_int2+'" readonly></td>'
+                                    +	'<td colspan="5"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+item.details_string+'" readonly></td>'
                                     +	'<td><input type="text" id="site_number'+d_count+'" name="site_number" value="'+item.details_money5+'" readonly></td>'
                                     +	'<td><input type="text" id="program_number'+d_count+'" name="program_number" value="'+item.details_money3+'" readonly></td>'
                                     +	'<td><input type="text" id="detection_frequency'+d_count+'" name="detection_frequency" value="'+item.details_int3+'" readonly></td>'
                                     +	'<td><input type="text" id="detection_days'+d_count+'" name="detection_days" value="'+item.details_int4+'" readonly></td>'
                                     +	'<td><input type="text" id="thatday_number'+d_count+'" name="thatday_number" lay-verify="required"></td>'
-                                    +	'<td><input type="text" name="remark" value="'+item.details_string6+'"></td>'
+                                    +	'<td colspan="4"><input type="text" name="remark" value="'+item.details_string6+'"></td>'
                                     /*+	'<td>'
                                     +		'<select id="sampleType'+d_count+'" name="sampleType" lay-search lay-verify="required">'
                                     +			'<option value="">请选择采样种类</option>'
@@ -406,10 +408,10 @@
                                     +			'<option value="无组织、土壤、噪声采样">无组织、土壤、噪声采样</option>'
                                     +		'</select>'
                                     +	'</td>'*/
-                                    +	'<td class="radio">'
+                                   /* +	'<td class="radio">'
                                     +		'<input type="radio" name="circulation'+d_count+'" value="1" title="是" checked>'
                                     +		'<input type="radio" name="circulation'+d_count+'" value="2" title="否">'
-                                    +	'</td>'
+                                    +	'</td>'*/
                                     +	'</tr>';
                                 $('table.table-open>tbody').append(html);
                                 form.render();
@@ -520,8 +522,8 @@
         $('.addDetails').click(function(){
             d_count++;
             var html = '<tr class="details">'
-                +	'<td><input type="text" name="number" value="'+(++n_count)+'" readonly></td>'
-                +	'<td><input type="text" name="detection_site"></td>'
+                //+	'<td><input type="text" name="number" value="'+(++n_count)+'" readonly></td>'
+                +	'<td colspan="5"><input type="text" name="detection_site"></td>'
                 +	'<td><input type="text" name="detection_program"></td>'
                 +	'<td><input type="text" name="according"></td>'
                 +	'<td><input type="text" name="standart"></td>'
@@ -541,10 +543,10 @@
                 +			'<option value="无组织、土壤、噪声采样">无组织、土壤、噪声采样</option>'
                 +		'</select>'
                 +	'</td>'
-                +	'<td class="radio">'
+                /*+	'<td class="radio">'
                 +		'<input type="radio" name="circulation'+d_count+'" value="1" title="是" checked>'
                 +		'<input type="radio" name="circulation'+d_count+'" value="2" title="否">'
-                +	'</td>'
+                +	'</td>'*/
                 +	'</tr>';
             $('table.table-open>tbody').append(html);
             //渲染
