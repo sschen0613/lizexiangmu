@@ -125,7 +125,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">上传图片 :</label>
 						<div class="layui-input-block">
-							<input type="file" id="pics" name="pics" accept="image/*" capture="camera" multiple>
+							<input type="file" id="pics" name="pics" accept="image/*" capture="camera" multiple lay-verify="required">
 						</div>
 					</div>
 					<div class="layui-form-item">

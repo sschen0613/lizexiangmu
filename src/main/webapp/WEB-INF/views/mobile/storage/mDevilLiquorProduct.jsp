@@ -83,19 +83,21 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">废液类型 :</label>
 						<div class="layui-input-block">
-							<select name="devilLiquor_type" id="devilLiquor_type" lay-filter="devilLiquor_type" class="layui-select" lay-search lay-verify="required"></select>
+							<select name="devilLiquor_type" id="devilLiquor_type" lay-filter="devilLiquor_type" class="layui-select" lay-search lay-verify="required">
+
+							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">数量 :</label>
 						<div class="layui-input-block">
-							<input type="text" id="contract_amount" name="contract_amount" class="layui-input">
+							<input type="text" id="amount" name="amount" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
  						<label class="layui-form-label">备注 :</label>
 						<div class="layui-input-block">
-							<textarea class="layui-textarea" name="apply_reason" placeholder="请务必填写申请事由" lay-verify="required"></textarea>
+							<textarea class="layui-textarea" name="remark"  lay-verify="required"></textarea>
 						</div>
 					</div>
 					<!-- 明细信息 -->

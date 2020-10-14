@@ -599,6 +599,22 @@
 		UPDATE currency_apply set currency_int = 1 WHERE currency_id = #{currency_id}
 	</update>
 
+	<!--更新43信息-->
+	<update id="update43After44" parameterType="com.yr.lize.pojo.CurrencyApply">
+		UPDATE currency_apply
+		<set>
+			currency_int = 1,
+			<if test="currency_string13 != null and currency_string13 != ''">currency_string13 = #{currency_string13},</if>
+			<if test="currency_string14 != null and currency_string14 != ''">currency_string14 = #{currency_string14},</if>
+		</set>
+		WHERE currency_id = #{currency_string17}
+	</update>
+
+	<!--更新43明细信息-->
+	<update id="updateDetails43After44" parameterType="com.yr.lize.pojo.CurrencyDetails">
+		UPDATE currency_details set details_money4 = #{details_money4} WHERE currency_details_id = #{details_int2}
+	</update>
+
 	<update id="updateFlagById66" parameterType="int">
 		UPDATE currency_apply set currency_int = 2 WHERE currency_id = #{currency_id}
 	</update>

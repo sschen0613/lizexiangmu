@@ -202,7 +202,7 @@
             var currentDetails = [];
             $.each($('.details'),function(index,item){
                 //var sal = $(item).find('input[name="sal"]').val();
-                var number = $(item).find('input[name="number"]').val();
+                var details_id = $(item).find('input[name="details_id"]').val();
 
                 var program_type = $(item).find('input[name="program_type"]').val();//检测项目类别
                 var site_number = $(item).find('input[name="site_number"]').val();//点位个数
@@ -231,7 +231,7 @@
                 //var sampleType = $(item).find('select[name="sampleType"]>option:selected').text();//检测种类
                 //var circulation =  $(item).find('input[name^="circulation"]:checked').val();//是否流转
                 var obj = {
-                    'details_int2':number,
+                    'details_int2':details_id,//存对应的
                     /*'details_string':detection_site,*/
                     'details_string':program_type,
                     //'details_string2':itemsDetails,
@@ -391,7 +391,7 @@
                             $.each(res.data,function (index,item) {
                                 var html = '<tr class="details">'
                                     //+	'<td><input type="text" name="number" value="'+item.details_int2+'" readonly></td>'
-                                    +	'<td colspan="5"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+item.details_string+'" readonly></td>'
+                                    +	'<td colspan="5"><input type="hidden" name="details_id" value="'+item.currency_details_id+'"><input type="text" id="program_type'+d_count+'" name="program_type" value="'+item.details_string+'" readonly></td>'
                                     +	'<td><input type="text" id="site_number'+d_count+'" name="site_number" value="'+item.details_money5+'" readonly></td>'
                                     +	'<td><input type="text" id="program_number'+d_count+'" name="program_number" value="'+item.details_money3+'" readonly></td>'
                                     +	'<td><input type="text" id="detection_frequency'+d_count+'" name="detection_frequency" value="'+item.details_int3+'" readonly></td>'

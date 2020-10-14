@@ -98,7 +98,7 @@
 			<thead>
 				<tr>
 					<td>上传图片</td>
-					<td><input type="file" id="pics" name="pics" multiple="multiple"></td>
+					<td><input type="file" id="pics" name="pics" multiple="multiple" lay-verify="required"></td>
 				</tr>
 			</thead>
 		</table>

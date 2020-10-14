@@ -86,6 +86,9 @@ public interface CurrencyApplyMapper {
 
 	Integer updateFlagById(Integer currency_id);
 
+	Integer update43After44(CurrencyApply currencyApply);
+	Integer updateDetails43After44(CurrencyDetails details);
+
 	Integer updateFlagById66(Integer currency_id);
 
 	CurrencyApply selectIsExistApply(CurrencyApply currencyApply);

@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -177,8 +176,8 @@ public class DetectionServiceImpl implements DetectionService {
             Integer res = detectionMapper.addCurrencyApply(currencyApply);
             if (currencyApply.getCurrency_string5().equals("水")){//丽泽水不再让样品管理员下发 -1
                 currencyApplyMapper.updateSignById(Integer.valueOf(currencyApply.getCurrency_string17()));
-            }else {//丽泽气继续让样品管理员下发 1
-                currencyApplyMapper.updateFlagById(Integer.valueOf(currencyApply.getCurrency_string17()));
+            }else {//丽泽气继续让样品管理员下发 1，且把采样人员更新上20200929
+                currencyApplyMapper.update43After44(currencyApply);
             }
             for (CurrencyDetails details : currencyDetailss) {
                 //添加流转的商品明细
@@ -191,6 +190,8 @@ public class DetectionServiceImpl implements DetectionService {
                 //details.setDetails_money(details.getDetails_money().add(details.getDetails_money4()));
 
                 detectionMapper.addCurrencyApplyDetais(details);
+                //20200929把43明细采样数量更新上
+                currencyApplyMapper.updateDetails43After44(details);
                 //添加多个检测项目
                 //detectionMapper.addTestProcess(testProcesses, details);
             }
