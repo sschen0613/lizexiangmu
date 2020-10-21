@@ -155,4 +155,14 @@ public interface CurrencyApplyMapper {
 
 	//用于导出
 	List<HashMap<String, Object>> selectAllCurrencyList(CurrencyApply currencyApply);
+
+	List<HashMap<String,Object>> selectSite(String companyCode);
+
+	List<HashMap<String,Object>> getDevilLiquor(CurrencyApply currencyApply);
+
+	void updateDevilLiquor(CurrencyDetails currencyDetails);
+
+	List<HashMap<String,Object>> getDevilLiquorTotal(CurrencyApply currencyApply);
+
+	List<HashMap<String,Object>> getDevilLiquorDetail(CurrencyApply currencyApply);
 }

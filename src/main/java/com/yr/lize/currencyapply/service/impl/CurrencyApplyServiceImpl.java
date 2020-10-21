@@ -2882,4 +2882,56 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 			}
 			return i;
 	}
+
+	@Override
+	public List<HashMap<String, Object>> selectSite(String companyCode) {
+		return currencyApplyMapper.selectSite(companyCode);
+	}
+
+	@Override
+	public void addDevilLiquor(SystemStaff staff, CurrencyApply currencyApply, String currencyDetails) {
+		//当前操作人id
+		currencyApply.setCurrency_applicant(staff.getStaff_Id());
+		//当前操作人姓名
+		currencyApply.setCurrency_string(staff.getStaff_Name());
+		//日期
+		currencyApply.setCurrency_date(new Date());
+		//流程数据
+		Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+		//明细数据
+		List<CurrencyDetails> currencyDetailss = JSONArray.parseArray(currencyDetails, CurrencyDetails.class);//*
+		currencyApplyMapper.addCurrencyApplyDetais(currencyDetailss, currencyApply.getCurrency_id());
+		//往条码表中插入条码数据
+		//for (CurrencyDetails details : currencyDetailss) {
+			//details.setDetails_string2();//操作人姓名
+			//往流水表中插入条码记录流水
+			//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			//String nowDate = simpleDateFormat.format(new Date());
+		//}
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getDevilLiquor(CurrencyApply currencyApply) {
+		return currencyApplyMapper.getDevilLiquor(currencyApply);
+	}
+
+	@Override
+	public void updateDevilLiquor(SystemStaff staff, CurrencyApply currencyApply, String currencyDetails) {
+		List<CurrencyDetails> currencyDetailss = JSONArray.parseArray(currencyDetails, CurrencyDetails.class);//*
+		for (CurrencyDetails details : currencyDetailss) {
+			details.setDetails_string3(staff.getStaff_Name());//操作人姓名
+			details.setDetails_date(new Date());
+			currencyApplyMapper.updateDevilLiquor(details);
+		}
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getDevilLiquorTotal(CurrencyApply currencyApply) {
+		return currencyApplyMapper.getDevilLiquorTotal(currencyApply);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getDevilLiquorDetail(CurrencyApply currencyApply) {
+		return currencyApplyMapper.getDevilLiquorDetail(currencyApply);
+	}
 }

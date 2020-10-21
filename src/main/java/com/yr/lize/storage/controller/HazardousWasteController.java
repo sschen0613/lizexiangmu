@@ -9,13 +9,13 @@ public class HazardousWasteController {
 	IStorageOutlibraryOfMaterialClassService StorageOutlibraryOfMaterialClassService;*/
 
 
-	// 跳转废液列表
+	// 跳转废液增加列表
 	@RequestMapping("storage/mDevilLiquorProduct.action")
 	public String devilLiquorProduct() {
 		return "WEB-INF/views/mobile/storage/mDevilLiquorProduct";
 	}
 
-	// 跳转废液列表
+	// 跳转废液转移列表
 	@RequestMapping("storage/mDevilLiquorMove.action")
 	public String devilLiquorMove() {
 		return "WEB-INF/views/mobile/storage/mDevilLiquorMove";
@@ -26,6 +26,12 @@ public class HazardousWasteController {
 	@RequestMapping("storage/devilLiquor.action")
 	public String setupAllocationApproverView1() {
 		return "WEB-INF/views/storage/devilLiquor";
+	}
+
+	// 跳转废液列表
+	@RequestMapping("storage/devilLiquorDetail.action")
+	public String devilLiquorDetail() {
+		return "WEB-INF/views/storage/devilLiquorDetail";
 	}
 
 	/*// 跳转丽泽材料类出库申请表界面

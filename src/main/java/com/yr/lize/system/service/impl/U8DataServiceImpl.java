@@ -288,6 +288,4 @@ public class U8DataServiceImpl implements U8DataService{
 			return U8DataMapper.selectOutInv(cCode);
 		}
 	}
-
-
 }

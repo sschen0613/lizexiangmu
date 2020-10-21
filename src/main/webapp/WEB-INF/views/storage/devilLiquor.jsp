@@ -22,14 +22,16 @@
 	<body>
 	 	<form class="layui-form form-top" action="">
 	 		<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label label-revise">仓库 :</label>
+				<%--<div class="layui-inline">
+					<label class="layui-form-label label-revise">厂区 :</label>
 					<div class="layui-input-block select-revise">
-						<select id="warehouse" name="currency_string9" lay-verify="" lay-search class="select-revise">
-							<option value="">请选择仓库</option>
+						<select id="currency_string11" name="currency_string11" lay-verify="" lay-search class="select-revise">
+							<option value="">请选择厂区</option>
+							<option value="">沂水厂</option>
+							<option value=""></option>
 						</select>
 					</div>
-				</div>
+				</div>--%>
 				<div class="layui-inline">
 					<label class="layui-form-label label-revise">开始日期 :</label>
 					<div class="layui-input-block">
@@ -42,35 +44,27 @@
 						<input name="currency_date3" type="text" class="layui-input input-revise date-revise" id="date2" placeholder="请选择结束日期">
 					</div>
 				</div>
-				<div class="layui-inline">
+				<%--<div class="layui-inline">
 					<label class="layui-form-label label-revise">客户名称 :</label>
 					<div class="layui-input-block">
 						<input type="text" name="currency_string10" placeholder="客户名称 :" autocomplete="off" class="layui-input input-revise">
 					</div>
-				</div>
+				</div>--%>
 			  	<div class="layui-inline">
 					<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 	              		检索
 					</button>
-					<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
-						导出
-					</button>
 				</div> 
 			</div>
 		</form>
-
+		<div class="layui-inline">
+			<button class="layui-btn layui-btn-normal layui-btn-xs button-revise" id="ebtn">
+				导出
+			</button>
+		</div>
 		<table id="tab" lay-filter="table"></table>
-
-		<script type="text/html" id="toolbarDemo">
-			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-xs" lay-event="add">丽泽材料类出库申请表</button>
-			</div>
-		</script>
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看明细</a>
-			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">撤回</a>
-			<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="approval">审批详情</a>
 		</script>
 		<script>
 		//一般直接写在一个js文件中
@@ -108,21 +102,6 @@
 			        }
 				});
 
-				//查询所有仓库
-				$.ajax({
-    				url:'System/selectCangKu.action',
-    				type:'post',
-    				dataType:'JSON',
-    				success:function(res){
-    	 				var html = '<option value="">请选择仓库</option>';
-    					$.each(res.data,function(index,item){
-    						html += '<option value="'+item.cWhCode+'">'+item.cWhName+'</option>';
-    					});
-    					$('#warehouse').html(html); 
-    					form.render('select');
-    				}
-    			});
-
 				//监听检索按钮
 				form.on('submit(search)', function(data){
 					// console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
@@ -141,11 +120,10 @@
 
                 //监听导出按钮
                 form.on('submit(out)', function(data){
-                    var cangku = $('#warehouse').val();
                     var date1 = $('input[name="currency_date2"]').val();
                     var date2 = $('input[name="currency_date3"]').val();
                     var currency_string10 = $('input[name="currency_string10"]').val();
-                    var url = 'Currency/selectApplicantCurrency1.action?currency_type=2';
+                    var url = 'Currency/getDevilLiquorDetail.action?currency_type=78';
                     if (cangku != null && cangku != ''){
                         url += '&currency_string9='+cangku;
 					}
@@ -210,28 +188,33 @@
 				//创建table实例					
 				var tableInner = table.render({
 					elem: '#tab'
-					,url: 'Currency/selectApplicantCurrency.action?currency_type=2' //数据接口
-					,page: true //开启分页
+					,url: 'Currency/getDevilLiquorTotal.action?currency_type=78' //数据接口
+					,page: false //开启分页
 					,toolbar: '#toolbarDemo'
-			    	,title: '丽泽材料类出库申请'
+			    	,title: '废液统计表'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
-						{type: 'checkbox', fixed: 'left'}
-						,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
-// 						,{field: 'staff_name', title: '申请人', minWidth:80}
-// 						,{field: 'department_name', title: '申请部门', minWidth:100}
-						,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100,templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-						,{field: 'currency_string8', title: '仓库', minWidth:100}
-						,{field: 'currency_string2', title: '区域', minWidth:150}
-						,{field: 'currency_string10', title: '客户名称', minWidth:200}
-						,{field: 'currency_string3', title: '合同编号', minWidth:100}
-						//,{field: 'currency_money', title: '合同金额', minWidth:100}
-						//,{field: 'currency_money2', title: '已收金额', minWidth:100}
-						//,{field: 'currency_money3', title: '欠款金额', minWidth:100}
-						,{field: 'currency_string7', title: '申请事由', minWidth:200}
-						,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
+						{field: 'currency_string9', title: '废液类型', minWidth:100}
+						,{field: 'currency_money', title: '数量', minWidth:100}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:260}
 					]]
+				});
+
+
+				$(document).on('click','#ebtn',function () {
+					var currencyApply = '';
+
+					var currency_date2 =$("#date1").val();
+					var currency_date3 = $("#date2").val();
+
+					if(currency_date2 !=null && currency_date2 != ''){
+						currencyApply += '&currency_date2='+currency_date2;
+					}
+					if(currency_date3 != null && currency_date3 != ''){
+						currencyApply += '&currency_date3='+currency_date3;
+					}
+
+					window.location.href="Currency/exportDevilLiquorExcel.action?currency_type=78"+currencyApply;
 				});
 
 				//监听工具条
@@ -239,6 +222,21 @@
 					var data = obj.data; //获得当前行数据
 					var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 					var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+					var date1 = $('input[name="currency_date2"]').val();
+					var date2 = $('input[name="currency_date3"]').val();
+
+					//var url = 'Currency/getDevilLiquorDetail.action?currency_type=78';
+					if (date1 == null || date1 == ''){
+						date1=1;
+					}
+					if (date2 == null || date2 == ''){
+						date2=1;
+					}
+					/*if (currency_string10 != null && currency_string10 != ''){
+						url += '&currency_string10='+currency_string10;
+					}*/
+
 				 
 					if(layEvent === 'detail'){ //查看明细
 						layer.open({
@@ -249,82 +247,11 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'Currency/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url currency_id通用审批流主键
-						});
-					} else if(layEvent === 'edit'){ //编辑
-						layer.open({
-							type: 2,
-							title: '丽泽材料类出库申请表修改',
-							//shadeClose: true,
-							shade: 0.8,
-							maxmin: true,
-							area: ['80%', '80%'],
-							content: 'storage/outlibraryOfMaterialClassFormRevise.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url
-						});
-				    	//同步更新缓存对应的值
-				   		obj.update({
-					    	// username: '123'
-					    	// ,title: 'xxx'
-					    	// 字段 : '要更新的值',
-						});
-					} else if(layEvent === 'del'){ //撤回
-						layer.confirm('确认撤回申请？', function(index){
-							//向服务端发送删除指令
-							$.ajax({
-								url:'Currency/deleteCurrencyApply.action',
-								type:'post',
-								data:{'currency_id':data.currency_id,'currency_type':data.currency_type},
-								dataType:'JSON',
-								success:function(result){
-									if(result.msg==null || result.msg == ""){
-                                        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                                        layer.close(index);
-                                        layer.msg('您的申请已成功撤回',{time: 2000});
-									}else{
-                                        layer.msg(result.msg);
-									}
-								}
-							});
-						});
-					} else if(layEvent === 'approval'){ //审批详情
-						layer.open({
-							type: 2,
-							// skin:'layui-layer-molv', //layui-layer-lan
-							title: '审批详情',
-							shadeClose: true,
-							shade: 0.8,
-							maxmin: true,
-							area: ['80%', '80%'],
-							content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
-									+data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type="+data.currency_type
+							content: 'storage/devilLiquorDetail.action?currency_string9='+data.currency_string9
+									+'&currency_date2='+date1+'&currency_date3='+date2 //iframe的url currency_id通用审批流主键
 						});
 					}
 				});
-				//监听头工具栏事件
-				table.on('toolbar(table)', function(obj){
-					var checkStatus = table.checkStatus(obj.config.id);
-					switch(obj.event){
-						case 'add':
-							layer.open({
-								type: 2,
-								// skin:'layui-layer-molv', //layui-layer-lan
-								title: '丽泽材料类出库申请表填写',
-								//shadeClose: true,
-								shade: 0.8,
-								maxmin: true,
-								area: ['80%', '80%'],
-								content: 'storage/outlibraryOfMaterialClassForm.action' //iframe的url
-							}); 
-				    	break;
-				    	case 'delete':
-				    		layer.msg('删除');
-				    	break;
-				    	case 'update':
-				    		layer.msg('编辑');
-				    	break;
-					};
-				});
-
 			});
 		</script> 
 	</body>

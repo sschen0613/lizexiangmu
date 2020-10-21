@@ -156,4 +156,16 @@ public interface ICurrencyApplyService {
 						   List<CurrencyDetails> currencyDetailss,List<PaymentPlan> paymentPlans,MultipartFile[] files1,MultipartFile[] files2) throws ApiException;
 
 	Integer uploadFiles(HttpServletRequest request,MultipartFile[] files, Integer currency_id,String flag);
+
+	List<HashMap<String,Object>> selectSite(String companyCode);
+
+	void addDevilLiquor(SystemStaff staff,CurrencyApply currencyApply,String currencyDetails);
+
+	List<HashMap<String,Object>> getDevilLiquor(CurrencyApply currencyApply);
+
+	void updateDevilLiquor(SystemStaff staff,CurrencyApply currencyApply,String currencyDetails);
+
+	List<HashMap<String,Object>> getDevilLiquorTotal(CurrencyApply currencyApply);
+
+	List<HashMap<String,Object>> getDevilLiquorDetail(CurrencyApply currencyApply);
 }

@@ -1952,6 +1952,160 @@ public class CurrencyApplyController {
             result2.setMsg("添加失败");
         }
         return result2;
-
     }
+
+	// 查询U8当前地区站点
+	@RequestMapping("/Currency/selectSite.action")
+	@ResponseBody
+	public ResponseResult selectSite(String companyCode) {
+
+		List<HashMap<String, Object>> selectSite = iCurrencyApplyService.selectSite(companyCode);
+		ResponseResult result = new ResponseResult();
+
+		result.setData(selectSite);
+		return result;
+	}
+
+    //添加废液
+    @RequestMapping("/Currency/addDevilLiquor.action")
+    @ResponseBody
+    public ResponseResult addDevilLiquor(HttpSession session ,CurrencyApply currencyApply,String currencyDetails) {
+
+		String[] strA = {"010101","010102","010109","010110","010111","010114","010115"};//沂水厂
+		String[] strB = {"010108","010103","010104","010105","010106","010113","010112","010107"};//郯城厂
+		//判断当前流程是否需要条件判定，当前流程是否在不需要判定数组中存在
+		if (Arrays.asList(strA).contains(currencyApply.getCurrency_string2())){
+			currencyApply.setCurrency_string11("沂水厂");
+		}else if(Arrays.asList(strB).contains(String.valueOf(currencyApply.getCurrency_type()))){
+			currencyApply.setCurrency_string11("郯城厂");
+		}
+        SystemStaff staff = (SystemStaff) session.getAttribute("systemStaff");
+        ResponseResult result = new ResponseResult();
+        iCurrencyApplyService.addDevilLiquor(staff,currencyApply,currencyDetails);
+        result.setCode(0);
+        result.setData(1);
+        result.setMsg("添加成功");
+        return result;
+    }
+
+	//添加废液
+	@RequestMapping("/Currency/getDevilLiquor.action")
+	@ResponseBody
+	public ResponseResult getDevilLiquor(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		List<HashMap<String, Object>> list  = iCurrencyApplyService.getDevilLiquor(currencyApply);
+		result.setCode(0);
+		result.setData(list);
+		result.setMsg("查询成功");
+		return result;
+	}
+
+	//添加废液
+	@RequestMapping("/Currency/updateDevilLiquor.action")
+	@ResponseBody
+	public ResponseResult updateDevilLiquor(HttpSession session ,CurrencyApply currencyApply,String currencyDetails) {
+		SystemStaff staff = (SystemStaff) session.getAttribute("systemStaff");
+		ResponseResult result = new ResponseResult();
+		iCurrencyApplyService.updateDevilLiquor(staff,currencyApply,currencyDetails);
+		result.setCode(0);
+		result.setData(1);
+		result.setMsg("转移成功");
+		return result;
+	}
+
+	//添加废液
+	@RequestMapping("/Currency/selectAllCurrencyList.action")
+	@ResponseBody
+	public ResponseResult selectAllCurrencyList(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		List<HashMap<String, Object>> list  = iCurrencyApplyService.selectAllCurrencyList(currencyApply);
+		result.setCode(0);
+		result.setData(list);
+		result.setMsg("查询成功");
+		return result;
+	}
+
+	//添加废液
+	@RequestMapping("/Currency/getDevilLiquorTotal.action")
+	@ResponseBody
+	public ResponseResult getDevilLiquorTotal(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		List<HashMap<String, Object>> list  = iCurrencyApplyService.getDevilLiquorTotal(currencyApply);
+		result.setCode(0);
+		result.setData(list);
+		result.setMsg("查询成功");
+		return result;
+	}
+
+	//添加废液
+	@RequestMapping("/Currency/getDevilLiquorDetail.action")
+	@ResponseBody
+	public ResponseResult getDevilLiquorDetail(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		List<HashMap<String, Object>> list  = iCurrencyApplyService.getDevilLiquorDetail(currencyApply);
+		result.setCode(0);
+		result.setData(list);
+		result.setMsg("查询成功");
+		return result;
+	}
+
+	//领取审批导出
+	@RequestMapping("/Currency/exportDevilLiquorExcel.action")
+	public String exportDevilLiquorExcel(CurrencyApply currencyApply,HttpServletResponse response) throws IOException {
+
+		List<HashMap<String, Object>> list = iCurrencyApplyService.getDevilLiquorDetail(currencyApply);
+
+		//2.通过IO写出到客户端。。。。
+		//1.内存中组装一个Workbook
+		XSSFWorkbook wb = new XSSFWorkbook();
+		//2.添加sheet
+		XSSFSheet ws = wb.createSheet();
+		//3.添加单元格  表头 编号  名字  作者 价格
+		XSSFRow wr = ws.createRow(0);
+		XSSFCell xc0 = wr.createCell(0);
+		xc0.setCellValue("编码");
+		XSSFCell xc1 = wr.createCell(1);
+		xc1.setCellValue("重量（kg）");
+		XSSFCell xc2 = wr.createCell(2);
+		xc2.setCellValue("站点名称");
+		XSSFCell xc3 = wr.createCell(3);
+		xc3.setCellValue("状态");
+		XSSFCell xc4 = wr.createCell(4);
+		xc4.setCellValue("产生日期");
+		XSSFCell xc5 = wr.createCell(5);
+		xc5.setCellValue("转移日期");
+		XSSFCell xc6 = wr.createCell(6);
+		xc6.setCellValue("所属大区");
+
+		SimpleDateFormat s= new SimpleDateFormat("yyyy-MM-dd");
+		int k=1;
+
+		for(HashMap<String, Object> map:list){
+
+			XSSFRow xrs = ws.createRow(k);
+			XSSFCell xc0s = xrs.createCell(0);
+			xc0s.setCellValue(String.valueOf(map.get("details_string")));
+			XSSFCell xc1s = xrs.createCell(1);
+			xc1s.setCellValue(map.get("details_string2") == null?"无":String.valueOf(map.get("details_string2")));
+			XSSFCell xc2s = xrs.createCell(2);
+			xc2s.setCellValue(map.get("currency_string8") == null?"无":String.valueOf(map.get("currency_string8")));
+			XSSFCell xc3s = xrs.createCell(3);
+			if ("0".equals(String.valueOf(map.get("details_int")))){
+				xc3s.setCellValue("未转移");
+			}else {
+				xc3s.setCellValue("已转移");
+			}
+			XSSFCell xc4s = xrs.createCell(4);
+			xc4s.setCellValue(map.get("currency_date") == null ?"无":s.format((Date)map.get("currency_date")));
+			XSSFCell xc5s = xrs.createCell(5);
+			xc5s.setCellValue(map.get("details_date") == null ? "无":s.format((Date)map.get("details_date")));
+			XSSFCell xc6s = xrs.createCell(6);
+			xc6s.setCellValue(map.get("currency_string11") == null?"无":String.valueOf(map.get("currency_string11")));
+			k++;
+		}
+		response.setHeader("Content-Disposition","filename=devilLiQuor.xlsx");
+		wb.write(response.getOutputStream());
+		response.getOutputStream().close();
+		return "WEB-INF/views/storage/devilLiquor";
+	}
 }

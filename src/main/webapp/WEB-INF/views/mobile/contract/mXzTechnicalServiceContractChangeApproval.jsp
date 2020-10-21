@@ -13,6 +13,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="stylesheet" href="layui/css/layui.css">
 		<link rel="stylesheet" href="css/mobile.css">
+		<style type="text/css">
+
+		</style>
 		<script src="layui/layui.js"></script>
 		<script src="js/jquery-3.1.1.min.js"></script>
 		<script type="text/javascript" src="js/iconfont.js"></script>
@@ -127,11 +130,11 @@
 							+				'<input type="text" name="currency_date4" value="'+item.currency_string5+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
-							+				'<label class="">合同开始日期变更 :</label>'
+							+				'<label style="color:red">合同开始日期变更 :</label>'
 							+				'<input type="text"  name="person" value="'+Format(item.currency_date2,"yyyy-MM-dd")+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
-							+				'<label class="">合同结束日期变更 :</label>'
+							+				'<label style="color:red">合同结束日期变更 :</label>'
 							+				'<input type="text" name="time-ranges" value="'+Format(item.currency_date3,"yyyy-MM-dd")+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
@@ -139,29 +142,29 @@
 							+				'<input type="text" name="contract_amount" value="'+item.currency_money+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
-							+				'<label class="">合同总额变更 :</label>'
+							+				'<label style="color:red">合同总额变更 :</label>'
 							+				'<input type="text" name="currency_money2" value="'+item.currency_money2+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
-							+				'<label class="">变更说明 :</label>'
+							+				'<label style="color:red">变更说明 :</label>'
 							+				'<input type="text" name="currency_string8" value="'+item.currency_string8+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div><label class="label-title">合同付款约定 </label></div>'
 							+			'<div class="pay-detail-container">'
 							//收款计划
 							+			'</div>'
-							+			'<div><label class="label-title">原合同图片 </label></div>'
-							+			'<div class="picture1-detail-container">'
-							//图片
-							+			'</div>'
-							+			'<div><label class="label-title">变更合同图片 </label></div>'
-							+			'<div class="picture2-detail-container">'
-							//图片
-							+			'</div>'
  							 +			'<div><label class="label-title">明细信息 </label></div>'
 							 +			'<div class="approval-detail-container">'
 											//明细信息
 							 +			'</div>'
+								+			'<div><label class="label-title">原合同图片 </label></div>'
+								+			'<div class="picture1-detail-container">'
+								//图片
+								+			'</div>'
+								+			'<div><label class="label-title" style="color:red">变更合同图片 </label></div>'
+								+			'<div class="picture2-detail-container">'
+								//图片
+								+			'</div>'
 								+			'<div class="approval-opinion">'
 								+				'<label class="">审批意见 :</label>'
 								+				'<select class="layui-select" name="ifAgree" id="ifAgree">'
@@ -216,7 +219,7 @@
 										+				'<textarea name="details_string6" class="layui-textarea" readonly>'+item.details_string6+'</textarea>'
 										+			'</div>'
 										+			'<div>'
-										+				'<label class="">内容描述变更 :</label>'
+										+				'<label style="color:red">内容描述变更 :</label>'
 										+				'<textarea name="details_string7" class="layui-textarea" readonly>'+item.details_string7+'</textarea>'
 										+			'</div>'
 										+			'<div>'
@@ -224,7 +227,7 @@
 										+				'<input type="text" name="details_money" value="'+item.details_money+'" class="layui-input" readonly>'
 										+			'</div>'
 										+			'<div>'
-										+				'<label class="">数量变更 :</label>'
+										+				'<label style="color:red">数量变更 :</label>'
 										+				'<input type="text" name="details_money2" value="'+item.details_money2+'" class="layui-input" readonly>'
 										+			'</div>'
 										+			'<div>'
@@ -232,7 +235,7 @@
 										+				'<input type="text" name="details_money3" value="'+item.details_money3+'" class="layui-input" readonly>'
 										+			'</div>'
 										+			'<div>'
-										+				'<label class="">含税原币单价变更 :</label>'
+										+				'<label style="color:red">含税原币单价变更 :</label>'
 										+				'<input type="text" name="details_money4" value="'+item.details_money4+'" class="layui-input" readonly>'
 										+			'</div>'
 										+			'<div>'
@@ -263,7 +266,7 @@
 										+				'<textarea name="strSettleStyleID" class="layui-textarea" readonly>'+item.strSettleStyleID+'</textarea>'
 										+			'</div>'
 										+			'<div>'
-										+				'<label class="">合同条款名称变更 :</label>'
+										+				'<label style="color:red">合同条款名称变更 :</label>'
 										+				'<textarea name="string" class="layui-textarea" readonly>'+item.string+'</textarea>'
 										+			'</div>'
 										+			'<div>'
@@ -271,7 +274,7 @@
 										+				'<textarea name="strPayFactor" class="layui-textarea" readonly>'+item.strPayFactor+'</textarea>'
 										+			'</div>'
 										+			'<div>'
-										+				'<label class="">合同条款内容变更 :</label>'
+										+				'<label style="color:red">合同条款内容变更 :</label>'
 										+				'<textarea name="string2" class="layui-textarea" readonly>'+item.string2+'</textarea>'
 										+			'</div>'
                                         +		'</div>'

@@ -213,10 +213,10 @@
 					});
 					var payDetails = [];
 					$.each($('.contract-details'),function(index,item){
-						var contract_str_name = $(item).find('input[name="contract_str_name"]').val();	//存货编码
-						var contract_str_name_change = $(item).find('input[name="contract_str_name_change"]').val();	//商品名称
-						var contract_str_memo = $(item).find('input[name="contract_str_memo"]').val(); //规格型号
-						var contract_str_memo_change = $(item).find('input[name="contract_str_memo_change"]').val(); 		//单位
+						var contract_str_name = $(item).find('textarea[name="contract_str_name"]').val();	//存货编码
+						var contract_str_name_change = $(item).find('textarea[name="contract_str_name_change"]').val();	//商品名称
+						var contract_str_memo = $(item).find('textarea[name="contract_str_memo"]').val(); //规格型号
+						var contract_str_memo_change = $(item).find('textarea[name="contract_str_memo_change"]').val(); 		//单位
 						var obj = {
 								'dtPayDate':currencyDate
 								,'dblPayRatio':0
