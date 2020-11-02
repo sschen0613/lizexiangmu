@@ -22,4 +22,20 @@ public class StatisticalReportFormsController {
 	public String mSetupAllocationApproverDetails() {
 		return "WEB-INF/views/mobile/testingProcess/statisticalReport/mStatisticalReportDetails";
 	}
+
+	//跳转检测报告登记申请页面
+	@RequestMapping("testingProcess/samplingMessage/overDueDeal.action")
+	public String overDueDeal() {
+		return "WEB-INF/views/testingProcess/samplingMessage/overDueDeal";
+	}
+	//跳转检测报告登记表页面
+	@RequestMapping("testingProcess/samplingMessage/overDueDealForm.action")
+	public String overDueDealForm() {
+		return "WEB-INF/views/testingProcess/samplingMessage/overDueDealForm";
+	}
+	//跳转检测报告登记审批页面
+	@RequestMapping("testingProcess/samplingMessage/overDueDealApproval.action")
+	public String overDueDealApproval() {
+		return "WEB-INF/views/testingProcess/samplingMessage/overDueDealApproval";
+	}
 }

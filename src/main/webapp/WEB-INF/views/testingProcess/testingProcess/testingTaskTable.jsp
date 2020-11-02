@@ -39,7 +39,7 @@
 
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
-		<button class="layui-btn layui-btn-xs" lay-event="add"></button>
+		<button class="layui-btn layui-btn-xs" lay-event="add">批量领取</button>
 	</div>
 </script>
 <script type="text/html" id="barDemo">
@@ -88,18 +88,18 @@
             elem: '#tab'
             ,url: 'Xinze/selectLatest1.action?currency_type=45&currency_int=2' //数据接口
             ,page: true //开启分页
-            ,toolbar: true
+			,toolbar: '#toolbarDemo'
             ,title: '检测任务表'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                ,{field: 'details_int', title: '是否领取', minWidth: 120,templet:'<div>{{d.details_int != null ? "已领取" : "未领取"}}</div>'}
+                ,{field: 'details_int', title: '是否领取', minWidth: 80,templet:'<div>{{d.details_int != null ? "已领取" : "未领取"}}</div>'}
                 ,{field: 'details_string3', title: '领取人', minWidth: 100,templet:'<div>{{d.details_string3 == null ? "无" : d.details_string3}}</div>'}
-                ,{field: 'details_string', title: '样品编码', minWidth: 100}
+                ,{field: 'details_string', title: '样品编码', minWidth: 150}
                 ,{field: 'details_string2', title: '检测项目', minWidth: 100}
-                ,{field: 'details_money3', title: '样品数量', minWidth: 100}
-                ,{field: 'currency_date2', title: '交接时间', minWidth: 140, sort: true, templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_date3', title: '检测完成时间', minWidth: 140, sort: true, templet:'<div>{{ Format(d.currency_date3,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'details_money3', title: '样品数量', minWidth: 80}
+                ,{field: 'currency_string2', title: '检测开始时间', minWidth: 130}
+                ,{field: 'currency_money', title: '检测限制天数', minWidth: 120}
                 ,{field: 'details_string6', title: '备注', minWidth: 200}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
             ]]
@@ -162,7 +162,7 @@
                         shade: 0.8,
                         maxmin: true,
                         area: ['80%', '80%'],
-                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?currency_id='+data.currency_id+'&currency_details_id='+data.currency_details_id+'&id='+data.id //iframe的url currency_id通用审批流主键
+                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?currency_id='+data.currency_id+'&detailsId='+data.currency_details_id //iframe的url currency_id通用审批流主键
                     });
                 }
                 /*$.ajax({
@@ -199,7 +199,17 @@
         });
         //监听头工具栏事件
         table.on('toolbar(table)', function(obj){
-            var checkStatus = table.checkStatus(obj.config.id);
+            var checkStatus = table.checkStatus(obj.config.id),
+			data = checkStatus.data;
+            if (data.length < 1){
+            	layer.msg("请选中至少一行数据");
+            	return false;
+			}
+			var detailsId = "";
+            var currency_id = data[0].currency_id;
+            for (var i=0;i<data.length;i++){
+            	detailsId += data[i].currency_details_id +",";
+			}
             switch(obj.event){
                 case 'add':
                     layer.open({
@@ -210,7 +220,7 @@
                         shade: 0.8,
                         maxmin: true,
                         area: ['80%', '80%'],
-                        content: '' //iframe的url
+                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?currency_id='+currency_id+'&detailsId='+detailsId //iframe的url
                     });
                     break;
                 case 'delete':

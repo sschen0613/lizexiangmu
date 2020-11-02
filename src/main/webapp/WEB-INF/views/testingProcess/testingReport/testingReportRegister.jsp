@@ -45,9 +45,12 @@
 <table id="tab" lay-filter="table"></table>
 
 <script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="confirm">确认</a>
+	<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="add">添加</a>
+	<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="detail">详情</a>
 	<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="compile">完成</a>
-	<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">报告详情</a>
-	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">导出</a>
+	<%--<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">报告详情</a>
+	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">导出</a>--%>
 </script>
 <script>
     //一般直接写在一个js文件中
@@ -88,33 +91,29 @@
         //创建table实例
         var tableInner = table.render({
             elem: '#tab'
-            ,url: 'Xinze/selectAllTesting.action?currency_type=43&currency_int=-1' //数据接口
+            ,url: 'Currency/selectCurrencyList.action?currency_type=45&currency_int=-1' //数据接口
             ,page: true //开启分页
             ,toolbar: true
             ,title: '检测报告登记'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
-                ,{field: 'currency_number', title: '编码单号', minWidth:200, sort:true}
-                ,{field: 'currency_string2', title: '项目名称', minWidth:150}
-                //,{field: 'currency_string3', title: '联系人', minWidth:80}
-                //,{field: 'currency_string4', title: '联系电话', minWidth:100}
-                //,{field: 'currency_string5', title: '委托单位地址', minWidth:200}
-                //,{field: 'currency_string10', title: '委托单位名称', minWidth:120}
-                ,{field: 'currency_string7', title: '报表编码', minWidth:100}
-                ,{field: 'currency_date2', title: '采样完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                ,{field: 'currency_string8', title: '检测类型', minWidth:100}
-                ,{field: 'currency_date3', title: '报告完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                //,{field: 'currency_string9', title: '执行标准', minWidth:200}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:200}
-            ]],
+				{fixed: 'left',field: 'currency_number', title: '编码单号', minWidth:200}
+				,{field: 'currency_int3', title: '是否确认', minWidth: 100,templet:'<div>{{d.currency_int3 == 1 ? "已确认" : "未确认"}}</div>'}
+				,{field: 'currency_int2', title: '检测超期', minWidth: 100,templet:'<div>{{d.currency_int2 == 1 ? "超期" : "未超期"}}</div>'}
+				,{field: 'currency_string3', title: '检测任务编码', minWidth:230}
+				,{field: 'currency_string2', title: '检测开始时间', minWidth:150}
+				,{field: 'currency_money', title: '检测限制天数', minWidth:80}
+				,{field: 'currency_date3', title: '报告期限', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:ss:mm")}}</div>'}
+				//,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
+				,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
+            ]]/*,
             done: function (res, curr, count) {
                 for (var i = 0; i < res.data.length; i++) {   //遍历返回数据
                     if (res.data[i].currency_int6 == -1) {    //设置条件
                         $("table tbody tr").eq(i).css('background-color', 'lightgreen')    //改变满足条件行的颜色
                     }
                 }
-            }
+            }*/
         });
 
         //监听工具条
@@ -122,8 +121,39 @@
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
-
-            if(layEvent === 'detail'){ //查看明细
+			if(layEvent === 'confirm'){ //确认
+				if (data.currency_int3 == 1){
+					layer.msg('已确认，请勿重复操作!',{time: 2000});
+				}else {
+					$.ajax({
+						url:'Xinze/confirmTest45.action',
+						type:'post',
+						data:{'currency_id':data.currency_id,'currency_type':data.currency_type},
+						dataType:'JSON',
+						success:function(result){
+							layer.msg(result.msg);
+							//重载表格
+							tableInner.reload({
+								where: data.field
+								//重新从第 1 页开始
+								,page: {curr: 1}
+							});
+						}
+					});
+				}
+			} else if(layEvent === 'add'){ //查看明细
+				layer.open({
+					type: 2,
+					// skin:'layui-layer-molv', //layui-layer-lan
+					title: '报告新增',
+					shadeClose: true,
+					shade: 0.8,
+					maxmin: true,
+					area: ['80%', '80%'],
+					content: 'testingProcess/testingReport/testingReportAdd.action?currency_id='+data.currency_id
+					//content: 'testingProcess/testingReport/testingReportRegisterForm.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type+'&currency_int2='+data.currency_int2+'&currency_string17='+data.currency_string17 //iframe的url currency_id通用审批流主键
+				});
+			}else if(layEvent === 'detail'){ //查看明细
                 layer.open({
                     type: 2,
                     // skin:'layui-layer-molv', //layui-layer-lan
@@ -132,7 +162,8 @@
                     shade: 0.8,
                     maxmin: true,
                     area: ['80%', '80%'],
-                    content: 'testingProcess/testingReport/testingReportRegisterForm.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type+'&currency_int2='+data.currency_int2+'&currency_string17='+data.currency_string17 //iframe的url currency_id通用审批流主键
+					content: 'testingProcess/testingReport/testingReportDetails.action?currency_id='+data.currency_id
+					//content: 'testingProcess/testingReport/testingReportRegisterForm.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type+'&currency_int2='+data.currency_int2+'&currency_string17='+data.currency_string17 //iframe的url currency_id通用审批流主键
                 });
             } else if(layEvent === 'compile'){ //完成
                 if (data.currency_int6 == -1){

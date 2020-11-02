@@ -212,7 +212,7 @@
 				//创建table实例
 				var tableInner = table.render({
 					elem: '#tab'
-					,url: 'Xinze/jianceJiXiaoManarge.action?currency_type=45&currency_int=2&code_int2=2' //数据接口
+					,url: 'Xinze/jianceJiXiaoManarge.action?currency_type=45&currency_int=-1' //currency_in3是否质控科科长确认
 					,page: true //开启分页
 					,toolbar: '#toolbarDemo'
 			    	,title: '检测科绩效管理'
@@ -220,14 +220,14 @@
 					,cols: [[ //表头
 						{type: 'checkbox', fixed: 'left'}
 						//,{field: 'currency_string10', title: '委托单位',minWidth:100}
-                        ,{field: 'currency_string3', title: '业务下发编码',minWidth:100}
+                        ,{field: 'currency_string3', title: '业务下发编码',minWidth:230}
 						//,{field: 'currency_string2', title: '样品名称',minWidth:100}
-						,{field: 'currency_date2', title: '交接时间',minWidth:100, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd")}}</div>'}
-						,{field: 'details_date', title: '领样日期',minWidth:100, templet:'<div>{{ Format0(d.details_date,"yyyy-MM-dd")}}</div>'}
+						,{field: 'currency_string2', title: '检测开始时间',minWidth:150}
+						//,{field: 'details_date', title: '领样日期',minWidth:100, templet:'<div>{{ Format0(d.details_date,"yyyy-MM-dd")}}</div>'}
                         ,{field: 'details_string', title: '样品编码',minWidth:100}
                         ,{field: 'details_string2', title: '检测项目',minWidth:100}
 						,{field: 'details_string12', title: '检测人',minWidth:80}
-						,{field: 'details_date4', title: '检测日期',minWidth:100, templet:'<div>{{ Format0(d.details_date4,"yyyy-MM-dd")}}</div>'}
+						//,{field: 'details_date4', title: '检测日期',minWidth:100, templet:'<div>{{ Format0(d.details_date4,"yyyy-MM-dd")}}</div>'}
 						,{field: 'details_int3', title: '检测数量',minWidth:100}
 						//,{field: 'code_int2', title: '检测状态',minWidth:100,templet:'<div>{{d.code_int2 == "2" ? "检测中" : "已检测"}}</div>'}
 						//,{field: 'details_string13', title: '样品处理状态',minWidth:120}

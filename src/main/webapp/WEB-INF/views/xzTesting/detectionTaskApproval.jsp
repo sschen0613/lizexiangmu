@@ -132,7 +132,7 @@
             ,title: '采样任务通知审批'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-                ,{field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:220}
+                {field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:220}
                 ,{field: 'currency_string2', title: '项目名称', minWidth:150}
                 //,{field: 'currency_string3', title: '联系人', minWidth:80}
                 //,{field: 'currency_string4', title: '联系电话', minWidth:100}

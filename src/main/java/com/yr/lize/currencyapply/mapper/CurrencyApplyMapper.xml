@@ -615,6 +615,20 @@
 		UPDATE currency_details set details_money4 = #{details_money4} WHERE currency_details_id = #{details_int2}
 	</update>
 
+	<!--更新43信息-->
+	<update id="update43OverDate" parameterType="com.yr.lize.pojo.CurrencyApply">
+		UPDATE currency_apply
+		<set>
+			<if test="currency_string3 != null and currency_string3 != ''">currency_string3 = #{currency_string3},</if>
+			<if test="currency_money != null and currency_money != ''">currency_money = #{currency_money},</if>
+			<if test="currency_string4 != null and currency_string4 != ''">currency_string4 = #{currency_string4},</if>
+			<if test="currency_money2 != null and currency_money2 != ''">currency_money2 = #{currency_money2},</if>
+			<if test="currency_string5 != null and currency_string5 != ''">currency_string5 = #{currency_string5},</if>
+			<if test="currency_money3 != null and currency_money3 != ''">currency_money3 = #{currency_money3},</if>
+		</set>
+		WHERE currency_id = #{currency_id}
+	</update>
+
 	<update id="updateFlagById66" parameterType="int">
 		UPDATE currency_apply set currency_int = 2 WHERE currency_id = #{currency_id}
 	</update>

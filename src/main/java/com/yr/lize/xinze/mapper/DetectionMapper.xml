@@ -473,6 +473,55 @@
         ORDER BY currency_apply.currency_id DESC
     </select>
 
+    <select id="selectPerformance" resultType="HashMap">
+        SELECT
+        currency_apply.currency_id ,currency_apply.currency_name ,currency_apply.currency_type
+        ,currency_apply.currency_applicant ,currency_apply.currency_department ,currency_apply.currency_date
+        ,currency_apply.currency_date2 ,currency_apply.currency_date3 ,currency_apply.currency_date4 ,currency_apply.currency_date5 ,currency_apply.currency_string
+        ,currency_apply.currency_string2 ,currency_apply.currency_string3 ,currency_apply.currency_string4
+        ,currency_apply.currency_string5 ,currency_apply.currency_string6 ,currency_apply.currency_string7,currency_apply.currency_string8,currency_apply.currency_string9,currency_apply.currency_string10,currency_apply.currency_string11,currency_apply.currency_string12,currency_apply.currency_string13,currency_apply.currency_string14
+        ,currency_apply.currency_string15,currency_apply.currency_string16,currency_apply.currency_string17,currency_apply.currency_string18
+        ,currency_apply.currency_int ,currency_apply.currency_int2 ,currency_apply.currency_int3 ,currency_apply.currency_int4
+        ,currency_apply.currency_int5 ,currency_apply.currency_int6 ,currency_apply.currency_int7
+        ,currency_apply.currency_money ,currency_apply.currency_money2 ,currency_apply.currency_money3 ,currency_apply.currency_money4
+        ,currency_apply.currency_money5 ,currency_apply.currency_money6 ,currency_apply.condition_state ,currency_apply.approver_count
+        ,currency_apply.current_approvalCount ,currency_apply.approver_state ,currency_apply.currency_number
+        ,system_staff.staff_name ,system_department.department_name
+        ,currency_details.currency_details_id,currency_details.currency_id,currency_details.details_string
+        ,currency_details.details_string2,currency_details.details_string3,currency_details.details_string4
+        ,currency_details.details_string5,currency_details.details_string6,currency_details.details_string7
+        ,currency_details.details_int,currency_details.details_int2,currency_details.details_int3,currency_details.details_int4
+        ,currency_details.details_money,currency_details.details_money2,currency_details.details_money3
+        ,currency_details.details_money4,currency_details.details_money5,currency_details.details_string8,currency_details.details_string9,currency_details.details_string10,currency_details.details_string11,currency_details.details_string12,currency_details.details_string13
+        FROM currency_apply
+        LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
+        LEFT JOIN system_department ON system_department.ding_depmid = system_staff.department_id
+        LEFT JOIN currency_details ON currency_apply.currency_id = currency_details.currency_id
+        WHERE currency_apply.currency_type = #{currency_type}
+        <if test="currency_int !=null">
+            AND currency_apply.currency_int = #{currency_int}
+        </if>
+        <if test="currency_int2 !=null">
+            AND currency_details.details_int is NULL
+        </if>
+        <if test="currency_department != null and currency_department != ''">AND system_staff.department_id = #{currency_department}</if>
+        <if test="currency_name != null and currency_name != ''">AND currency_apply.currency_name LIKE '%${currency_name}%'</if>
+        <if test="currency_number != null and currency_number != ''">AND currency_apply.currency_number LIKE '%${currency_number}%'</if>
+        <if test="currency_string2 != null and currency_string2 != ''">AND system_staff.staff_name LIKE '%${currency_string2}%'</if>
+        <if test="currency_string3 != null and currency_string3 != ''">AND currency_apply.currency_string3 LIKE '%${currency_string3}%'</if>
+        <if test="currency_string4 != null and currency_string4 != ''">AND currency_apply.currency_string4 LIKE '%${currency_string4}%'</if>
+        <if test="currency_string5 != null and currency_string5 != ''">AND currency_apply.currency_string5 LIKE '%${currency_string5}%'</if>
+        <if test="currency_string6 != null and currency_string6 != ''">AND currency_apply.currency_string6 LIKE '%${currency_string6}%'</if>
+        <if test="currency_string7 != null and currency_string7 != ''">AND currency_apply.currency_string7 LIKE '%${currency_string7}%'</if>
+        <if test="currency_string8 != null and currency_string8 != ''">AND currency_apply.currency_string8 LIKE '%${currency_string8}%'</if>
+        <if test="currency_string9 != null and currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${currency_string9}%'</if>
+        <if test="currency_string10 != null and currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${currency_string10}%'</if>
+        <if test="currency_string17 != null and currency_string17 != ''">AND currency_apply.currency_string2 LIKE '%${currency_string17}%'</if>
+        <if test="currency_string18 != null and currency_string18 != ''">AND currency_apply.currency_string18 LIKE '%${currency_string18}%'</if>
+        <if test="currency_int7 != null ">AND currency_apply.currency_int7 IS NULL </if>
+        ORDER BY currency_apply.currency_id DESC
+    </select>
+
     <insert id="addTestProcess">
         insert into test_process
         (details_id,processName,methodBasis,number,process_int,process_int2,process_int3,process_string)
@@ -505,8 +554,10 @@
     </select>
     <!-- 添加领取信息-->
     <update id="updateLingQuDetails" parameterType="com.yr.lize.pojo.CurrencyDetails" >
-        update currency_details set details_string7 = #{details_string7},details_string11 = #{details_string11},
-        details_string12 = #{details_string12},details_string13 = #{details_string13},details_int = -1,details_date = #{details_date},details_date4 = #{details_date4},details_int3 = #{details_int3} where currency_details_id = #{currency_details_id}
+        update currency_details set
+        details_string3 = #{details_string3},details_string4 = #{details_string4},
+        details_string5 = #{details_string5},details_string7 = #{details_string7},details_int = -1,details_int3 = #{details_int3}
+        where currency_details_id = #{currency_details_id}
     </update>
     <!-- 查询上一级以及送样信息-->
     <select id="selectCaiyangOrShangJiApplicantCurrency" resultType="HashMap">
@@ -879,7 +930,6 @@
     <!--查询监测科绩效管理信息-->
     <select id="selectJianCeJiXiaoManarge"  resultType="HashMap">
         SELECT
-        <if test="param1.pagerows != null">TOP ${param1.pagerows}</if>
         currency_apply.currency_id ,currency_apply.currency_name ,currency_apply.currency_type
         ,currency_apply.currency_applicant ,currency_apply.currency_department ,currency_apply.currency_date
         ,currency_apply.currency_date2 ,currency_apply.currency_date3 ,currency_apply.currency_date4,currency_apply.currency_date5 ,currency_apply.currency_string
@@ -903,7 +953,7 @@
         LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
         LEFT JOIN system_department ON system_department.ding_depmid = system_staff.department_id
         LEFT JOIN currency_details ON currency_apply.currency_id = currency_details.currency_id
-        WHERE currency_apply.currency_type = 45 AND currency_apply.currency_int = 2
+        WHERE currency_apply.currency_type = 45
         <if test="param2.currency_department != null and param2.currency_department != ''">AND system_staff.department_id = #{param2.currency_department}</if>
         <if test="param2.currency_name != null and param2.currency_name != ''">AND currency_apply.currency_name LIKE '%${param2.currency_name}%'</if>
         <if test="param2.currency_number != null and param2.currency_number != ''">AND currency_apply.currency_number LIKE '%${param2.currency_number}%'</if>
@@ -920,30 +970,7 @@
         <if test="param2.currency_string18 != null and param2.currency_string18 != ''">AND currency_details.details_string LIKE '%${param2.currency_string18}%'</if>
         <if test="param2.currency_date3 != null">AND currency_details.details_date4 <![CDATA[ <= ]]>#{param2.currency_date3}</if>
         <if test="param2.currency_date2 != null">AND currency_details.details_date4 >=#{param2.currency_date2}</if>
-        <if test="param1.start != null">AND currency_apply.currency_id NOT IN
-            (SELECT TOP ${param1.start} currency_apply.currency_id FROM currency_apply
-            LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
-            LEFT JOIN system_department ON system_department.ding_depmid = system_staff.department_id
-            LEFT JOIN currency_details ON currency_apply.currency_id = currency_details.currency_id
-            WHERE
-            currency_apply.currency_type = 45 AND currency_apply.currency_int = 2
-            <if test="param2.currency_department != null and param2.currency_department != ''">AND system_staff.department_id = #{param2.currency_department}</if>
-            <if test="param2.currency_name != null and param2.currency_name != ''">AND currency_apply.currency_name LIKE '%${param2.currency_name}%'</if>
-            <if test="param2.currency_number != null and param2.currency_number != ''">AND currency_apply.currency_number LIKE '%${param2.currency_number}%'</if>
-            <if test="param2.currency_string2 != null and param2.currency_string2 != ''">AND system_staff.staff_name LIKE '%${param2.currency_string2}%'</if>
-            <if test="param2.currency_string3 != null and param2.currency_string3 != ''">AND currency_apply.currency_string3 LIKE '%${param2.currency_string3}%'</if>
-            <if test="param2.currency_string4 != null and param2.currency_string4 != ''">AND currency_apply.currency_string4 LIKE '%${param2.currency_string4}%'</if>
-            <if test="param2.currency_string5 != null and param2.currency_string5 != ''">AND currency_apply.currency_string5 LIKE '%${param2.currency_string5}%'</if>
-            <if test="param2.currency_string6 != null and param2.currency_string6 != ''">AND currency_apply.currency_string6 LIKE '%${param2.currency_string6}%'</if>
-            <if test="param2.currency_string7 != null and param2.currency_string7 != ''">AND currency_apply.currency_string7 LIKE '%${param2.currency_string7}%'</if>
-            <if test="param2.currency_string8 != null and param2.currency_string8 != ''">AND currency_apply.currency_string8 LIKE '%${param2.currency_string8}%'</if>
-            <if test="param2.currency_string9 != null and param2.currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${param2.currency_string9}%'</if>
-            <if test="param2.currency_string10 != null and param2.currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${param2.currency_string10}%'</if>
-            <if test="param2.currency_string17 != null and param2.currency_string17 != ''">AND currency_details.details_string2 LIKE '%${param2.currency_string17}%'</if>
-            <if test="param2.currency_string18 != null and param2.currency_string18 != ''">AND currency_details.details_string LIKE '%${param2.currency_string18}%'</if>
-            <if test="param2.currency_date3 != null">AND currency_details.details_date4 <![CDATA[ <= ]]>#{param2.currency_date3}</if>
-            <if test="param2.currency_date2 != null">AND currency_details.details_date4 >=#{param2.currency_date2}</if>
-            ORDER BY currency_apply.currency_id DESC)</if>
+        <if test="param2.currency_int3 != null and param2.currency_int3 != ''">AND currency_apply.currency_int3 = #{param2.currency_int3}</if>
         ORDER BY currency_apply.currency_id DESC
     </select>
     <!--更改sampleCode表中cod_int2字段-->
@@ -1201,5 +1228,57 @@
         ,currency_details.details_string10,currency_details.details_string11,currency_details.details_string12,currency_details.details_string13
         FROM currency_details
         WHERE currency_details.currency_id = #{currency_id}
+    </select>
+
+    <!-- 查询还未完成的45明细信息数量 -->
+    <select id="selectCurrencyDetailsCount45" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM currency_details
+        WHERE details_int <![CDATA[ <> ]]> -1 and currency_id = #{currency_id}
+    </select>
+
+    <!-- 批量添加的采购商品 -->
+    <insert id="testingReportAdd" parameterType="com.yr.lize.pojo.CurrencyDetails">
+        insert into currency_details
+        (currency_id,details_string,details_string2,details_string4,details_string5,details_string6,details_string7,details_string8,details_string9,details_string10,details_string11,details_string12,details_string13
+        ,details_int,details_int2,details_int3,details_int4
+        ,details_money,details_money2,details_money3,details_money4,details_money5,details_money6,details_money7
+        ,details_date,details_date2,details_date3)
+        values
+        (#{currency_id},#{details_string},#{details_string2},#{details_string4},#{details_string5}
+        ,#{details_string6},#{details_string7},#{details_string8},#{details_string9},#{details_string10},#{details_string11},#{details_string12},#{details_string13},#{details_int},#{details_int2},#{details_int3},#{details_int4},#{details_money}
+        ,#{details_money2},#{details_money3},#{details_money4},#{details_money5},#{details_money6},#{details_money7}
+        ,#{details_date},#{details_date2},#{details_date3})
+    </insert>
+
+    <!-- 查看采样详情 -->
+    <select id="selectCurrencyDetailsReport" parameterType="com.yr.lize.pojo.CurrencyDetails" resultType="HashMap">
+        SELECT currency_details.currency_details_id,currency_details.currency_id,currency_details.details_string
+        ,currency_details.details_string2,currency_details.details_string3,currency_details.details_string4
+        ,currency_details.details_string5,currency_details.details_string6,currency_details.details_string7
+        ,currency_details.details_int,currency_details.details_int2,currency_details.details_int3,currency_details.details_int4
+        ,currency_details.details_money,currency_details.details_money2,currency_details.details_money3
+        ,currency_details.details_money4,currency_details.details_money5,currency_details.details_string8,currency_details.details_string9
+        ,currency_details.details_string10,currency_details.details_string11,currency_details.details_string12,currency_details.details_string13
+        ,currency_details.details_date
+        FROM currency_details
+        <where>
+            currency_id = 0
+            <if test="details_int4 != null and details_int4 != 0">
+                AND details_int4 = #{details_int4}
+            </if>
+            <if test="details_date3 != null">
+                AND details_date <![CDATA[ <= ]]>#{details_date3}
+            </if>
+            <if test="details_date2 != null">
+                AND details_date >=#{param1.details_date2}
+            </if>
+            <if test="details_string4 != null and details_string4 != ''">
+                AND  details_string4 LIKE '%${details_string4}%'
+            </if>
+            <if test="details_string3 != null and details_string3 != ''">
+                AND  details_string3 LIKE '%${details_string3}%'
+            </if>
+        </where>
     </select>
 </mapper>

@@ -35,6 +35,12 @@
 				<input type="text" name="currency_string7" placeholder="请输入报表编码模糊检索" autocomplete="off" class="layui-input input-revise">
 			</div>
 		</div>
+		<%--<div class="layui-inline">
+			<label class="layui-form-label label-revise">报表编码 :</label>
+			<div class="layui-input-block">
+				<input type="text" name="currency_string7" placeholder="请输入报表编码模糊检索" autocomplete="off" class="layui-input input-revise">
+			</div>
+		</div>--%>
 		<div class="layui-inline">
 			<label class="layui-form-label label-revise">开始日期 :</label>
 			<div class="layui-input-block">
@@ -66,10 +72,10 @@
 <!-- 			</div> -->
 <!-- 		</script> -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="get">样品接收</a>
-	<a class="layui-btn layui-btn-xs" lay-event="next">样品流转</a>
-	<a class="layui-btn layui-btn-xs" lay-event="register">样品登记</a>
 	<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看明细</a>
+	<a class="layui-btn layui-btn-xs" lay-event="get">样品接收</a>
+	<a class="layui-btn layui-btn-xs" lay-event="trans">样品流转</a>
+	<a class="layui-btn layui-btn-xs" lay-event="register">样品登记</a>
 	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">结束流程</a>
 </script>
 <script>
@@ -213,12 +219,12 @@
             ,title: '检测任务登记'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-                {field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:200, sort:true}
-                ,{field: 'currency_string2', title: '项目名称', minWidth:150}
+                {field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:220, sort:true}
+                ,{field: 'currency_string2', title: '项目名称', minWidth:180}
                 ,{field: 'currency_string7', title: '报表编码', minWidth:100}
-                ,{field: 'currency_date2', title: '采样完成时间', minWidth:120, sort: true, templet:'<div>{{ Format0(d.currency_date,"yyyy-MM-dd HH:ss:mm")}}</div>'}
+                ,{field: 'currency_date2', title: '采样完成时间', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd HH:ss:mm")}}</div>'}
                 ,{field: 'currency_string8', title: '检测类型', minWidth:100}
-                ,{field: 'currency_date3', title: '报告完成时间', minWidth:120, sort: true, templet:'<div>{{ Format0(d.currency_date,"yyyy-MM-dd HH:ss:mm")}}</div>'}
+                ,{field: 'currency_date3', title: '报告完成时间', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:ss:mm")}}</div>'}
                 //,{field: 'currency_string9', title: '执行标准', minWidth:200}
                 //,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:400}
@@ -242,50 +248,42 @@
                     area: ['80%', '80%'],
                     content: 'Xinze/currencyDetails.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url currency_id通用审批流主键
                 });
-            } else if(layEvent === 'edit'){ //编辑
-                layer.open({
-                    type: 2,
-                    title: '采样登记表修改',
-                    shadeClose: true,
-                    shade: 0.8,
-                    maxmin: true,
-                    area: ['80%', '80%'],
-                    content: '?currency_id='+data.currency_id+'&currency_type='+data.currency_type //iframe的url
-                });
-                //同步更新缓存对应的值
-                obj.update({
-                    // username: '123'
-                    // ,title: 'xxx'
-                    // 字段 : '要更新的值',
-                });
-            } else if(layEvent === 'del'){ //撤回
-                layer.confirm('确认结束流程？', function(index){
-                    //向服务端发送删除指令
-                    $.ajax({
-                        url:'Xinze/endTest.action',
-                        type:'post',
-                        data:{'currency_id':data.currency_id},
-                        dataType:'JSON',
-                        success:function(result){
+            } else if(layEvent === 'get'){ //样品接收
+				$.ajax({
+					url:'Xinze/getSample.action',
+					type:'post',
+					data:{'currency_id':data.currency_id},
+					dataType:'JSON',
+					success:function(result){
+						layer.msg(result.msg);
+					}
+				});
+            } else if(layEvent === 'trans'){ //样品流转
+				$.ajax({
+					url:'Xinze/transSample.action',
+					type:'post',
+					data:{'currency_id':data.currency_id},
+					dataType:'JSON',
+					success:function(result){
+						layer.msg(result.msg);
+					}
+				});
+            }else if(layEvent === 'del'){ //撤回
+				layer.confirm('确认结束流程？', function(index){
+					//向服务端发送删除指令
+					$.ajax({
+						url:'Xinze/endTest.action',
+						type:'post',
+						data:{'currency_id':data.currency_id},
+						dataType:'JSON',
+						success:function(result){
 							obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
 							layer.close(index);
 							layer.msg(result.msg,{time: 2000});
-                        }
-                    });
-                });
-            } else if(layEvent === 'approval'){ //审批详情
-                layer.open({
-                    type: 2,
-                    // skin:'layui-layer-molv', //layui-layer-lan
-                    title: '审批详情',
-                    shadeClose: true,
-                    shade: 0.8,
-                    maxmin: true,
-                    area: ['80%', '80%'],
-                    content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
-                    +data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type="+data.currency_type
-                });
-            } else if(layEvent === 'register'){ //采样任务交接
+						}
+					});
+				});
+			} else if(layEvent === 'register'){ //样品登记
                 layer.open({
                     type: 2,
                     // skin:'layui-layer-molv', //layui-layer-lan
@@ -294,35 +292,12 @@
                     shade: 0.8,
                     maxmin: true,
                     area: ['80%', '80%'],
-                    content: 'testingProcess/samplingMessage/sampleManagerForm.action?currency_id='+data.currency_id+'&currency_number='+data.currency_number+'&currency_string7='+data.currency_string7+"&currency_type="+data.currency_type //iframe的url
+                    content: 'testingProcess/samplingMessage/sampleManagerForm.action?currency_id='+data.currency_id
+							+'&currency_number='+data.currency_number+'&currency_string7='+data.currency_string7
+							+"&currency_type="+data.currency_type
                 });
             }
         });
-        //监听头工具栏事件
-        table.on('toolbar(table)', function(obj){
-            var checkStatus = table.checkStatus(obj.config.id);
-            switch(obj.event){
-                case 'add':
-                    layer.open({
-                        type: 2,
-                        // skin:'layui-layer-molv', //layui-layer-lan
-                        title: '采样登记表填写',
-                        //shadeClose: true,
-                        shade: 0.8,
-                        maxmin: true,
-                        area: ['80%', '80%'],
-                        content: 'testingProcess/samplingMessage/samplingTaskRegisterForm.action' //iframe的url
-                    });
-                    break;
-                case 'delete':
-                    layer.msg('删除');
-                    break;
-                case 'update':
-                    layer.msg('编辑');
-                    break;
-            };
-        });
-
     });
 </script>
 </body>

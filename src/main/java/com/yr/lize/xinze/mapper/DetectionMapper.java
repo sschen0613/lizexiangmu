@@ -53,6 +53,8 @@ public interface DetectionMapper {
 
     List<HashMap<String,Object>> selectLatest(Page page,CurrencyApply currencyApply);
 
+    List<HashMap<String,Object>> selectPerformance(CurrencyApply currencyApply);
+
     //添加项目分配
     Integer addTestProcess(List<TestProcess> list,CurrencyDetails details);
 
@@ -145,4 +147,11 @@ public interface DetectionMapper {
 
     //根据ID查询上一级任务书详情
     List<HashMap<String,Object>> selectCurrencyDetails49(Integer currency_id);
+
+    //查询还未完成的明细信息
+    Integer selectCurrencyDetailsCount45 (Integer currency_id);
+
+    Integer testingReportAdd(CurrencyDetails currencyDetails);
+
+    List<HashMap<String,Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails);
 }

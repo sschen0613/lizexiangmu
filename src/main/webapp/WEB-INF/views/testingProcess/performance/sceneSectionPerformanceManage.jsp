@@ -98,27 +98,26 @@
 			    	,title: '现场科绩效管理'
 // 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
-						{type: 'checkbox', fixed: 'left'}
-						,{field: 'reportNum', title: '采样任务单编号',minWidth:130}
+						{fixed: 'left',field: 'reportNum', title: '采样任务单编号',minWidth:230}
 						//,{field: 'currency_string18', title: '合同编号',minWidth:100}
-						,{field: 'currency_string2', title: '项目名称',minWidth:100}
-						,{field: 'details_string', title: '检测项目类别',minWidth:100}
+						,{field: 'currency_string2', title: '项目名称',minWidth:150}
+						,{field: 'details_string', title: '检测项目类别',minWidth:230}
 						//,{field: 'processName', title: '检测项目',minWidth:100}
-						,{field: 'details_money5', title: '点位个数',minWidth:100}
-                        ,{field: 'details_money3', title: '检测项目个数',minWidth:100}
-                        ,{field: 'details_int3', title: '检测频次',minWidth:100}
-                        ,{field: 'details_int4', title: '检测天数',minWidth:100}
-                        ,{field: 'details_money4', title: '当天采样数量',minWidth:100}
+						,{field: 'details_money5', title: '点位个数',minWidth:90}
+                        ,{field: 'details_money3', title: '检测项目个数',minWidth:110}
+                        ,{field: 'details_int3', title: '检测频次',minWidth:90}
+                        ,{field: 'details_int4', title: '检测天数',minWidth:90}
+                        ,{field: 'details_money4', title: '当天采样数量',minWidth:120}
 						//,{field: '', title: '检测点位数量',minWidth:120, templet:'<div>{{d.details_money2/d.details_int3/d.details_int4 }}</div>'}
 						//,{field: '', title: '实际检测点位数量',minWidth:140, templet:'<div>{{d.details_money2/d.details_int3/d.details_int4 }}</div>'}
 						/*,{field: '', title: '样品交接单编号',minWidth:130}*/
 						,{field: 'staff_name', title: '取样人',minWidth:80}
 						,{field: 'currency_date', title: '取样时间',minWidth:100, templet:'<div>{{ Format0(d.currency_date,"yyyy-MM-dd")}}</div>'}
 						//,{field: 'details_money4', title: '总数量',minWidth:80}
-						,{field: '绩效标准', title: '绩效标准ID',minWidth:120}
+						//,{field: '绩效标准', title: '绩效标准ID',minWidth:120}
 						,{field: '绩效单价', title: '绩效单价',minWidth:100}
 						,{field: '绩效金额', title: '绩效总额',minWidth:100}
-                        ,{field: '登高', title: '登高',minWidth:100}
+                        //,{field: '登高', title: '登高',minWidth:100}
 						//,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}
 					]],parseData:function(res){
                         var data = res.data;

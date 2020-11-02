@@ -1128,7 +1128,18 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
                         	//66水样检测审批完成后，更新currency_int为2，令检测任务表能获取到此数据。进行领取操作
 							//Integer currency_id = Integer.parseInt(currencyApply2.getCurrency_string17());
 							currencyApplyMapper.updateFlagById66(currencyApply2.getCurrency_id());
-						}
+						}else if (currencyApply2.getCurrency_type() == 49){
+                            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currencyApply2.getCurrency_int());
+                            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+                            if ("现场科".equals(currencyApply2.getCurrency_string2())){
+                                currencyApply43.setCurrency_money(new BigDecimal(2));
+                            }else if("检测科".equals(currencyApply2.getCurrency_string2())){
+								currencyApply43.setCurrency_money2(new BigDecimal(2));
+                            }else if("质控科".equals(currencyApply2.getCurrency_string2())){
+								currencyApply43.setCurrency_money3(new BigDecimal(2));
+                            }
+							currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
+                        }
 						//---------------------------审批完成后抄送人没有根据天人来进行查询20200617--------------------------
 						List<ApproverCopy> aCopies = systemApprovalMapper.selectCopyPerson(approval_id , systemStaff.getCompany_Id());
 						systemApprovalMapper.deleteApproveRroleRecord(approverRole3);

@@ -2,6 +2,7 @@ package com.yr.lize.xinze.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.st.rbac.util.Page;
+import com.taobao.api.ApiException;
 import com.yr.lize.currencyapply.mapper.CurrencyApplyMapper;
 import com.yr.lize.currencyapply.service.ICurrencyApplyService;
 import com.yr.lize.dingding.service.IDingDingUtilsService;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -54,6 +56,11 @@ public class DetectionServiceImpl implements DetectionService {
             //添加调拨审批请求
             /*更改上级标识*/
             //Integer integer = currencyApplyMapper.updateSignById(currencyApply.getCurrency_id());
+            //获取43检测开始时间记录到45
+            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply.getCurrency_string17()));
+            currencyApply.setCurrency_string2(currencyApply43.getCurrency_string4());
+            //报告最后限定时间
+            currencyApply.setCurrency_date3(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(currencyApply43.getCurrency_date3()));
             Integer res = detectionMapper.addCurrencyApply(currencyApply);
             //StringBuffer sb = new StringBuffer("以下样品已交接,请尽快检测！样品编码:");
             if (currencyDetailss != null) {
@@ -68,21 +75,6 @@ public class DetectionServiceImpl implements DetectionService {
                         details.setDetails_string2(d);
                         detectionMapper.addCurrencyApplyDetais1(details);
                     }
-
-                    /*for (TestProcess process : testProcesses) {
-                        details.setDetails_string2(process.getProcessName());
-                        detectionMapper.addCurrencyApplyDetais1(details);
-                        //添加多个检测标准
-                        detectionMapper.addStandartProcess(process, details);
-
-                        //添加样品编码
-                        List<sampleCode> codeList = JSONArray.parseArray(details.getDetails_string3(), sampleCode.class);
-                        for (sampleCode code : codeList) {
-                            detectionMapper.addSampleCode(code, details);
-                            sb.append(code.getCode()).append("、");
-                        }
-
-                    }*/
                 }
 
             }
@@ -102,53 +94,176 @@ public class DetectionServiceImpl implements DetectionService {
 
             return res;
         } else if (currencyApply.getCurrency_type() == 49) {
+            //获取43的一些信息
+            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_int());
+            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+            currencyApply.setCurrency_string7(currencyApply43.getCurrency_string2());//项目名称
+            currencyApply.setCurrency_string8(currencyApply43.getCurrency_string18());//合同编号
+            currencyApply.setCurrency_string9(currencyApply43.getCurrency_string7());//报告编码
 
-            //Integer integer = detectionMapper.updateShangjiMsg(currencyDetailss.get(0).getCurrency_details_id());
-            Integer res = detectionMapper.addCurrencyApply(currencyApply);
-            if (currencyDetailss != null) {
-                //添加当前通用审批的详情
-                for (CurrencyDetails details : currencyDetailss) {
-                    details.setCurrency_id(currencyApply.getCurrency_id());
-                    //领取之后为-1，检测登记之后为1
-                    detectionMapper.updateSampleCodeInt2(Integer.valueOf(currencyDetailss.get(0).getDetails_string12()));//检测状态标识
-                    detectionMapper.addCurrencyApplyDetais(details);
+            //循环遍历审批组
+            Integer approval_id = currencyApply.getCurrency_type();//*
+            currencyApply.setApprover_count(roles.size());//记录一共有几层审批
+            int count = 0;//*
+            ApproverManage approverManage = systemApprovalMapper.selectManage(approval_id);//查询当前审批的管理信息//*
+            for (ApproverRole approverRole : roles) {//遍历审批组//*
+                //循环第一遍进入第一个要发送消息的审批组如果第一个审批组中没有人进行第二次循环
+                if (approverRole.getRole_type() == 1) {//判断是否为角色
+                    ResponseResult result = dingDingUtilsService.selectDingRoleStaff(approverRole.getApprover_id());//查询钉钉角色下的人员
+                    if (!"".equals(result.getMsg())) {//如果查询到的角色不为空字符串
+                        //添加调拨审批请求
+                        Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+                        currencyApply.setCurrency_string17(currencyApply.getCurrency_id()+"");
+                        detectionMapper.updateString17(currencyApply);
 
-                }
-            }
-            return res;
+                        List<String> list = new ArrayList<>();
+                        String[]  strs2=result.getMsg().split(",");
+                        int index = 0;
+                        for(int i=0,len=strs2.length;i<len;i++){
+                            //区域经理角色只针对申请人所在区域的区域经理发送消息
+                            if ("区域经理".equals(approverRole.getApprover_name())){
+                                SystemStaff systemStaff = systemStaffMapper.selectStaffByDingdingStaffIdAndDepartmentId(strs2[i],staff.getDepartment_Id());
+                                if (systemStaff == null){
+                                    continue;
+                                }else if (systemStaff.getDepartment_Id().equals(staff.getDepartment_Id())){
+                                    index++;
+                                    //发送工作消息
+                                    dingDingUtilsService.sendoOutNotice2(strs2[i],staff,approverManage,currencyApply);
+                                    list.add(strs2[i]);
+                                }
+                            }else {
+                                index++;
+                                //发送工作消息
+                                dingDingUtilsService.sendoOutNotice2(strs2[i], staff, approverManage, currencyApply);
+                                list.add(strs2[i]);
+                            }
+                        }
 
-            /*if (!("异常".equals(currencyDetailss.get(0).getDetails_string10()) && "超标".equals(currencyDetailss.get(0).getDetails_string11()))) {
-                Integer integer = detectionMapper.updateShangjiMsg(currencyDetailss.get(0).getCurrency_details_id());
-                Integer res = detectionMapper.addCurrencyApply(currencyApply);
-                if (currencyDetailss != null) {
-                    //添加当前通用审批的详情
-                    for (CurrencyDetails details : currencyDetailss) {
-                        details.setCurrency_id(currencyApply.getCurrency_id());
-                        detectionMapper.updateSampleCodeInt2(currencyDetailss.get(0).getCurrency_details_id());//检测状态标识
-                        detectionMapper.addCurrencyApplyDetais(details);
-
+                        currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+                        if (approverRole.getRole_state() == 1) {//添加当前审批组有多少人要进行审批 如果是或签为一
+                            currencyApply.setApprover_state(1);
+                        }else {//如果当前审批为会签把要审批的人的数量加到审批中
+                            currencyApply.setApprover_state(index);
+                        }
+                        Integer update = currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+                        if(currencyDetailss != null) {
+                            //添加当前通用审批的详情
+                            for (CurrencyDetails details : currencyDetailss) {
+                                if (currencyApply.getCurrency_int2()==2){
+                                    details.setDetails_money(details.getDetails_money2());
+                                }
+                                List<TestProcess> testProcesses = JSONArray.parseArray(details.getDetails_string2(), TestProcess.class);
+                                details.setCurrency_id(currencyApply.getCurrency_id());
+                                details.setDetails_string2("项目名称");
+                                detectionMapper.addCurrencyApplyDetais(details);
+                                //添加多个检测项目
+                                detectionMapper.addTestProcess(testProcesses, details);
+                            }
+                        }
+                        //合同添加图片
+                        if (files != null && files.length > 0){
+                            this.uploadFiles(request,files,currencyApply.getCurrency_id());
+                        }
+                        //记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+                        systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+                        //将审批人添加到审批列表中
+                        systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+                        return res;
                     }
-                }
-                return res;
-            } else {
-                Integer i = detectionMapper.selectErrorJianCeCount(currencyDetailss.get(0).getCurrency_details_id() + "");
-                if (i < 2) {
-                    Integer res = detectionMapper.addCurrencyApply(currencyApply);
-                    if (currencyDetailss != null) {
+
+                }else if (approverRole.getRole_type() == 2) {
+                    //查询主管的部门id
+                    List<Long> parentIds = dingDingUtilsService.getDingDepartmentSup(staff.getDepartment_Id());
+                    Integer index2 = Integer.parseInt(approverRole.getApprover_id());
+                    //获取道当前部门主管的id集合
+                    ResponseResult result = dingDingUtilsService.selectDepartmRole(parentIds.get(index2-1).toString());
+                    if (!"".equals(result.getMsg())) {//如果查询到的部门主管不为空字符串
+                        //添加审批请求
+                        Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+                        currencyApply.setCurrency_string17(currencyApply.getCurrency_id()+"");
+                        detectionMapper.updateString17(currencyApply);
+
+                        List<String> list = new ArrayList<>();
+                        String[]  strs2=result.getMsg().split(",");
+                        int index = 0;
+                        for(int i=0,len=strs2.length;i<len;i++){
+                            index++;
+                            //发送工作消息
+                            dingDingUtilsService.sendoOutNotice2(strs2[i],staff,approverManage,currencyApply);
+                            list.add(strs2[i]);
+                        }
+
+                        currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+                        if (approverRole.getRole_state() == 1) {//添加当前审批组有多少人要进行审批 如果是或签为一
+                            currencyApply.setApprover_state(1);
+                        }else {
+                            currencyApply.setApprover_state(index);
+                        }
+                        //添加审批请求
+                        Integer update = currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+                        if (currencyDetailss != null) {
+                            //添加当前通用审批的详情
+                            for (CurrencyDetails details : currencyDetailss) {
+                                if (currencyApply.getCurrency_int2()==2){
+                                    details.setDetails_money(details.getDetails_money2());
+                                }
+                                List<TestProcess> testProcesses = JSONArray.parseArray(details.getDetails_string2(), TestProcess.class);
+                                details.setCurrency_id(currencyApply.getCurrency_id());
+                                details.setDetails_string2("项目名称");
+                                detectionMapper.addCurrencyApplyDetais(details);
+                                //添加多个检测项目
+                                detectionMapper.addTestProcess(testProcesses, details);
+                            }
+                        }
+                        //合同添加图片
+                        if (files != null && files.length > 0){
+                            this.uploadFiles(request,files,currencyApply.getCurrency_id());
+                        }
+                        //记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+                        systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+                        //将审批人添加到审批列表中
+                        systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+                        return res;
+                    }
+                }else if (approverRole.getRole_type() == 3) {
+
+                    List<String> list = new ArrayList<>();
+                    list.add(approverRole.getApprover_id());
+                    currencyApply.setCurrent_approvalCount(count);//记录当前是第几次审批
+                    currencyApply.setApprover_state(1);
+                    //添加审批请求
+                    Integer res = currencyApplyMapper.addCurrencyApply(currencyApply);
+                    currencyApply.setCurrency_string17(currencyApply.getCurrency_id()+"");
+                    detectionMapper.updateString17(currencyApply);
+                    //添加当前调拨的商品
+                    if(currencyDetailss!=null) {
                         //添加当前通用审批的详情
                         for (CurrencyDetails details : currencyDetailss) {
-                            details.setDetails_string12(currencyDetailss.get(0).getCurrency_details_id() + "");
+                            if (currencyApply.getCurrency_int2() != null && currencyApply.getCurrency_int2()==2){
+                                details.setDetails_money(details.getDetails_money2());
+                            }
+                            //List<TestProcess> testProcesses = JSONArray.parseArray(details.getDetails_string2(), TestProcess.class);
                             details.setCurrency_id(currencyApply.getCurrency_id());
+                            //details.setDetails_string2("项目名称");
                             detectionMapper.addCurrencyApplyDetais(details);
-
+                            //添加多个检测项目
+                            //detectionMapper.addTestProcess(testProcesses, details);
                         }
                     }
+                    //合同添加图片
+                    if (files != null && files.length > 0){
+                        this.uploadFiles(request,files,currencyApply.getCurrency_id());
+                    }
+                    //记录这条审批发起时的申请流程,确保这条审批流程没有审批完成时,审批流程被修改,不会影响到当前发起的这条申请流程无法继续
+                    systemApprovalMapper.addApproveRroleRecord(roles,currencyApply.getCurrency_id());
+                    //将审批人添加到审批列表中
+                    systemApprovalMapper.addApprovalList(list, currencyApply.getCurrency_id(),approval_id);
+                    dingDingUtilsService.sendoOutNotice2(approverRole.getApprover_id(),staff,approverManage,currencyApply);//发送工作消息
                     return res;
-                } else {
-                    Integer integer = detectionMapper.updateShangjiMsg(currencyDetailss.get(0).getCurrency_details_id());
-                    return -2;
                 }
-            }*/
+                count++;
+            }
+            return -1;
 
 
         } else if (currencyApply.getCurrency_type() == 44) {
@@ -503,9 +618,81 @@ public class DetectionServiceImpl implements DetectionService {
     }
 
     @Override
-    public Integer insertLingQuMsg(CurrencyDetails details) {
-        Integer res = detectionMapper.updateLingQuDetails(details);
-        return res;
+    public void insertLingQuMsg(String detailsId,CurrencyDetails details) {
+        String[] ids = detailsId.split(",");
+        for (String id:ids){
+            //获取45主流程
+            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(details.getCurrency_id());
+            //获取要求时间
+            BigDecimal testDateLimit = currencyApply45.getCurrency_money();
+            //获取检测开始时间
+            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+
+            Date testDateStart = new Date();
+            try {
+                testDateStart = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(currencyApply43.getCurrency_string4());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //判断当前日期减去检测开始日期
+            Date nowDate = new Date();//当前日期
+            //获取检测开始日期与当前日期相差天数
+            BigDecimal days = new BigDecimal((nowDate.getTime() - testDateStart.getTime())/(1000 * 60 * 60 * 24));
+
+            //判断当前时间是否>检测开始时间+期限天数，是则超期 记录到43
+            if (days.compareTo(testDateLimit) == 1){
+                currencyApply43.setCurrency_money2(new BigDecimal(1));
+                details.setDetails_int4(1);//记录到45明细
+                currencyApply45.setCurrency_int2(1);//记录到45主表
+            }else {
+                currencyApply43.setCurrency_money2(new BigDecimal(0));
+                details.setDetails_int4(0);//记录到45明细
+                currencyApply45.setCurrency_int2(0);//记录到45主表
+            }
+            //把检测天数限制记录到43
+            currencyApply43.setCurrency_money6(testDateLimit);
+            //更新43的数据 1.检测是否超期 2.检测限制天数
+            currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
+            //更新45的数据 1.检测是否超期
+            currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply45);
+
+            details.setCurrency_details_id(Integer.valueOf(id));
+            Integer res = detectionMapper.updateLingQuDetails(details);
+
+            //查询此45下还有没有未领取的明细
+            Integer not = detectionMapper.selectCurrencyDetailsCount45(details.getCurrency_id());
+            //若无，则表示已经检测完毕
+            if (not.equals(0)){
+                //1.把45更新为已完成（是否更新43）
+                currencyApply45.setCurrency_int(-1);
+                currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply45);
+                //2.给检测科科长发消息（检测科科长点击确认后，质控科科长发消息）
+                String content = "检测任务"+currencyApply45.getCurrency_string3()+"已经完成，请及时确认";
+                ResponseResult result = null;
+                try {
+                    //给检测科科长发消息
+                    result = dingDingUtilsService.selectDingRoleStaff("449618522");
+                    if (!"".equals(result.getMsg())) {
+                        String[]  strs2=result.getMsg().split(",");
+                        for(int i=0,len=strs2.length;i<len;i++){
+                            //发送工作消息
+                            dingDingUtilsService.sendrRemind(strs2[i], content);
+                        }
+                    }
+                    //给质控科科长发消息
+                    result = dingDingUtilsService.selectDingRoleStaff("449576508");
+                    if (!"".equals(result.getMsg())) {
+                        String[]  strs2=result.getMsg().split(",");
+                        for(int i=0,len=strs2.length;i<len;i++){
+                            //发送工作消息
+                            dingDingUtilsService.sendrRemind(strs2[i], content);
+                        }
+                    }
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -606,85 +793,66 @@ public class DetectionServiceImpl implements DetectionService {
         List<HashMap<String, Object>> list = detectionMapper.selectJianCeJiXiaoManarge(page2, currencyApply);
 
         String checked = currencyApply.getCurrency_string();
-
         for (HashMap<String, Object> hashMap : list){
-            //判断是否已经检测登记49，如果有才有绩效
-            if (detectionMapper.selectCurrencyApplyByString18(String.valueOf(hashMap.get("currency_details_id"))) != null){
-                HashMap<String,Object> hashMap49 = detectionMapper.selectCurrencyApplyByString18(String.valueOf(hashMap.get("currency_details_id")));
-                //查询对应的49明细，从而取得采样数量用了计算绩效
-                List<HashMap<String,Object>> list49 = detectionMapper.selectCurrencyDetails49(Integer.valueOf(String.valueOf(hashMap49.get("currency_id"))));
-                HashMap<String,Object> h49 = list49.get(0);
-                String code_string = (String)hashMap.get("details_string12");//多个检测人
-                if (code_string != null){
-                    //StringBuffer sb = new StringBuffer();
-                    String[] strings = code_string.split(",");
-                    for (String s : strings){
+            String code_string = (String)hashMap.get("details_string4");//多个检测人
+            if (code_string != null){
+                //StringBuffer sb = new StringBuffer();
+                String[] strings = code_string.split(",");
+                for (String s : strings){
+                    //查询出业务员
+                    Integer staffId = Integer.parseInt(s);
+                    SystemStaff systemStaff = systemStaffMapper.selectStaffById(staffId);
 
-                        //查询出业务员
-                        Integer staffId = Integer.parseInt(s);
-                        SystemStaff systemStaff = systemStaffMapper.selectStaffById(staffId);
+                    String test_type = String.valueOf(hashMap.get("details_string7"));//检测类型
+                    BigDecimal price = new BigDecimal(0);//单价
+                    if ("常规检测".equals(test_type)){
+                        price = new BigDecimal(2);
+                    }else if ("称量检测".equals(test_type)){
+                        price = new BigDecimal(2.3);
+                    }else if ("有机、元素检测".equals(test_type)){
+                        price = new BigDecimal(5);
+                    }
 
-                        HashMap<String,Object> hashMapResult = new HashMap<>();
-                        //判断是否模糊查询业务员
-                        if (checked != null && !"".equals(checked)){
-                            if(systemStaff.getStaff_Name().contains(checked)){
-                                hashMapResult.put("currency_string3",hashMap.get("currency_string3"));//业务科下发编码
-                                hashMapResult.put("currency_date2",hashMap.get("currency_date2"));//交接时间
-                                hashMapResult.put("details_string",hashMap.get("details_string"));//样品编码
-                                hashMapResult.put("details_string2",hashMap.get("details_string2"));//检测项目
-                                //hashMapResult.put("currency_string2",hashMap.get("currency_string2"));
-                                hashMapResult.put("details_date",hashMap.get("details_date"));//领样日期
-
-                                hashMapResult.put("code",hashMap.get("code"));
-                                hashMapResult.put("details_string2",hashMap.get("details_string2"));
-                                hashMapResult.put("details_date4",hashMap.get("details_date4"));//检测日期
-                                hashMapResult.put("details_int3",h49.get("details_int3"));//样品数量
-                                hashMapResult.put("code_int2",hashMap.get("code_int2"));
-
-                                //根据添加业务员和绩效金额
-                                BigDecimal money = new BigDecimal(String.valueOf(h49.get("details_int3"))).multiply(new BigDecimal("2.5"));
-                                String name = systemStaff.getStaff_Name();
-                                hashMapResult.put("money",money);
-                                hashMapResult.put("details_string12",name);
-                                listResult.add(hashMapResult);
-                            }
-                        }else {
-                            //hashMapResult.put("currency_string10",hashMap.get("currency_string10"));
+                    HashMap<String,Object> hashMapResult = new HashMap<>();
+                    //判断是否模糊查询业务员
+                    if (checked != null && !"".equals(checked)){
+                        if(systemStaff.getStaff_Name().contains(checked)){
                             hashMapResult.put("currency_string3",hashMap.get("currency_string3"));//业务科下发编码
-                            hashMapResult.put("currency_date2",hashMap.get("currency_date2"));//交接时间
                             hashMapResult.put("details_string",hashMap.get("details_string"));//样品编码
                             hashMapResult.put("details_string2",hashMap.get("details_string2"));//检测项目
-                            //hashMapResult.put("currency_string2",hashMap.get("currency_string2"));
-                            hashMapResult.put("details_date",hashMap.get("details_date"));//领样日期
-
-                            hashMapResult.put("code",hashMap.get("code"));
-                            hashMapResult.put("details_string2",hashMap.get("details_string2"));
-                            hashMapResult.put("details_date4",hashMap.get("details_date4"));//检测日期
-                            hashMapResult.put("details_int3",h49.get("details_int3"));//样品数量
-                            hashMapResult.put("code_int2",hashMap.get("code_int2"));
-
-                            //根据45 详情的id = 查询对应 49 details_money 中的结果details_string9
-                            //Integer currency_details_id = Integer.parseInt(String.valueOf(hashMap.get("currency_details_id")));
-
-                        /*String result = detectionMapper.selectResult(currency_details_id);
-                        String resultCount = "0";
-                        if (result != null && !"".equals(result)){
-                            resultCount = (result.split("；").length)+"";
-                        }*/
+                            hashMapResult.put("details_string7",hashMap.get("details_string7"));//检测类型
+                            hashMapResult.put("currency_string2",hashMap.get("currency_string2"));//检测开始时间
+                            hashMapResult.put("currency_money",hashMap.get("currency_money"));//检测限定天数
+                            hashMapResult.put("details_int4",String.valueOf(hashMap.get("details_int4"))=="1"?"是":"否");//是否超时
+                            hashMapResult.put("details_int3",hashMap.get("details_int3"));//样品数量
 
                             //根据添加业务员和绩效金额
-                            BigDecimal money = new BigDecimal(String.valueOf(h49.get("details_int3"))).multiply(new BigDecimal("2.5"));
+                            BigDecimal money = new BigDecimal(String.valueOf(hashMap.get("details_int3"))).multiply(price);
                             String name = systemStaff.getStaff_Name();
-                            hashMapResult.put("money",money);
-                            hashMapResult.put("details_string12",name);
+                            hashMapResult.put("money",money);//绩效金额
+                            hashMapResult.put("details_string12",name);//检测人
                             listResult.add(hashMapResult);
                         }
+                    }else {
+                        hashMapResult.put("currency_string3",hashMap.get("currency_string3"));//业务科下发编码
+                        hashMapResult.put("details_string",hashMap.get("details_string"));//样品编码
+                        hashMapResult.put("details_string2",hashMap.get("details_string2"));//检测项目
+                        hashMapResult.put("details_string7",hashMap.get("details_string7"));//检测类型
+                        hashMapResult.put("currency_string2",hashMap.get("currency_string2"));//检测开始时间
+                        hashMapResult.put("currency_money",hashMap.get("currency_money"));//检测限定天数
+                        hashMapResult.put("details_int4",String.valueOf(hashMap.get("details_int4"))=="1"?"是":"否");//是否超时
+                        hashMapResult.put("details_int3",hashMap.get("details_int3"));//样品数量
 
-                        //sb.append(systemStaff.getStaff_Name()).append(",");
+                        //根据添加业务员和绩效金额
+                        BigDecimal money = new BigDecimal(String.valueOf(hashMap.get("details_int3"))).multiply(price);
+                        String name = systemStaff.getStaff_Name();
+                        hashMapResult.put("money",money);//绩效金额
+                        hashMapResult.put("details_string12",name);//检测人
+                        listResult.add(hashMapResult);
                     }
-                    //hashMap.put("details_string12",sb.toString().substring(0,sb.toString().length()-1));
                 }
             }
+
         }
         return listResult;
     }
@@ -874,209 +1042,61 @@ public class DetectionServiceImpl implements DetectionService {
 
     @Override
     public List<HashMap<String, Object>> selectSceneSectionPerformance(Page page2, CurrencyApply currencyApply) {
-        List<HashMap<String, Object>> list = detectionMapper.selectLatest(page2, currencyApply);
+        List<HashMap<String, Object>> list = detectionMapper.selectPerformance(currencyApply);
         List<HashMap<String, Object>> sampleList = new ArrayList<>();
         int i = 0;
-
-        //遍历所有，并获取含有排气筒的流程id
-        String ids = "";
         for(HashMap<String, Object> hashMap : list){
-            String s = String.valueOf(hashMap.get("details_string"));
-            String id = String.valueOf(hashMap.get("currency_id"));
-            if (s.contains("有组织") && !ids.contains(id)){
-                ids += id+",";
-            }
-        }
-
-        for(HashMap<String, Object> hashMap : list){
-
-
             //获取多个采样人员从明细放到了主表中
             String[] details_string13s = (hashMap.get("currency_string13") + "").split(",");
 
             String currency_id = (String) hashMap.get("currency_string17");
-            CurrencyApply currencyApply1 = currencyApplyMapper.selectCurrencyApplyById(Integer.parseInt(currency_id));
-            hashMap.put("reportNum",currencyApply1.getCurrency_number());
-            Integer currency_details_id = (Integer) hashMap.get("currency_details_id");
-            Page page = new Page();
-            List<HashMap<String, Object>> list1 = detectionMapper.selectProcessByDetailsId(page, currency_details_id);
-            //拼接检测项目
-           /* String processName = "";
-            if (list1 != null && list1.size() != 0){
-                for (HashMap<String, Object> hashMap1 : list1) {
-                    processName = processName + hashMap1.get("processName") + "、";
+            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.parseInt(currency_id));
+            hashMap.put("reportNum",currencyApply43.getCurrency_number());
+            //如果为合同相关的
+            String[] strLevel1 = {"无组织废气","无组织噪声","无组织土壤","采水"};
+            String[] strLevel2 = {"烟气常规检测","水的比对检测"};
+            String[] strLevel3 = {"在线监测设备比对检测（气）","水质在线设备验收检测","在线监测设备验收检测（非超低）"};
+            String[] strLevel4 = {"在线监测设备验收检测（超低）"};
+            String[] strLevel5 = {"环评现状检测","竣工验收检测"};
+
+            //检测类型
+            String program_type = String.valueOf(hashMap.get("details_string"));
+            //一级检测
+            if (Arrays.asList(strLevel1).contains(program_type)){
+                if ("无组织土壤".equals(program_type) || "采水".equals(program_type)){
+                    hashMap.put("绩效标准",program_type);
+                    hashMap.put("绩效单价",6);//原90
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if("无组织废气".equals(program_type) || "无组织噪声".equals(program_type)){
+                    hashMap.put("绩效标准",program_type);
+                    hashMap.put("绩效单价",6);
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money3"))))//检测项目个数
+                                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
                 }
-                processName = processName.substring(0, processName.length() - 1);
-            }
-            //将检测项目和方法依据添加至主list
-            hashMap.put("processName", processName);*/
-            //绩效单价分支判断
-            if("设备校验".equals(hashMap.get("currency_string8"))){
-                if(String.valueOf(hashMap.get("details_string")).contains("计")){//说明是丽泽的技术检测中的PH计、水温计、流量计
-                    //计算设备数量
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"|"+hashMap.get("details_string"));
-                    hashMap.put("绩效单价",40);//原90
-                    BigDecimal b = new BigDecimal(40/details_string13s.length);//绩效
-                    int num = (String.valueOf(hashMap.get("details_string")).split(",").length);
-                    hashMap.put("绩效金额",b.multiply(new BigDecimal(num+"")).doubleValue());//点位个数
-                }else if("超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"超低有组织废气");
-                    hashMap.put("绩效单价",70);//原90
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                    hashMap.put("登高",d.multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//登高*频次
-                }else if ("非超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(60/details_string13s.length);//绩效
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"非超低有组织废气");
-                    hashMap.put("绩效单价",60);//原80
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    hashMap.put("登高",d.multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//登高*频次
-                }
-            }else if("常规检测".equals(hashMap.get("currency_string8")) || "自行检测".equals(hashMap.get("currency_string8"))){
-                if("超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(60/details_string13s.length);//绩效
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"超低有组织废气");
-                    hashMap.put("绩效单价",60);//原90
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                    hashMap.put("登高",d.multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//登高*频次
-                }else if ("非超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(50/details_string13s.length);//绩效
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"非超低有组织废气");
-                    hashMap.put("绩效单价",50);//原80
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    hashMap.put("登高",d.multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//登高*频次
-                }else if ("无组织废气".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(8/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"无组织废气");
-                    hashMap.put("绩效单价", 8);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money3"))//检测项目个数
-                                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3"))))//频率（频次）
-                                            .multiply((BigDecimal)hashMap.get("details_money5"))//点位个数
-                                            .doubleValue());
-                }else if ("水和废水".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(10/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"水和废水");
-                    hashMap.put("绩效单价", 10);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money4")).doubleValue());//10*采样数量
-                }else if ("噪声".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(8/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"噪声");
-                    hashMap.put("绩效单价", 8);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money4")).doubleValue());//当天采样个数
-                }else if ("土壤和固废".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(8/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"土壤和固废");
-                    hashMap.put("绩效单价", 8);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                }
-            }else if ("建设项目竣工验收检测".equals(hashMap.get("currency_string8")) || "环评现状检测".equals(hashMap.get("currency_string8"))){
-                if("超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(180/details_string13s.length);//300=180绩效+120登高
-                    BigDecimal d = new BigDecimal(120/details_string13s.length);//登高 不再乘次数，总数只有120
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"超低有组织废气");
-                    hashMap.put("绩效单价",180);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    hashMap.put("登高",d.doubleValue());
-                }else if ("非超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(150/details_string13s.length);//270=150绩效+120登高
-                    BigDecimal d = new BigDecimal(120/details_string13s.length);//登高 不再乘次数，总数只有120
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"非超低有组织废气");
-                    hashMap.put("绩效单价",150);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    hashMap.put("登高",d.doubleValue());
-                }else if ("无组织废气".equals(hashMap.get("details_string"))) {
-                    int p;
-                    if (ids.contains(String.valueOf(hashMap.get("currency_id")))) {//有排气筒
-                        p = 3;
-                        BigDecimal b = new BigDecimal(p/details_string13s.length);
-                        hashMap.put("绩效标准", hashMap.get("currency_string8")+"无组织废气");
-                        hashMap.put("绩效单价", p);
-                        hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money3"))//检测项目个数
-                                                .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3"))))//频率（频次）
-                                                .multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                    }else {
-                        p = 8;
-                        BigDecimal b = new BigDecimal(p/details_string13s.length);
-                        hashMap.put("绩效标准", hashMap.get("currency_string8")+"无组织废气");
-                        hashMap.put("绩效单价", p);
-                        hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    }
-                }else if ("水和废水".equals(hashMap.get("details_string"))) {
-                    int p = 10;//无排气筒
-                    if (ids.contains(String.valueOf(hashMap.get("currency_id")))){//有排气筒
-                        p = 3;
-                    }
-                    BigDecimal b = new BigDecimal(p/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"水和废水");
-                    hashMap.put("绩效单价", p);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                }else if ("土壤和固废".equals(hashMap.get("details_string"))) {
-                    int p = 8;//无排气筒
-                    if (ids.contains(String.valueOf(hashMap.get("currency_id")))){//有排气筒
-                        p = 3;
-                    }
-                    BigDecimal b = new BigDecimal(p/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"土壤和固废");
-                    hashMap.put("绩效单价", p);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                }else if ("噪声".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(3/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"噪声");
-                    hashMap.put("绩效单价", 3);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money4")).doubleValue());//当天采样数量
-                }
-            }else if ("季度比对检测".equals(hashMap.get("currency_string8"))){
-                if("超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(70/details_string13s.length);//原100
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高 不再乘次数，总数只有30
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"超低有组织废气");
-                    hashMap.put("绩效单价",70);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                    hashMap.put("登高",d.doubleValue());
-                }else if ("非超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(60/details_string13s.length);//原90
-                    BigDecimal d = new BigDecimal(30/details_string13s.length);//登高 不再乘次数，总数只有30
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"非超低有组织废气");
-                    hashMap.put("绩效单价",60);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());
-                    hashMap.put("登高",d.doubleValue());
-                }else if ("水和废水".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(40/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"水和废水");
-                    hashMap.put("绩效单价", 40);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money3")).doubleValue());//检测项目个数
-                }/*else if ("无组织、土壤、噪声采样".equals(hashMap.get("details_string7"))) {
-                    BigDecimal b = new BigDecimal(8/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"无组织、土壤、噪声采样");
-                    hashMap.put("绩效单价", 8);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money4")).doubleValue());
-                }*/
-            }else{//验收比对
-                if("超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(140/details_string13s.length);
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"超低有组织废气");
-                    hashMap.put("绩效单价",140);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                }else if ("非超低有组织废气".equals(hashMap.get("details_string"))){
-                    BigDecimal b = new BigDecimal(100/details_string13s.length);
-                    hashMap.put("绩效标准",hashMap.get("currency_string8")+"非超低有组织废气");
-                    hashMap.put("绩效单价",100);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-                }else if ("水和废水".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(40/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"水和废水");
-                    hashMap.put("绩效单价", 40);
-                    hashMap.put("绩效金额", b.multiply((BigDecimal)hashMap.get("details_money3")).doubleValue());//检测项目个数
-                }/*else if ("无组织、土壤、噪声采样".equals(hashMap.get("details_string"))) {
-                    BigDecimal b = new BigDecimal(8/details_string13s.length);
-                    hashMap.put("绩效标准", hashMap.get("currency_string8")+"无组织、土壤、噪声采样");
-                    hashMap.put("绩效单价", 8);
-                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money4")).doubleValue());
-                }*/
+            }else if(Arrays.asList(strLevel2).contains(program_type)){
+                BigDecimal b = new BigDecimal(50/details_string13s.length);//绩效
+                hashMap.put("绩效标准",program_type);
+                hashMap.put("绩效单价",50);
+                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+            }else if(Arrays.asList(strLevel3).contains(program_type)){
+                BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
+                hashMap.put("绩效标准",program_type);
+                hashMap.put("绩效单价",70);
+                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+            }else if(Arrays.asList(strLevel4).contains(program_type)){
+                BigDecimal b = new BigDecimal(110/details_string13s.length);//绩效
+                hashMap.put("绩效标准",program_type);
+                hashMap.put("绩效单价",110);
+                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+            }else if(Arrays.asList(strLevel5).contains(program_type)){
+                BigDecimal b = new BigDecimal(200/details_string13s.length);//绩效
+                hashMap.put("绩效标准",program_type);
+                hashMap.put("绩效单价",200);
+                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
             }
 
             for (String details_string13 : details_string13s){
@@ -1106,107 +1126,77 @@ public class DetectionServiceImpl implements DetectionService {
     public List<HashMap<String, Object>> selectBusinessTracking(Page page2, CurrencyApply currencyApply) {
         //查询通过审批的信泽业务下发
         List<HashMap<String, Object>> taskList = detectionMapper.selectOneUpApply(page2, currencyApply);
-
-        for (HashMap<String, Object> hashMap : taskList){
+        for (HashMap<String, Object> hashMap : taskList) {
             //拿取业务下发主键id，查询采样通知
             Integer taskId = Integer.parseInt(String.valueOf(hashMap.get("currency_id")));
             //CurrencyApply taskApply = detectionMapper.selectCurrencyApplyByString17(taskId,43);
-            CurrencyApply taskApply = detectionMapper.selectCurrencyApplyById(taskId);
-            //采样要求完成时间
-            Date currency_date2 = taskApply.getCurrency_date2();
-            hashMap.put("currency_date",taskApply.getCurrency_date());//业务下发时间
-            //判断现场科登记状态
-            if (taskApply.getCurrency_int2().equals(1)){//采样，走现场登记
-                //查询现场科登记数据
-                CurrencyApply currencyApply44 = detectionMapper.selectCurrencyApplyByString17ForReport(String.valueOf(taskApply.getCurrency_id()),44);
-                if (currencyApply44 != null){//说明已经登记了
-                    //判断是否超时完成
-                    Date currency_date44 = currencyApply44.getCurrency_date();
-                    if (currency_date44.compareTo(currency_date2) == 1){
-                        hashMap.put("register","超时完成");
-                    }else {
-                        hashMap.put("register","已完成");
-                    }
-                    hashMap.put("registerTime",currencyApply44.getCurrency_date());
-                }else {
-                    hashMap.put("register","未开始");
-                    hashMap.put("handover", "未开始");
-                    hashMap.put("testing", "未开始");
-                    hashMap.put("report","未开始");
-                    hashMap.put("finance","未开始");
-                    continue;
-                }
-            }else {//送样不走现场科登记（默认完成）
-                hashMap.put("register","已完成");
-                hashMap.put("registerTime",taskApply.getCurrency_date());
-            }
-            //判断采样员检测业务下发状态（质控科交接）
-            if (taskApply.getCurrency_int() == -1){
-                CurrencyApply currencyApply45 = detectionMapper.selectCurrencyApplyByString17ForReport(String.valueOf(taskApply.getCurrency_id()),45);
-                hashMap.put("handover", "已完成");
-                hashMap.put("handoverTime",currencyApply45.getCurrency_date());
-                hashMap.put("testing", "未开始");
-                hashMap.put("report","未开始");
-                hashMap.put("finance","未开始");
-            }else {//现场科已经登记，但是质控科（样品管理员检测任务登记）还没有交接
-                hashMap.put("handover", "未开始");
-                hashMap.put("testing", "未开始");
-                hashMap.put("report", "未开始");
-                hashMap.put("finance", "未开始");
-                continue;
-            }
-            //判断检测科检测状态
-            //获取所有45对应的明细
-            List<HashMap<String,Object>> list45 = detectionMapper.selectTestResult(taskApply.getCurrency_id(),45);
-            //判断是否每个明细都被检测了
-            int a = 0;
-            for (HashMap<String, Object> hashMap1 : list45) {
-                //被领取了
-                if (detectionMapper.selectCurrencyApplyByString18(String.valueOf(hashMap1.get("currency_details_id"))) != null){
-                    a++;
-                }
-            }
-            //被领取的个数与明细比对
-            if (a == 0){//未开始检测
-                hashMap.put("testing", "未开始");
-                hashMap.put("report","未开始");
-                hashMap.put("finance","未开始");
-                continue;
-            }else if (a < list45.size()){//未完全检测
-                hashMap.put("testing", "进行中");
+            CurrencyApply currencyApply43 = detectionMapper.selectCurrencyApplyById(taskId);
+            //判断采样状态
+            //1.是否有采样完成时间
+            if (currencyApply43.getCurrency_string3() == null) {//无，说明没有完成
                 //判断是否超时
-                Date test45 = (Date) list45.get(0).get("currency_date2");//检测完成时间
-                Date nowDate = new Date();
-                if (nowDate.compareTo(test45) == 1){
-                    hashMap.put("testing", "超时进行中");
-                }
-            }else {
-                hashMap.put("testing", "已完成");
-            }
-            //质控科报告完成进度
-            if (taskApply.getCurrency_int6() != null && -1 == taskApply.getCurrency_int6()){//报告完成
-                hashMap.put("report","已完成");
-                hashMap.put("reportTime",taskApply.getCurrency_date4());
-                Date needReport = taskApply.getCurrency_date3();//报告需要完成时间
-                Date relReport = taskApply.getCurrency_date4();//报告实际完成时间
-                if (relReport.compareTo(needReport) == 1){
-                    hashMap.put("report","超时完成");
-                }
-            }else {
-                hashMap.put("report","进行中");
-                hashMap.put("finance","未开始");
+                hashMap.put("register", "进行中");//现场科
+                hashMap.put("handover", "未开始");//样品管理员
+                hashMap.put("testing", "未开始");//检测科
+                hashMap.put("report", "未开始");//质控科
+                hashMap.put("finance", "未开始");//报告流转
                 continue;
+            } else {//表示采样完成
+                //判断采样是否逾期
+                if (currencyApply43.getCurrency_money().compareTo(BigDecimal.ZERO) == 0) {//未逾期
+                    hashMap.put("register", "完成");//现场科
+                } else {
+                    hashMap.put("register", "超时完成");//现场科
+                }
+                //是否流转，检测是否开始
+                if (currencyApply43.getCurrency_string4() == null) {//无，说明没有流转
+                    //判断是否超时
+                    hashMap.put("handover", "进行中");//样品流转
+                    hashMap.put("testing", "未开始");//检测科
+                    hashMap.put("report", "未开始");//质控科
+                    hashMap.put("finance", "未开始");//报告流转
+                    continue;
+                } else {//表示已经流转
+                    hashMap.put("handover", "完成");//样品流转
+                    //检测是否完成
+                    if (currencyApply43.getCurrency_string5() == null) {//检测没有完成
+                        hashMap.put("testing", "进行中");//检测科
+                        hashMap.put("report", "未开始");//质控科
+                        hashMap.put("finance", "未开始");//报告流转
+                        continue;
+                    } else {
+                        if (currencyApply43.getCurrency_money2().compareTo(BigDecimal.ZERO) == 0) {//未逾期
+                            hashMap.put("testing", "完成");//现场科
+                        } else {
+                            hashMap.put("testing", "超时完成");//现场科
+                        }
+                        //检测是否完成
+                        if (currencyApply43.getCurrency_string10() == null) {//报告没有完成
+                            hashMap.put("report", "进行中");//质控科
+                            hashMap.put("finance", "未开始");//报告流转
+                            continue;
+                        } else {
+                            if (currencyApply43.getCurrency_money3().compareTo(BigDecimal.ZERO) == 0) {//未逾期
+                                hashMap.put("report", "完成");//现场科
+                            } else {
+                                hashMap.put("report", "超时完成");//现场科
+                            }
+                            //总体是否超期
+                            /*if (currencyApply43.getCurrency_money4().compareTo(BigDecimal.ZERO) != 1) {//未逾期
+                                hashMap.put("over", "正常");//现场科
+                            } else {
+                                hashMap.put("over", "超时");//现场科
+                            }*/
+
+                        }
+
+                    }
+
+                }
             }
 
-            //财务报告完成进度
-            if (taskApply.getCurrency_int7() != null && -1 == taskApply.getCurrency_int7()){//报告完成
-                hashMap.put("finance","已完成");
-                hashMap.put("financeTime",taskApply.getCurrency_date4());
-            }else {
-                hashMap.put("finance","进行中");
-                continue;
-            }
         }
+
         return taskList;
     }
 
@@ -1274,8 +1264,80 @@ public class DetectionServiceImpl implements DetectionService {
     }
 
     @Override
+    public Integer confirmTest45(CurrencyApply currencyApply) {
+        //获取45主流程
+        CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
+        //获取43主流程
+        CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+        //检测完成，报告开始
+        Date nowDate = new Date();
+        String reportDateStart = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(nowDate);
+        //把检测完成记录到43
+        currencyApply43.setCurrency_string5(reportDateStart);
+        //更新43的数据 检测完成即报告开始时间
+        Integer res = currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
+        return res;
+    }
+
+    @Override
+    public Integer testingReportAdd(CurrencyDetails currencyDetails) {
+        Integer currency_id = currencyDetails.getCurrency_id();
+        Date nowDate = new Date();//当前日期
+        //0为从绩效页面新增
+        if (!"0".equals(currency_id)){
+            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currency_id);
+            CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+            currencyDetails.setDetails_int3(currencyApply43.getCurrency_id());//保存43
+            currencyDetails.setDetails_int4(currency_id);//保存45
+
+            //判断当前日期与日期期限大小，大则是超期 记录到43
+            if (nowDate.getTime()-currencyApply45.getCurrency_date3().getTime()>0){
+                currencyApply43.setCurrency_money3(new BigDecimal(1));
+                currencyDetails.setDetails_int2(1);//记录到报告
+            }else {
+                currencyApply43.setCurrency_money3(new BigDecimal(0));
+                currencyDetails.setDetails_int2(0);//记录到报告
+            }
+            //更新43报告相关信息
+            currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
+        }
+        //报告等级计算绩效
+        String report_type = currencyDetails.getDetails_string2();
+        if ("一级".equals(report_type)){
+            currencyDetails.setDetails_int(18);
+        }else if ("二级".equals(report_type)){
+            currencyDetails.setDetails_int(25);
+        }else if ("三级".equals(report_type)){
+            currencyDetails.setDetails_int(150);
+        }else if ("四级".equals(report_type)){
+            currencyDetails.setDetails_int(180);
+        }
+        //区分45，将45的id去掉
+        currencyDetails.setCurrency_id(0);
+        //记录当前报告生成日期
+        currencyDetails.setDetails_date(nowDate);
+        //添加报告相关信息
+        Integer res = detectionMapper.testingReportAdd(currencyDetails);
+        return res;
+    }
+
+    @Override
     public Integer complieReport(CurrencyApply currencyApply) {
-        return detectionMapper.complieReport(currencyApply);
+        Integer currency_id = currencyApply.getCurrency_id();
+        CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currency_id);
+        CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.valueOf(currencyApply45.getCurrency_string17()));
+        Date nowDate = new Date();//当前日期
+        //获取报告完成总时间
+        String reportDateEnd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(nowDate);
+        //给45完成时间
+        currencyApply.setCurrency_date4(reportDateEnd);
+        currencyApply.setCurrency_int6(1);
+        currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+        //给43完成时间
+        currencyApply43.setCurrency_string10(reportDateEnd);
+        //更新43报告相关信息
+        currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
+        return 1;
     }
 
     @Override
@@ -1322,5 +1384,37 @@ public class DetectionServiceImpl implements DetectionService {
     @Override
     public Integer endTest(CurrencyApply currencyApply) {
         return detectionMapper.endTest(currencyApply);
+    }
+
+    @Override
+    public Integer getSample(CurrencyApply currencyApply) {
+        //获取数据43
+        CurrencyApply currencyApply2  = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
+        //判断当前日期是否超出43的采样完成日期
+        Date nowDate = new Date();//当前日期
+        Date limitDate = currencyApply2.getCurrency_date2();//限定日期
+        if (nowDate.getTime() > limitDate.getTime()){//超期
+            currencyApply.setCurrency_money(new BigDecimal(1));
+        }else {
+            currencyApply.setCurrency_money(new BigDecimal(0));
+        }
+        //记录样品管理员获取到样品时间，即采样完成时间
+        currencyApply.setCurrency_string3(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(nowDate));
+        Integer res = currencyApplyMapper.update43OverDate(currencyApply);//
+        return res;
+    }
+
+    @Override
+    public Integer transSample(CurrencyApply currencyApply) {
+        //记录样品管理员流转样品时间，即检测开始时间
+        Date nowDate = new Date();//当前日期
+        currencyApply.setCurrency_string4(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(nowDate));
+        Integer res = currencyApplyMapper.update43OverDate(currencyApply);//
+        return res;
+    }
+
+    @Override
+    public List<HashMap<String, Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails) {
+        return detectionMapper.selectCurrencyDetailsReport(currencyDetails);
     }
 }

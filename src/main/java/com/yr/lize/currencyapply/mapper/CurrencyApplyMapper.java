@@ -87,7 +87,10 @@ public interface CurrencyApplyMapper {
 	Integer updateFlagById(Integer currency_id);
 
 	Integer update43After44(CurrencyApply currencyApply);
+
 	Integer updateDetails43After44(CurrencyDetails details);
+
+	Integer update43OverDate(CurrencyApply currencyApply);//设置是否超期
 
 	Integer updateFlagById66(Integer currency_id);
 

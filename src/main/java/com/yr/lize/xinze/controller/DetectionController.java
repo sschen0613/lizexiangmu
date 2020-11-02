@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,6 +117,9 @@ public class DetectionController {
                 currencyApply.setCondition_state(1);//加入条件标识
                 roles = iSystemApprovalService.selectConditionApproval(approverRole);
             }
+        }else if(currencyApply.getCurrency_type()==49 ){
+            currencyApply.setCondition_state(1);//加入条件标识
+            roles = iSystemApprovalService.selectConditionApproval(approverRole);
         }else {
             currencyApply.setCurrent_approvalCount(0);
             currencyApply.setApprover_count(0);
@@ -287,20 +289,9 @@ public class DetectionController {
     //添加领取信息
     @RequestMapping("/Xinze/insertLingQuMsg.action")
     @ResponseBody
-    public ResponseResult insertLingQuMsg(CurrencyDetails details) throws ParseException {
+    public ResponseResult insertLingQuMsg(String detailsId,CurrencyDetails details) throws ParseException {
         ResponseResult result = new ResponseResult();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = sdf.parse(details.getDetails_string8());
-        Date date2 = sdf.parse(details.getDetails_string9());
-        details.setDetails_date(date1);
-        details.setDetails_date4(date2);
-        Integer res = detectionService.insertLingQuMsg(details);//将领取数据更新到对应的45明细中，且将detail_int赋值为-1已领取
-        /*Integer res1 = detectionService.updateSampleCode(details);//更改样品编码表中领取标识
-        if(res1 >= 1){
-            result.setMsg("领取成功！");
-        }else {
-            result.setMsg("领取失败！");
-        }*/
+        detectionService.insertLingQuMsg(detailsId,details);//将领取数据更新到对应的45明细中，且将detail_int赋值为-1已领取
         result.setMsg("领取成功！");
         return result;
     }
@@ -455,7 +446,7 @@ public class DetectionController {
     //查询检测绩效管理
     @RequestMapping("/Xinze/jianceJiXiaoManarge.action")
     @ResponseBody
-    public ResponseResult selectJianCeJiXiaoManarge(Integer limit,Integer page,CurrencyApply currencyApply,sampleCode sample){
+    public ResponseResult selectJianCeJiXiaoManarge(Integer limit,Integer page,CurrencyApply currencyApply){
         ResponseResult result = new ResponseResult();
         Page page2 = new Page();
         /*if (limit != null) {
@@ -722,6 +713,47 @@ public class DetectionController {
         return result;
     }
 
+    //质控科科长确认，检测结束，检测报告开始
+    @RequestMapping("/Xinze/confirmTest45.action")
+    @ResponseBody
+    public ResponseResult confirmTest45(CurrencyApply currencyApply){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.confirmTest45(currencyApply);
+        if (res > 0){
+            result.setMsg("操作成功!");
+        }else {
+            result.setMsg("操作失败!");
+        }
+        return result;
+    }
+
+    //质控科科长确认，检测结束，检测报告开始
+    @RequestMapping("/Xinze/testingReportAdd.action")
+    @ResponseBody
+    public ResponseResult testingReportAdd(CurrencyDetails currencyDetails){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.testingReportAdd(currencyDetails);
+        if (res > 0){
+            result.setMsg("操作成功!");
+        }else {
+            result.setMsg("操作失败!");
+        }
+        return result;
+    }
+
+    //查询所有报告详情selectBusinessTracking
+    @RequestMapping("/Xinze/selectCurrencyDetailsReport.action")
+    @ResponseBody
+    public ResponseResult selectCurrencyDetailsReport(CurrencyDetails currencyDetails){
+        ResponseResult result = new ResponseResult();
+        List<HashMap<String,Object>> list = detectionService.selectCurrencyDetailsReport(currencyDetails);
+
+        result.setCode(0);
+        result.setData(list);
+        result.setMsg("查询成功");
+        return result;
+    }
+
     //检测报告完成
     @RequestMapping("/Xinze/complieReport.action")
     @ResponseBody
@@ -746,6 +778,34 @@ public class DetectionController {
             result.setMsg("操作成功!");
         }else {
             result.setMsg("操作失败!");
+        }
+        return result;
+    }
+
+    //接受样品
+    @RequestMapping("/Xinze/getSample.action")
+    @ResponseBody
+    public ResponseResult getSample(CurrencyApply currencyApply){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.getSample(currencyApply);
+        if (res > 0){
+            result.setMsg("接收成功!");
+        }else {
+            result.setMsg("接收失败!");
+        }
+        return result;
+    }
+
+    //接受样品
+    @RequestMapping("/Xinze/transSample.action")
+    @ResponseBody
+    public ResponseResult transSample(CurrencyApply currencyApply){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.transSample(currencyApply);
+        if (res > 0){
+            result.setMsg("流转成功!");
+        }else {
+            result.setMsg("流转失败!");
         }
         return result;
     }

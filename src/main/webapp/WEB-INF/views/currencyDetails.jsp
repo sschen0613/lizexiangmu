@@ -711,20 +711,22 @@
             });
 
         }
-        //采样交接审批 || 检测登记审批
-        else if(currency_type == 45 || currency_type == 000){
+        //检测明细
+        else if(currency_type == 45){
             //执行一个 table 实例
             table.render({
                 elem: '#test'
                 ,url: 'selectCurrencyDetails.action?currency_id='+currency_id //数据接口
                 ,page: false
-                ,title: '用户数据表'
+                ,title: '明细数据表'
                 ,totalRow: true
                 ,cols: [[ //表头
-                    {fixed: 'left', field: 'details_string', title: '样品编码', minWidth: 100}
+                    {fixed: 'left', field: 'details_in4', title: '是否超期', minWidth: 120,templet:'<div>{{d.details_int == 0 ? "超期" : "未超期"}}</div>'}
+                    ,{field: 'details_string', title: '样品编码', minWidth: 100}
                     ,{field: 'details_string2', title: '检测项目', minWidth: 100}
-                    ,{field: 'details_money3', title: '样品数量', minWidth: 100}
-                    ,{field: 'details_string6', title: '备注', minWidth: 200}
+                    ,{field: 'details_string7', title: '检测类型', minWidth: 100}
+                    ,{field: 'details_string5', title: '检测人', minWidth: 100}
+                    ,{field: 'details_int3', title: '样品数量', minWidth: 100}
                 ]]
             });
         }

@@ -103,10 +103,10 @@
                         +		'<a href="testingProcess/statisticalReport/mStatisticalReportDetails.action'
                         +'?currency_number='+item.currency_number+'&currency_id='+item.currency_id
                         +'&staff_name='+item.staff_name+'&department_name='+item.department_name+'&currency_date='+Format0(item.currency_date,"yyyy-MM-dd HH:mm:ss")
-                        +'&register='+item.register+'&registerTime='+(item.registerTime == undefined ? "无" : Format0(item.registerTime,"yyyy-MM-dd HH:mm:ss"))
-                        +'&handover='+item.handover+'&handoverTime='+(item.handoverTime == undefined ? "无" : Format0(item.handoverTime,"yyyy-MM-dd HH:mm:ss"))
-                        +'&testing='+item.testing+'&testTime='+(item.testTime == undefined ? "无" : Format0(item.testTime,"yyyy-MM-dd HH:mm:ss"))
-                        +'&report='+item.report+'&reportTime='+(item.reportTime == undefined ? "无" : Format0(item.reportTime,"yyyy-MM-dd HH:mm:ss"))
+                        +'&register='+item.register+'&registerTime='+item.currency_string3
+                        +'&handover='+item.handover+'&handoverTime='+item.currency_string4
+                        +'&testing='+item.testing+'&testTime='+item.currency_string5
+                        +'&report='+item.report+'&reportTime='+item.currency_string10
                         //+'&finance='+item.finance+'&financeTime='+(item.reportTime == undefined ? "无" : Format0(item.reportTime,"yyyy-MM-dd HH:mm:ss"))
                         +'&approverState=waitting" id="a'+index+'" onclick="approvalDetails(this);return false;">'
                         +			'查看详情'

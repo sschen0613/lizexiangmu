@@ -51,7 +51,7 @@
 <!-- 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a> -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看明细</a>
-	<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">检测登记</a>
+	<%--<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">检测登记</a>--%>
 	<%--<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="approval">审批详情</a>--%>
 </script>
 <script>
@@ -93,7 +93,7 @@
         //创建table实例
         var tableInner = table.render({
             elem: '#tab'
-            ,url: 'Xinze/selectReadeyCurrency.action?currency_type=45' //数据接口
+            ,url: 'Currency/selectCurrencyList.action?currency_type=45&currency_int=-1' //查询已经完成的
             ,page: true //开启分页
             ,toolbar: true
             ,title: '检测登记'
@@ -101,19 +101,10 @@
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
                 ,{field: 'currency_number', title: '编码单号', minWidth:200, sort:true}
-                //,{field: 'currency_string2', title: '项目名称', minWidth:150}
-                //,{field: 'currency_string3', title: '联系人', minWidth:80}
-                //,{field: 'currency_string4', title: '联系电话', minWidth:100}
-                //,{field: 'currency_string5', title: '委托单位地址', minWidth:200}
-                //,{field: 'currency_string10', title: '委托单位名称', minWidth:120}
-                //,{field: 'currency_string7', title: '报表编码', minWidth:100}
-                ,{field: 'currency_date2', title: '交接时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                //,{field: 'currency_string8', title: '检测类型', minWidth:100}
-                ,{field: 'currency_date3', title: '检测完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
-                //,{field: 'currency_string9', title: '执行标准', minWidth:200}
-                ,{field: 'details_string11', title: '任务领取人', minWidth:100}
-                ,{field: 'details_string', title: '样品编码', minWidth:100}
-                ,{field: 'details_string2', title: '检测项目', minWidth:100}
+				,{field: 'currency_int2', title: '是否超期', minWidth: 120,templet:'<div>{{d.currency_int2 == 0 ? "超期" : "未超期"}}</div>'}
+				,{field: 'currency_string3', title: '检测任务编码', minWidth:150}
+                ,{field: 'currency_string2', title: '检测开始时间', minWidth:150}
+                ,{field: 'currency_money2', title: '检测限制天数', minWidth:80}
                 //,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
             ]]

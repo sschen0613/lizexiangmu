@@ -26,7 +26,7 @@ public interface DetectionService {
 
     List<HashMap<String,Object>> selectLatest(Page page,CurrencyApply currencyApply);
 
-    Integer insertLingQuMsg(CurrencyDetails details);
+    void insertLingQuMsg(String detailsId,CurrencyDetails details);
 
     List<HashMap<String,Object>> selectOneDetails(sampleCode sampleCode);
 
@@ -81,6 +81,10 @@ public interface DetectionService {
 
     List<HashMap<String,Object>> selectAllNotice(CurrencyApply currencyApply);
 
+    Integer confirmTest45(CurrencyApply currencyApply);//质控科科长确认，检测结束，报告开始testingReportAdd
+
+    Integer testingReportAdd(CurrencyDetails currencyDetails);
+
     Integer complieReport(CurrencyApply currencyApply);
 
     HashMap<String,String> selectStaff(HashMap<String,Object> map);
@@ -88,4 +92,10 @@ public interface DetectionService {
     Integer uploadFiles(HttpServletRequest request,MultipartFile[] files, Integer currency_id);
 
     Integer endTest(CurrencyApply currencyApply);
+
+    Integer getSample(CurrencyApply currencyApply);
+
+    Integer transSample(CurrencyApply currencyApply);
+
+    List<HashMap<String,Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails);
 }

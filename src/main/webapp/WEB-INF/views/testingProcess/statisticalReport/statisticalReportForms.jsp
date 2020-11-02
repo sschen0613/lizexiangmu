@@ -59,8 +59,8 @@
 		</script>
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-xs" lay-event="detail">查看明细</a>
-			<%--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--%>
+			<a class="layui-btn layui-btn-xs" lay-event="edit">逾期处理</a>
+			<!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--%>
 		</script>
 
 		<script type="text/html" id="over1">
@@ -204,27 +204,26 @@
 					elem: '#tab'
 					,url: 'Xinze/selectBusinessTracking.action?currency_type=43' //数据接口
 					,page: true //开启分页
-					// ,toolbar: '#toolbarDemo'
+					,toolbar: true
 			    	,title: '统计报表'
 			    	,totalRow: true //开启合计行
 					,cols: [[ //表头
-						{type: 'checkbox', fixed: 'left'}
-                        ,{field: 'currency_number', title: '业务编号'}
-                        ,{field: 'currency_string7', title: '报表编码'}
-                        ,{field: 'currency_string18', title: '合同编号'}
-                        ,{field: 'currency_string2', title: '项目名称'}
+						{fixed: 'left',field: 'currency_string7', title: '报告编码', minWidth:120}
+                        ,{field: 'currency_string18', title: '合同编号', minWidth:120}
+                        ,{field: 'currency_string2', title: '项目名称', minWidth:150}
                         //,{field: 'notice', title: '业务科通知'}
-                        ,{field: 'currency_date', title: '下发时间', templet:'<div>{{d.currency_date == undefined ? "无" : Format0(d.currency_date,"yyyy-MM-dd HH:mm:ss")}}</div>'}
-                        ,{field: 'register', title: '现场科登记', templet:'#over1'}
-                        ,{field: 'registerTime', title: '到达时间', templet:'<div>{{d.registerTime == undefined ? "无" : Format0(d.registerTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
-                        ,{field: 'handover', title: '质控科交接'}
-                        ,{field: 'handoverTime', title: '到达时间', templet:'<div>{{d.handoverTime == undefined ? "无" : Format0(d.handoverTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
-                        ,{field: 'testing', title: '检测科检测', templet:'#over2'}
-                        ,{field: 'testTime', title: '到达时间', templet:'<div>{{d.testTime == undefined ? "无" : Format0(d.testTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
-                        ,{field: 'report', title: '质控科报告', templet:'#over3'}
-                        ,{field: 'reportTime', title: '到达时间', templet:'<div>{{d.reportTime == undefined ? "无" : Format0(d.reportTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
-                        //,{field: 'finance', title: '财务科确认'}
-                        //,{field: 'financeTime', title: '到达时间', templet:'<div>{{d.reportTime == undefined ? "无" : Format0(d.financeTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
+                        ,{field: 'currency_date', title: '下发时间', minWidth:150, templet:'<div>{{d.currency_date == undefined ? "无" : Format0(d.currency_date,"yyyy-MM-dd HH:mm:ss")}}</div>'}
+                        ,{field: 'register', title: '现场科采样', minWidth:120, templet:'#over1'}
+                        ,{field: 'currency_string3', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string3 == undefined ? "无" : d.currency_string3}}</div>'}
+                        ,{field: 'handover', title: '样品流转', minWidth:120}
+                        ,{field: 'currency_string4', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string4 == undefined ? "无" : d.currency_string4}}</div>'}
+                        ,{field: 'testing', title: '检测科检测', minWidth:120, templet:'#over2'}
+                        ,{field: 'currency_string5', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string5 == undefined ? "无" : d.currency_string5}}</div>'}
+                        ,{field: 'report', title: '质控科报告', minWidth:120, templet:'#over3'}
+                        ,{field: 'currency_string10', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string10 == undefined ? "无" : d.currency_string10}}</div>'}
+                        //,{field: 'finance', minWidth:150, title: '财务科确认'}
+                        //,{field: 'financeTime', title: '到达时间', minWidth:150, templet:'<div>{{d.reportTime == undefined ? "无" : Format0(d.financeTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
+						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
 					]]
 				});
 
@@ -252,13 +251,15 @@
 							//向服务端发送删除指令
 						});
 					} else if(layEvent === 'edit'){ //编辑
-				    	//do something
-				    
-				    	//同步更新缓存对应的值
-				   		obj.update({
-					    	// username: '123'
-					    	// ,title: 'xxx'
-					    	// 字段 : '要更新的值',
+						layer.open({
+							type: 2,
+							// skin:'layui-layer-molv', //layui-layer-lan
+							title: '逾期处理申请',
+							shadeClose: true,
+							shade: 0.8,
+							maxmin: true,
+							area: ['80%', '80%'],
+							content: 'testingProcess/testingReport/overDueDealForm.action?currency_id='+data.currency_id//45
 						});
 					}
 				});
