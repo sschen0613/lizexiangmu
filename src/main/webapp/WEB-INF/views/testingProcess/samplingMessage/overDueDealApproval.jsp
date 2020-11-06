@@ -132,7 +132,7 @@
             ,title: '逾期处理审批'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-                ,{field: 'currency_number', fixed: 'left', title: '编号', minWidth:220}
+                {field: 'currency_number', fixed: 'left', title: '编号', minWidth:220}
 				,{field: 'currency_string2', title: '申请科室', minWidth:150}
 				,{field: 'currency_string3', title: '申请理由', minWidth:80}
 				,{field: 'currency_string5', title: '申请人', minWidth:100}

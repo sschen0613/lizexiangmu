@@ -1303,13 +1303,13 @@ public class DetectionServiceImpl implements DetectionService {
         }
         //报告等级计算绩效
         String report_type = currencyDetails.getDetails_string2();
-        if ("一级".equals(report_type)){
+        if ("一类".equals(report_type)){
             currencyDetails.setDetails_int(18);
-        }else if ("二级".equals(report_type)){
+        }else if ("二类".equals(report_type)){
             currencyDetails.setDetails_int(25);
-        }else if ("三级".equals(report_type)){
+        }else if ("三类".equals(report_type)){
             currencyDetails.setDetails_int(150);
-        }else if ("四级".equals(report_type)){
+        }else if ("四类".equals(report_type)){
             currencyDetails.setDetails_int(180);
         }
         //区分45，将45的id去掉

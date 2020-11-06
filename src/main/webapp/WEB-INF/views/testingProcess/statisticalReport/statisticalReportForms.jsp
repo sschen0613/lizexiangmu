@@ -58,7 +58,7 @@
 			</div>
 		</script>
 		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-xs" lay-event="detail">查看明细</a>
+			<%--<a class="layui-btn layui-btn-xs" lay-event="detail">查看明细</a>--%>
 			<a class="layui-btn layui-btn-xs" lay-event="edit">逾期处理</a>
 			<!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>--%>
 		</script>
@@ -259,7 +259,7 @@
 							shade: 0.8,
 							maxmin: true,
 							area: ['80%', '80%'],
-							content: 'testingProcess/testingReport/overDueDealForm.action?currency_id='+data.currency_id//45
+							content: 'testingProcess/samplingMessage/overDueDealForm.action?currency_id='+data.currency_id//45
 						});
 					}
 				});

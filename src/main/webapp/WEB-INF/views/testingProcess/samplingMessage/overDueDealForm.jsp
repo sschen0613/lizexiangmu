@@ -97,10 +97,10 @@
                 ,data : {
                 	'currency_type':49,
                 	'currency_int':currency_id,//45
-					'details_string2':apply_dep,//报告编码
-					'details_string3':apply_reason,//报告类型
-					'details_string4':staff_Id,
-                    'details_string5':staffName,//当前操作人
+					'currency_string2':apply_dep,//报告编码
+					'currency_string3':apply_reason,//报告类型
+					'currency_string4':staff_Id,
+                    'currency_string5':staffName,//当前操作人
                 }
                 ,dataType : "JSON"
                 ,beforeSend: function(){

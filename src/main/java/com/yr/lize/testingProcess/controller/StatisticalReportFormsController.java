@@ -38,4 +38,10 @@ public class StatisticalReportFormsController {
 	public String overDueDealApproval() {
 		return "WEB-INF/views/testingProcess/samplingMessage/overDueDealApproval";
 	}
+
+	//跳转质控科绩效页面
+	@RequestMapping("testingProcess/performance/qualityControlPerformanceManage.action")
+	public String qualityControlPerformanceManage() {
+		return "WEB-INF/views/testingProcess/performance/qualityControlPerformanceManage";
+	}
 }

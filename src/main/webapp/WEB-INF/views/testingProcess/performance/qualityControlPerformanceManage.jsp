@@ -40,12 +40,6 @@
 						<input type="text" name="currency_string" required  lay-verify="" placeholder="请输入检测员" autocomplete="off" class="layui-input input-revise">
 					</div>
 				</div>
-				<%--<div class="layui-inline">
-					<label class="layui-form-label label-revise">委托单位 :</label>
-					<div class="layui-input-block">
-						<input type="text" name="currency_string10" required  lay-verify="" placeholder="请输入委托单位" autocomplete="off" class="layui-input input-revise">
-					</div>
-				</div>--%>
 				<div class="layui-inline">
 					<label class="layui-form-label label-revise">开始日期 :</label>
 					<div class="layui-input-block">
@@ -211,9 +205,10 @@
 
 				//执行一个 table 实例
 				table.render({
-					elem: '#test1'
+					elem: '#tab'
 					,url: 'Xinze/selectCurrencyDetailsReport.action' //数据接口
 					,page: false
+					,toolbar: true
 					,title: '质控科绩效表'
 					,totalRow: true
 					,cols: [[ //表头

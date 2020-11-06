@@ -32,11 +32,6 @@ public class TestingReportRegisterController {
 		return "WEB-INF/views/testingProcess/testingReport/testingReportDetails";
 	}
 
-	//质控科绩效页面
-	@RequestMapping("testingProcess/performance/qualityControlPerformanceManage.action")
-	public String qualityControlPerformanceManage() {
-		return "WEB-INF/views/testingProcess/performance/qualityControlPerformanceManage";
-	}
 	
 	// 跳转手机端检测报告登记申请界面
 	@RequestMapping("testingProcess/testingReport/mTestingReportRegister.action")
