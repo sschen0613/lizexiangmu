@@ -13,6 +13,7 @@ public class TechnicalServiceContractSealController {
 	@RequestMapping("contract/technicalServiceContractSealForm.action")
 	public String setupAllocationApproverView2() {
 		return "WEB-INF/views/contract/technicalServiceContractSealForm";
+		//return "WEB-INF/views/mobile/contract/mTechnicalServiceContractSeal";
 	}
     //跳转信泽技术服务合同盖章审批（丽泽）页面
 	@RequestMapping("contract/technicalServiceContractSealApproval.action")

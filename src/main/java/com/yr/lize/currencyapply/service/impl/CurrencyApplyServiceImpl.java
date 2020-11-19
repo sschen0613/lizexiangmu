@@ -783,7 +783,7 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 								currencyApply3.setCurrency_string16(startTime);
 								currencyApply3.setCurrency_string17(endTime);
 								u8DataMapper.insertCMContractB36(currencyApply3);
-							}else {
+							}else {//信泽技术服务盖章合同审批完成
 								String strContractID = xzu8DataMapper.selectStrContractID9();
 								if (strContractID != null) {
 									strContractID = strContractID.replaceFirst("1", "0");
@@ -2944,5 +2944,16 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 	@Override
 	public List<HashMap<String, Object>> getDevilLiquorDetail(CurrencyApply currencyApply) {
 		return currencyApplyMapper.getDevilLiquorDetail(currencyApply);
+	}
+
+	public void remind(String dingId,String content) throws ApiException {
+		ResponseResult result = dingDingUtilsService.selectDingRoleStaff(dingId);
+		if (!"".equals(result.getMsg())) {
+			String[]  strs2=result.getMsg().split(",");
+			for(int i=0,len=strs2.length;i<len;i++){
+				//发送工作消息
+				dingDingUtilsService.sendrRemind(strs2[i], content);
+			}
+		}
 	}
 }

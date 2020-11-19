@@ -441,26 +441,27 @@
 					}
 				});
 				// 过程一第二级 - 根据区域获取客户名称
-        		//form.on('select(area)', function(data){
-    				var cDCCode = areaid;
-    				$.ajax({
-    					url:'System/selectXZUser.action',
-    					type:'post',
-    					data:{"cDCCode": cDCCode},
-    					dataType:'JSON',
-    					success:function(res){
-    		 				var html = '<option value="">请选择客户名称</option>';
-    						$.each(res.data,function(index,item){
-    							html += '<option value="'+item.cCusCode+'" data-cCusPPerson="'+item.cCusPPerson+'" data-dept="'+item.cCusDepart+'">'+item.cCusName+'</option>'
-    						});
-    						$('#customer_name').html(html);
-    						form.render('select');
-    					}
-    				});
-    				// 重置[客户名称]级下面的内容(客户编码 合同编号 金额信息 合同条款 明细信息)
-    				$('#customer_number').val('');
+        		form.on('select(area)', function(data) {
+					var cDCCode = data.value;
+					$.ajax({
+						url: 'System/selectXZUser.action',
+						type: 'post',
+						data: {"cDCCode": cDCCode},
+						dataType: 'JSON',
+						success: function (res) {
+							var html = '<option value="">请选择客户名称</option>';
+							$.each(res.data, function (index, item) {
+								html += '<option value="' + item.cCusCode + '" data-cCusPPerson="' + item.cCusPPerson + '" data-dept="' + item.cCusDepart + '">' + item.cCusName + '</option>'
+							});
+							$('#customer_name').html(html);
+							form.render('select');
+						}
+					});
+					// 重置[客户名称]级下面的内容(客户编码 合同编号 金额信息 合同条款 明细信息)
+					$('#customer_number').val('');
 					$('#contract_id').siblings().remove();
 					$('#contract_id').html('');
+				});
         		// 过程一第三级 - 根据客户名称获取销售合同编号 并设置客户编码
         		var cCusPPerson;
                 var cCusDepart;

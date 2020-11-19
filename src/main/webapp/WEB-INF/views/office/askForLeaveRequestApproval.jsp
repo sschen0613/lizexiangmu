@@ -203,11 +203,13 @@
                             return Format(value,"yyyy-MM-dd");
                         },
                         currency_string2:"currency_string2",
+                        currency_string8:"currency_string8",
                         currency_string7:"currency_string7"
                     });
                     data.unshift({
-                        currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期',
-                        currency_date2: '请假开始时间',currency_date3: '请假结束时间',currency_string2:"请假时长",currency_string7:"申请事由"
+                        currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期'
+                        ,currency_date2: '请假开始时间',currency_date3: '请假结束时间',currency_string2:"请假时长"
+                        ,currency_string8:"请假类型",currency_string7:"申请事由"
                     });
                     // 3. 执行导出函数，系统会弹出弹框
                     LAY_EXCEL.exportExcel(data, '请假统计.xlsx', 'xlsx');
