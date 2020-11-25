@@ -119,10 +119,12 @@
         //表单数据初始化填写
         var currency_id0 = '${param.currency_id}';//number类型
 		var currency_type0 = '${param.currency_type0}';
+		var currency_string = '';//项目名称
 		var currency_string70 = '';//报表编码
 		var currency_number0 = '';//表单编码
 		if (currency_type0 == 43){
             currency_string70 = '${param.currency_string7}';
+			currency_string = '${param.currency_string2}';
             $("#task_code").val(currency_string70);
         }else{
             currency_number0 = '${param.currency_number}';
@@ -162,6 +164,7 @@
                 ,type : "post"
                 ,data : {
                     'currency_type':45,//暂时定为45=======================================================================================
+					'currency_string':currency_string,//项目名称
                     'currency_string17':currency_id0,//对应检测科任务数据id43
                     'currency_string3':task_code,//对应检测科任务编码
                     //'currency_date2':date1,//交接时间

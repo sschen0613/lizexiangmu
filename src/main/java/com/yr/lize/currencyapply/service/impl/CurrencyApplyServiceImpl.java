@@ -806,6 +806,14 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 								currencyApply3.setCurrency_string17(endTime);
 
 								xzu8DataMapper.insertCMContractB47(currencyApply3);
+
+								//获取联系人和联系方式
+								String contract_person = currencyApply2.getCurrency_string15();
+								String contract_phone = currencyApply2.getCurrency_string16();
+								String content = "在"+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())+"，合同编号为："+ strContractID +"的合同已经审批完成，其中联系人为"+contract_person+"联系电话为："+contract_phone;
+								remind("1671780017",content);//通知合同管理员
+								remind("1671660577",content);//通知业务交接员
+
 							}
 							int sum = 0;
 							//技术服务类合同无商品明细，无需添加子表信息

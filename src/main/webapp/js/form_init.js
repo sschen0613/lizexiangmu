@@ -673,8 +673,8 @@ function xzProcessProductByCangkuId($demo){
     //过程二第二级 - 根据商品名称设置其它内容
     //给下拉列表框绑定点击事件
     $demo.find(".list-container>ul").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
-        //判断明细信息中是否已存在相同项
-        if( ! judgeItems($(this).closest('.details'),$(this).attr('data-name'),$(this).closest('.details').find('input[name="runproduct_id"]').val()) ) return;
+        //判断明细信息中是否已存在相同项20201120css给去掉了
+        //if( ! judgeItems($(this).closest('.details'),$(this).attr('data-name'),$(this).closest('.details').find('input[name="runproduct_id"]').val()) ) return;
         var value = $(this).val();//number类型
         var text = $(this).text();
         var product_name = $(this).attr('data-name');//货物名称

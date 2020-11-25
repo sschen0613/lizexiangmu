@@ -50,6 +50,12 @@
 					<td colspan=8><input type="text" name="remark" value="无档案的客户名称请填写《客户档案建档申请流程》" readonly></td>
 				</tr>
 				<tr>
+					<td>联系人</td>
+					<td colspan=3><input type="text" name="contract_person" id="contract_person" lay-verify="required"></td>
+					<td>联系电话</td>
+					<td colspan=4><input type="text" id="contract_phone" name="contract_phone" lay-verify="required"></td>
+				</tr>
+				<tr>
 					<td>业务人员</td>
 					<td colspan=3><select name="person" id="person" lay-filter="person" class="staff-select" lay-search lay-verify="required"></select></td>
 					<td>服务类型</td>
@@ -193,6 +199,7 @@
 				inputRender();//input框自定义渲染
                 detailsRender(1); //明细信息每行自定义渲染事件
                 initTestName(1);//加载标的
+				inputLimitPhone($('#contract_phone'));
 
                 //字数限制
                 form.verify({
@@ -212,6 +219,8 @@
 					var area = $('#area').find('option:selected').text();
 					var customer_number = data.field.customer_number;
 					var customer_name = $('#customer_name').find('option:selected').text();
+					var contract_person =  data.field.contract_person;//联系人
+					var contract_phone =  data.field.contract_phone;//联系电话
 					var person = $('#person').find('option:selected').text();
                     var personCode = $('#person').find('option:selected').val();
 					var service_type = data.field.service_type;
@@ -275,6 +284,8 @@
                     myForm.set("currency_string",remark);
                     myForm.set("currency_string4",customer_number);
                     myForm.set("currency_string5",customer_name);
+					myForm.set("currency_string15",contract_person);//联系人
+					myForm.set("currency_string16",contract_phone);//联系电话
                     myForm.set("currency_string11",customer_number);
                     myForm.set("currency_money",contract_amount);
                     myForm.set("currency_string13",contract_ChineseAmount);

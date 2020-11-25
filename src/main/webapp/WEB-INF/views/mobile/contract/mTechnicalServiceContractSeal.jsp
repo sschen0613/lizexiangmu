@@ -81,6 +81,18 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
+						<label class="layui-form-label">联系人 :</label>
+						<div class="layui-input-block">
+							<input type="text" name="contract_person" id="contract_person" class="layui-input" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">联系电话 :</label>
+						<div class="layui-input-block">
+							<input type="text" name="contract_phone" id="contract_phone" class="layui-input" lay-verify="required">
+						</div>
+					</div>
+					<div class="layui-form-item">
 						<label class="layui-form-label">业务人员 :</label>
 						<div class="layui-input-block">
 							<select name="person" id="person" lay-filter="person" class="layui-select" lay-search lay-verify="required"></select>
@@ -273,6 +285,7 @@
                 detailsRender(1); //明细信息第一行自定义渲染事件
                 detailsRender1(1); //明细信息第一行自定义渲染事件
                 initTestName(1);//加载标的
+				inputLimitPhone($('#contract_phone'));
 
                 //字数限制
                 form.verify({
@@ -292,6 +305,8 @@
                     var area = $('#area').find('option:selected').text();
                     var customer_number = data.field.customer_number;
                     var customer_name = $('#customer_name').find('option:selected').text();
+					var contract_person =  data.field.contract_person;//联系人
+					var contract_phone =  data.field.contract_phone;//联系电话
                     var person = $('#person').find('option:selected').text();
                     var personCode = $('#person').find('option:selected').val();
                     var service_type = data.field.service_type;
@@ -353,6 +368,8 @@
                     myForm.set("currency_string",remark);
                     myForm.set("currency_string4",customer_number);
                     myForm.set("currency_string5",customer_name);
+					myForm.set("currency_string15",contract_person);//联系人
+					myForm.set("currency_string16",contract_phone);//联系电话
                     myForm.set("currency_string11",customer_number);
                     myForm.set("currency_money",contract_amount);
                     myForm.set("currency_string13",contract_ChineseAmount);

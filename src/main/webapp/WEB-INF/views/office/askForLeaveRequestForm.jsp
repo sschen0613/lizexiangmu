@@ -71,6 +71,7 @@
                     <option value="婚假">婚假</option>
                     <option value="丧假">丧假</option>
                     <option value="产假">产假</option>
+                    <option value="调休假">调休假</option>
                     <option value="年休假">年休假</option>
                     <option value="陪产假">陪产假</option>
                 </select>

@@ -16,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="css/search_bar_custom.css">
 		<script src="layui/layui.js"></script>
 		<script src="js/jquery-3.1.1.min.js"></script>
-		<script src="js/form_init.js"></script>
+		<script src="js/form_init.js?v="+Math.random()></script>
 		<script src="js/function_tool.js"></script>
 	</head>
 	<body>

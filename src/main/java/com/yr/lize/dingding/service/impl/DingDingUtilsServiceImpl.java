@@ -257,7 +257,7 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			System.out.println(rsp.getBody());*/
 
 
-			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/simplelist");
+			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/simplelist");
 			OapiUserSimplelistRequest req = new OapiUserSimplelistRequest();
 			req.setDepartmentId(107846063L);
 			req.setOffset(0L);
@@ -265,7 +265,7 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			req.setHttpMethod("GET");
 
 			OapiUserSimplelistResponse res = client1.execute(req, accessToken);
-			System.out.println(res.getUserlist());
+			System.out.println(res.getUserlist());*/
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/listbypage");
 			OapiUserListbypageRequest request1 = new OapiUserListbypageRequest();
@@ -276,14 +276,14 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 			request1.setHttpMethod("GET");
 			OapiUserListbypageResponse execute = client1.execute(request1,accessToken);*/
 
-			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+			DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
 			OapiDepartmentListRequest request1 = new OapiDepartmentListRequest();
 			request1.setId("1");
 			request1.setFetchChild(true);
 			request1.setHttpMethod("GET");
 			OapiDepartmentListResponse response1 = client1.execute(request1, accessToken);
 			System.err.println(response1.getBody());
-			List<Department> departments = response1.getDepartment();*/
+			List<Department> departments = response1.getDepartment();
 
 			/*DingTalkClient client1 = new DefaultDingTalkClient("https://oapi.dingtalk.com/attendance/listRecord");
 			OapiAttendanceListRecordRequest request1 = new OapiAttendanceListRecordRequest();

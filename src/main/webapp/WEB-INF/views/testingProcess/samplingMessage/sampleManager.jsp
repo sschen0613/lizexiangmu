@@ -294,6 +294,7 @@
                     area: ['80%', '80%'],
                     content: 'testingProcess/samplingMessage/sampleManagerForm.action?currency_id='+data.currency_id
 							+'&currency_number='+data.currency_number+'&currency_string7='+data.currency_string7
+							+'&currency_string2='+data.currency_string2
 							+"&currency_type="+data.currency_type
                 });
             }
