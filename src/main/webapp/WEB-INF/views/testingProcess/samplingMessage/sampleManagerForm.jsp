@@ -47,7 +47,7 @@
 			<td>采样任务编码</td>
 			<td colspan="4"><input type="text" id="task_code" name="task_code"  autocomplete="off" lay-verify="required" readonly></td>
 			<td>检测完成时间</td>
-			<td colspan="4"><input name="date2" type="text" class="layui-input" lay-verify="required"></td>
+			<td colspan="4"><input name="date2" type="text" value="2" class="layui-input" lay-verify="required"></td>
 		</tr>
 
 		<tr>

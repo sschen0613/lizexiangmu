@@ -148,6 +148,7 @@
         <if test="param2.currency_string8 != null and param2.currency_string8 != ''">AND currency_apply.currency_string8 LIKE '%${param2.currency_string8}%'</if>
         <if test="param2.currency_string9 != null and param2.currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${param2.currency_string9}%'</if>
         <if test="param2.currency_string10 != null and param2.currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${param2.currency_string10}%'</if>
+        <if test="param2.currency_string14 != null and param2.currency_string14 != ''">AND currency_apply.currency_string14 LIKE '%${param2.currency_string14}%'</if>
         <if test="param2.currency_string17 != null and param2.currency_string17 != ''">AND currency_apply.currency_string2 LIKE '%${param2.currency_string17}%'</if>
         <if test="param2.currency_string18 != null and param2.currency_string18 != ''">AND currency_apply.currency_string18 LIKE '%${param2.currency_string18}%'</if>
         <if test="param2.currency_int2 != null">AND currency_apply.currency_int2 = #{param2.currency_int2}</if>
@@ -177,6 +178,7 @@
             <if test="param2.currency_string8 != null and param2.currency_string8 != ''">AND currency_apply.currency_string8 LIKE '%${param2.currency_string8}%'</if>
             <if test="param2.currency_string9 != null and param2.currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${param2.currency_string9}%'</if>
             <if test="param2.currency_string10 != null and param2.currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${param2.currency_string10}%'</if>
+            <if test="param2.currency_string14 != null and param2.currency_string14 != ''">AND currency_apply.currency_string14 LIKE '%${param2.currency_string14}%'</if>
             <if test="param2.currency_string17 != null and param2.currency_string17 != ''">AND currency_apply.currency_string2 LIKE '%${param2.currency_string17}%'</if>
             <if test="param2.currency_string18 != null and param2.currency_string18 != ''">AND currency_apply.currency_string18 LIKE '%${param2.currency_string18}%'</if>
             <if test="param2.currency_int2 != null">AND currency_apply.currency_int2 = #{param2.currency_int2}</if>
@@ -212,6 +214,7 @@
         <if test="currency_string8 != null and currency_string8 != ''">AND currency_apply.currency_string8 LIKE '%${currency_string8}%'</if>
         <if test="currency_string9 != null and currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${currency_string9}%'</if>
         <if test="currency_string10 != null and currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${currency_string10}%'</if>
+        <if test="currency_string14 != null and currency_string14 != ''">AND currency_apply.currency_string14 LIKE '%${currency_string14}%'</if>
         <if test="currency_string17 != null and currency_string17 != ''">AND currency_apply.currency_string2 LIKE '%${currency_string17}%'</if>
         <if test="currency_string18 != null and currency_string18 != ''">AND currency_apply.currency_string18 LIKE '%${currency_string18}%'</if>
         <if test="currency_int2 != null">AND currency_apply.currency_int2 = #{currency_int2}</if>
@@ -796,6 +799,8 @@
         <if test="param2.currency_string18 != null and param2.currency_string18 != ''">AND currency_apply.currency_string18 LIKE '%${param2.currency_string18}%'</if>
         <if test="param2.currency_date3 != null">AND currency_apply.currency_date <![CDATA[ <= ]]>#{param2.currency_date3}</if>
         <if test="param2.currency_date2 != null">AND currency_apply.currency_date >=#{param2.currency_date2}</if>
+        <if test="param3.details_int != null and param3.details_int != ''">AND currency_details.details_int = #{param3.details_int}</if>
+        <if test="param3.details_string != null and param3.details_string != ''">AND currency_details.details_string LIKE '%${param3.details_string}%'</if>
         <if test="param1.start != null">AND currency_details.currency_details_id NOT IN
             (SELECT TOP ${param1.start} currency_details.currency_details_id FROM currency_apply
             LEFT JOIN system_staff ON system_staff.staff_id = currency_apply.currency_Applicant
@@ -1021,6 +1026,8 @@
         <if test="param1.currency_int2 != null">AND currency_apply.currency_int2 = #{param1.currency_int2}</if>
         <if test="param1.currency_date3 != null">AND currency_apply.currency_date <![CDATA[ <= ]]>#{param1.currency_date3}</if>
         <if test="param1.currency_date2 != null">AND currency_apply.currency_date >=#{param1.currency_date2}</if>
+        <if test="param2.details_int != null and param2.details_int != ''">AND currency_details.details_int = #{param2.details_int}</if>
+        <if test="param2.details_string != null and param2.details_string != ''">AND currency_details.details_string LIKE '%${param2.details_string}%'</if>
     </select>
 
     <!--查询检测科绩效统计信息-->

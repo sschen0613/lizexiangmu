@@ -70,6 +70,10 @@
 			</td>
 		</tr>
 		<tr>
+			<td colspan="2">合同状态</td>
+			<td colspan="8"><input type="text" name="contract_status" id="contract_status" readonly></td>
+		</tr>
+		<tr>
 			<td colspan="2">项目名称</td>
 			<td colspan="2"><input type="text" name="program_name" id="program_name" lay-verify="required"></td>
 			<%--<td>联系人</td>
@@ -98,15 +102,22 @@
 				</select>
 			</td>
 			<td>检测类型</td>
-			<td colspan="2"><select id="type" name="type" lay-filter="type" lay-search lay-verify="required">
-				<option value="">==请选择类型==</option>
-				<option value="自行检测">自行检测</option>
-				<option value="常规检测">常规检测</option>
-				<option value="建设项目竣工验收检测">建设项目竣工验收检测</option>
-				<option value="环评现状检测">环评现状检测</option>
-				<option value="季度比对检测">季度比对检测</option>
-				<option value="验收比对检测">验收比对检测</option>
-			</select>
+			<td colspan="2">
+				<select id="type" name="type" lay-filter="type" lay-search lay-verify="required">
+					<option value="">==请选择类型==</option>
+					<option value="自行检测">自行检测</option>
+					<option value="常规检测">常规检测</option>
+					<option value="扩展报告">扩展报告</option>
+					<option value="室内空气检测">室内空气检测</option>
+					<option value="实验室间比对、能力验证、参考结果报告">实验室间比对、能力验证、参考结果报告</option>
+					<option value="水在线设备比对">水在线设备比对</option>
+					<option value="水在线设备验收">水在线设备验收</option>
+					<option value="气在线设备比对">气在线设备比对</option>
+					<option value="气在线设备验收">气在线设备验收</option>
+					<option value="项目竣工验收">项目竣工验收</option>
+					<option value="环境影响评价">环境影响评价</option>
+					<option value="环境现状检测">环境现状检测</option>
+				</select>
 			</td>
 			<%--<td >检测完成时间</td>
             <td colspan="1"><input name="date3" type="text" class="layui-input" id="date3" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
@@ -158,18 +169,13 @@
 			<td colspan="3">
 				<select id="program_type1" name="program_type" lay-filter="program_type" lay-search lay-verify="required">
 					<option value="">==请选择==</option>
-					<option value="烟气常规检测">烟气常规检测</option>
-					<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>
-					<option value="水的比对检测">水的比对检测</option>
-					<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>
-					<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>
-					<option value="水质在线设备验收检测">水质在线设备验收检测</option>
-					<option value="环评现状检测">环评现状检测</option>
-					<option value="竣工验收检测">竣工验收检测</option>
-					<option value="无组织土壤">无组织土壤</option>
-					<option value="无组织噪声">无组织噪声</option>
-					<option value="无组织废气">无组织废气</option>
-					<option value="采水">采水</option>
+					<option value="水和废水">水和废水</option>
+					<option value="有组织气">有组织气</option>
+					<option value="无组织气">无组织气</option>
+					<option value="噪声">噪声</option>
+					<option value="土壤/固废">土壤/固废</option>
+					<option value="气在线设备验收（超低）">气在线设备验收（超低）</option>
+					<option value="气在线设备验收（非超低）">气在线设备验收（非超低）</option>
 				</select>
 			</td>
 			<%--<td><input type="text" name="detection_site" data-subItems="1" lay-verify="required"></td>--%>
@@ -214,7 +220,7 @@
 		<div class="layui-input-block">
 			<button type="submit" id="myForm" class="layui-btn" lay-submit="" lay-filter="submitForm">提交</button>
 			<button type="reset" id="resetForm" class="layui-btn layui-btn-primary">重置</button>
-			<button type="submit" id="tForm" class="layui-btn" lay-submit="" lay-filter="temporaryForm">暂存</button>
+			<%--<button type="submit" id="tForm" class="layui-btn" lay-submit="" lay-filter="temporaryForm">暂存</button>--%>
 		</div>
 	</div>
 </form>
@@ -417,6 +423,7 @@
             var source = data.field.source;//下发来源
             var sampleType = data.field.specimen_source;//样品来源
             var contract_number = data.field.contract_number;//合同编号
+			var contract_status = data.field.contract_status;//合同状态
             var program_name =  data.field.program_name;//项目名称
             var date1 =  data.field.date1;//采样完成时间
             var specimen_name =  data.field.code;//报告编码
@@ -461,6 +468,7 @@
             myForm.set("currency_string",illustration);//说明
             myForm.set("currency_int3",source);//下发来源
             myForm.set("currency_string18",contract_number);//合同编号
+			myForm.set("currency_string16",contract_status);//合同状态
             myForm.set("currency_string2",program_name);//项目名称
             myForm.set("currency_int2",sampleType);//样品来源
             myForm.set("currency_date2",date1);//采样完成时间
@@ -529,14 +537,21 @@
                         data:{'cName':currentKey},
                         dataType:'JSON',
                         success:function(res){
-                            var html = '<li value="" class="list-this">请选择销售合同编号</li>';
+                            var html = '<li value="" class="list-this">请选择技术服务合同编号</li>';
                             $.each(res.data,function(index,item){
+                            	//20201130任务状态1下过任务0未
+                            	var testStatus = "否";
+                            	if (item.cDefine5 == 1){
+									testStatus = "是";
+								}
                                 html += '<li value="'+item.strContractID+'" data-id="'+item.strContractID
                                     +'" data-name="'+item.cCusName
-                                    +'" data-cusCode="'+item.cCusCode
+									+'" data-status="'+item.iStatus
+                                    +'" data-cusCode="'+item.cCusCode +'" data-cusCode="'+item.cCusCode
                                     +'" data-cCusAddress="'+item.cCusAddress
                                     +'" data-money="'+item.dblTotalCurrency+'" >名称：'+item.strContractName
                                     +'；编号:'+item.strContractID+'；￥'+item.dblTotalCurrency+'；时间：'+item.strContractStartDate
+									+'；是否下过任务：'+testStatus
                                     +'</li>';
                             });
                             $demo.find('.list-container.number>ul').html(html);
@@ -559,6 +574,11 @@
                 customer = "";
                 customer = $(this).attr("data-cusCode");
                 $('#contract_number').val(strContractID);  //合同编号
+				var contract_status = "自由态"
+				if ($(this).attr('data-status') == 1){
+					contract_status = "生效态";
+				}
+				$('#contract_status').val(contract_status);  //合同编号
                 //$("#contract_amount").val(contractAmount);//合同金额
                 //$('#client_department').val(contractName);//委托单位
                 //$('#customer_name').val(contractName);//客户名称
@@ -652,6 +672,11 @@
                 //$("#date1").val(dateA);//日期
                 var number = $(this).attr('data-number');
                 var sampleType = $(this).attr('data-sampleType');//样品来源
+				var contract_status = "自由态"
+				if ($(this).attr('data-status') == 1){
+					contract_status = "生效态";
+				}
+				$('#contract_status').val(contract_status);//合同状态
                 $('#specimen_source').val(sampleType);//样品来源
                 //var department = $(this).attr('data-department');//委托单位
                 var standard = $(this).attr('data-standard');
@@ -681,19 +706,14 @@
                                 //+	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
                                 +	'<td colspan="3">'
 								+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
-								+			'<option value="">==请选择==</option>' +
-								+			'<option value="烟气常规检测">烟气常规检测</option>'
-								+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
-								+			'<option value="水的比对检测">水的比对检测</option>'
-								+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
-								+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
-								+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
-								+			'<option value="环评现状检测">环评现状检测</option>'
-								+			'<option value="竣工验收检测">竣工验收检测</option>'
-								+			'<option value="无组织土壤">无组织土壤</option>'
-								+			'<option value="无组织噪声">无组织噪声</option>'
-								+			'<option value="无组织废气">无组织废气</option>'
-								+			'<option value="采水">采水</option>'
+								+			'<option value="">==请选择==</option>'
+								+			'<option value="水和废水">水和废水</option>'
+								+			'<option value="有组织气">有组织气</option>'
+								+			'<option value="无组织气">无组织气</option>'
+								+			'<option value="噪声">噪声</option>'
+								+			'<option value="土壤/固废">土壤/固废</option>'
+								+			'<option value="气在线设备验收（超低）">气在线设备验收（超低）</option>'
+								+			'<option value="气在线设备验收（非超低）">气在线设备验收（非超低）</option>'
 								+		'</select>'
 								+ 	'</td>'
                                 //+	'<td><input type="text" name="detection_site" value="'+item.details_string+'" data-subItems="1" lay-verify="required"></td>'
@@ -800,19 +820,14 @@
                 //+	'<td><input type="text" name="number" value="'+(++n_count)+'" readonly></td>'
 				+	'<td colspan="3">'
 				+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
-				+			'<option value="">==请选择==</option>' +
-				+			'<option value="烟气常规检测">烟气常规检测</option>'
-				+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
-				+			'<option value="水的比对检测">水的比对检测</option>'
-				+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
-				+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
-				+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
-				+			'<option value="环评现状检测">环评现状检测</option>'
-				+			'<option value="竣工验收检测">竣工验收检测</option>'
-				+			'<option value="无组织土壤">无组织土壤</option>'
-				+			'<option value="无组织噪声">无组织噪声</option>'
-				+			'<option value="无组织废气">无组织废气</option>'
-				+			'<option value="采水">采水</option>'
+				+			'<option value="">==请选择==</option>'
+				+			'<option value="水和废水">水和废水</option>'
+				+			'<option value="有组织气">有组织气</option>'
+				+			'<option value="无组织气">无组织气</option>'
+				+			'<option value="噪声">噪声</option>'
+				+			'<option value="土壤/固废">土壤/固废</option>'
+				+			'<option value="气在线设备验收（超低）">气在线设备验收（超低）</option>'
+				+			'<option value="气在线设备验收（非超低）">气在线设备验收（非超低）</option>'
 				+		'</select>'
 				+ 	'</td>'
                 //+	'<td><input type="text" name="detection_site" data-subItems="1" lay-verify="required"></td>'
@@ -960,19 +975,14 @@
                                 //+	'<td><input type="text" name="number" value="'+(n_count++)+'" readonly></td>'
 								+	'<td colspan="3">'
 								+ 		'<select id="program_type'+d_count+'" name="program_type" lay-filter="program_type" lay-search lay-verify="required">'
-								+			'<option value="">==请选择==</option>' +
-								+			'<option value="烟气常规检测">烟气常规检测</option>'
-								+			'<option value="在线监测设备比对检测（气）">在线监测设备比对检测（气）</option>'
-								+			'<option value="水的比对检测">水的比对检测</option>'
-								+			'<option value="在线监测设备验收检测（超低）">在线监测设备验收检测（超低）</option>'
-								+			'<option value="在线监测设备验收检测（非超低）">在线监测设备验收检测（非超低）</option>'
-								+			'<option value="水质在线设备验收检测">水质在线设备验收检测</option>'
-								+			'<option value="环评现状检测">环评现状检测</option>'
-								+			'<option value="竣工验收检测">竣工验收检测</option>'
-								+			'<option value="无组织土壤">无组织土壤</option>'
-								+			'<option value="无组织噪声">无组织噪声</option>'
-								+			'<option value="无组织废气">无组织废气</option>'
-								+			'<option value="采水">采水</option>'
+								+			'<option value="">==请选择==</option>'
+								+			'<option value="水和废水">水和废水</option>'
+								+			'<option value="有组织气">有组织气</option>'
+								+			'<option value="无组织气">无组织气</option>'
+								+			'<option value="噪声">噪声</option>'
+								+			'<option value="土壤/固废">土壤/固废</option>'
+								+			'<option value="气在线设备验收（超低）">气在线设备验收（超低）</option>'
+								+			'<option value="气在线设备验收（非超低）">气在线设备验收（非超低）</option>'
 								+		'</select>'
 								+ 	'</td>'
                                 //+	'<td><input type="text" name="detection_site" value="'+item.details_string+'" data-subItems="1" lay-verify="required"></td>'

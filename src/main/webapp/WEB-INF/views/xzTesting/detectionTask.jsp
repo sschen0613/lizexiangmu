@@ -129,6 +129,8 @@
             ,cols: [[ //表头
                 {field: 'currency_number', fixed: 'left',title: '采样单号', minWidth:220}
                 ,{field: 'currency_string2', title: '项目名称', minWidth:150}
+				,{field: 'currency_string18', title: '合同编号', minWidth:120}
+				,{field: 'currency_string16', title: '合同状态', minWidth:100}
                 /*,{field: 'currency_string3', title: '联系人', minWidth:80}
                 ,{field: 'currency_string4', title: '联系电话', minWidth:100}
                 ,{field: 'currency_string5', title: '委托单位地址', minWidth:200}

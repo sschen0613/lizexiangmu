@@ -321,7 +321,7 @@ public class DetectionController {
     //查询上一级或者送样信息
     @RequestMapping("Xinze/selectCaiyangOrShangJiApplicantCurrency.action")
     @ResponseBody
-    public ResponseResult selectCaiyangOrShangJiApplicantCurrency(Integer limit,Integer page,CurrencyApply currencyApply,sampleCode sampleCode){
+    public ResponseResult selectCaiyangOrShangJiApplicantCurrency(Integer limit,Integer page,CurrencyApply currencyApply,CurrencyDetails currencyDetails){
         ResponseResult result = new ResponseResult();
         Page page2 = new Page();
         if (limit != null) {
@@ -329,7 +329,7 @@ public class DetectionController {
             page2.setCurpage(page);
         }
         List<HashMap<String,Object>> list = detectionService.selectCaiyangOrShangJiApplicantCurrency(page2,currencyApply);
-        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,sampleCode);
+        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,currencyDetails);
         result.setCode(0);
         result.setCount(count);
         result.setData(list);
@@ -401,15 +401,15 @@ public class DetectionController {
     //查看所有交接任务详情
     @RequestMapping("/Xinze/selectLatest1.action")
     @ResponseBody
-    public ResponseResult selectLatest1(Integer limit,Integer page,CurrencyApply currencyApply,sampleCode sampleCode) {
+    public ResponseResult selectLatest1(Integer limit,Integer page,CurrencyApply currencyApply,CurrencyDetails currencyDetails) {
         ResponseResult result = new ResponseResult();
         Page page2 = new Page();
         if (limit != null) {
             page2.setPagerows(limit);
             page2.setCurpage(page);
         }
-        List<HashMap<String, Object>> list = detectionService.selectLatest1(page2,currencyApply);
-        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,sampleCode);
+        List<HashMap<String, Object>> list = detectionService.selectLatest1(page2,currencyApply,currencyDetails);
+        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,currencyDetails);
         result.setCode(0);
         result.setCount(count);
         result.setData(list);
@@ -520,7 +520,7 @@ public class DetectionController {
     //查询检测绩效统计
     @RequestMapping("/Xinze/jianceJiXiaoManarge1.action")
     @ResponseBody
-    public ResponseResult selectJianCeJiXiaoManarge1(Integer limit,Integer page,CurrencyApply currencyApply,sampleCode sample){
+    public ResponseResult selectJianCeJiXiaoManarge1(Integer limit,Integer page,CurrencyApply currencyApply,CurrencyDetails currencyDetails){
         ResponseResult result = new ResponseResult();
         Page page2 = new Page();
         if (limit != null) {
@@ -528,7 +528,7 @@ public class DetectionController {
             page2.setCurpage(page);
         }
         List<HashMap<String,Object>> list = detectionService.selectJianCeJiXiaoManarge1(page2,currencyApply);
-        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,sample);
+        Integer count = detectionService.getApplyCurrencyRows1(currencyApply,currencyDetails);
         result.setCode(0);
         result.setCount(count);
         result.setData(list);

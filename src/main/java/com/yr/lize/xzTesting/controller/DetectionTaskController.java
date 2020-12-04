@@ -20,6 +20,13 @@ public class DetectionTaskController {
 		return "WEB-INF/views/xzTesting/detectionTaskApproval";
 		//return "WEB-INF/views/mobile/xzTesting/mDetectionTaskApprovalList";
 	}
+
+	//跳转业务下发合同列表界面
+	@RequestMapping("xzTesting/taskContractList.action")
+	public String taskContractList() {
+		return "WEB-INF/views/xzTesting/taskContractList";
+		//return "WEB-INF/views/mobile/xzTesting/mDetectionTaskApprovalList";
+	}
 	
 	// 跳转手机端检测业务下发申请界面
 	@RequestMapping("xzTesting/mDetectionTask.action")

@@ -2108,4 +2108,15 @@ public class CurrencyApplyController {
 		response.getOutputStream().close();
 		return "WEB-INF/views/storage/devilLiquor";
 	}
+
+    //更新下发任务合同状态
+    @RequestMapping("/Currency/updateTaskContract.action")
+    @ResponseBody
+    public ResponseResult updateTaskContract(CurrencyApply currencyApply) {
+        ResponseResult result = new ResponseResult();
+        iCurrencyApplyService.updateTaskContract(currencyApply);
+        result.setCode(0);
+        result.setMsg("领取成功");
+        return result;
+    }
 }

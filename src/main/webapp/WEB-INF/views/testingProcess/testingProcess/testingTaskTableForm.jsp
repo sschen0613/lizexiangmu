@@ -52,6 +52,12 @@
 				</select>
 			</td>
 		</tr>
+		<tr>
+			<td>备注</td>
+			<td colspan="8">
+				<input type="text" id="remark" name="remark">
+			</td>
+		</tr>
 		</tbody>
 		<thead>
 		<tr>
@@ -98,7 +104,7 @@
         inputRender();//input框自定义渲染
 
         //表单数据初始化
-        var currency_id = '${param.currency_id}';
+        //var currency_id = '${param.currency_id}';
         var detailsId = '${param.detailsId}';
 
         var staff_Id ="${sessionScope.systemStaff.staff_Id }";//获取当前登录用户id;
@@ -119,6 +125,8 @@
                 $('#samplePerson').append(staffHtml);
                 form.render();
                 formSelects.render('selectId');
+                var p = [staff_Id];
+				formSelects.value('selectId',p);
             }
         });
 
@@ -131,18 +139,20 @@
             var specimen_acount =  data.field.specimen_acount;//样品数量
             var testPersonId = formSelects.value('selectId', 'valStr');//检测人员
 			var testPersonName = formSelects.value('selectId', 'nameStr');//检测人员
+			var remark =  data.field.remark;//备注
 
             $.ajax({
                 url : "Xinze/insertLingQuMsg.action"
                 ,type : "post"
                 ,data : {
 					'detailsId':detailsId,
-                	'currency_id':currency_id,
+                	//'currency_id':currency_id,
                     'details_string3':staffName,//当前操作人
                     'details_string4':testPersonId,
 					'details_string5':testPersonName,
 					'details_string7':test_type,
                     'details_int3':specimen_acount,//样品数量
+					'details_string6':remark
                     //,'details_money':id
                 }
                 ,dataType : "JSON"

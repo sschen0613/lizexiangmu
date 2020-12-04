@@ -59,7 +59,7 @@
 					<td>业务人员</td>
 					<td colspan=3><select name="person" id="person" lay-filter="person" class="staff-select" lay-search lay-verify="required"></select></td>
 					<td>服务类型</td>
-					<td colspan=4><select name="service_type"><option value="1">一次性服务</option><option value="2">按合同期间</option></select></td>
+					<td colspan=4><select name="service_type"><option value="1">一次性服务</option><option value="2">长期服务</option></select></td>
 				</tr>
 				<tr>
 					<td>合同期间</td>

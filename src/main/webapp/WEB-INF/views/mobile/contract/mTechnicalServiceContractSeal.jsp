@@ -101,7 +101,7 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">服务类型 :</label>
 						<div class="layui-input-block">
-							<select name="service_type"><option value="1">一次性服务</option><option value="2">按合同期间</option></select>
+							<select name="service_type"><option value="1">一次性服务</option><option value="2">长期服务</option></select>
 						</div>
 					</div>
 					<div class="layui-form-item">

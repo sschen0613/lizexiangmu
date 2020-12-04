@@ -35,12 +35,12 @@
 				<input type="text" name="currency_string7" placeholder="请输入报表编码模糊检索" autocomplete="off" class="layui-input input-revise">
 			</div>
 		</div>
-		<%--<div class="layui-inline">
-			<label class="layui-form-label label-revise">报表编码 :</label>
+		<div class="layui-inline">
+			<label class="layui-form-label label-revise">采样人员 :</label>
 			<div class="layui-input-block">
-				<input type="text" name="currency_string7" placeholder="请输入报表编码模糊检索" autocomplete="off" class="layui-input input-revise">
+				<input type="text" name="currency_string14" placeholder="请输入采样人员模糊检索" autocomplete="off" class="layui-input input-revise">
 			</div>
-		</div>--%>
+		</div>
 		<div class="layui-inline">
 			<label class="layui-form-label label-revise">开始日期 :</label>
 			<div class="layui-input-block">
@@ -152,6 +152,7 @@
             var currency_string2 = $('input[name="currency_string2"]').val();
             var currency_string5 = $('input[name="currency_string5"]').val();
             var currency_string7 = $('input[name="currency_string7"]').val();
+			var currency_string14 = $('input[name="currency_string14"]').val();
             var date1 = $('input[name="currency_date2"]').val();
             var date2 = $('input[name="currency_date3"]').val();
             var url = 'Xinze/selectApplicantCurrency.action?currency_type=43&currency_int=0&currency_int2=1';
@@ -164,6 +165,9 @@
             if (currency_string7 != null && currency_string7 != ''){
                 url += '&currency_string7='+currency_string7;
             }
+			if (currency_string14 != null && currency_string14 != ''){
+				url += '&currency_string14='+currency_string14;
+			}
             if (date1 != null && date1 != ''){
                 url += '&currency_date2='+date1;
             }
@@ -222,6 +226,7 @@
                 {field: 'currency_number', fixed: 'left', title: '采样单号', minWidth:220, sort:true}
                 ,{field: 'currency_string2', title: '项目名称', minWidth:180}
                 ,{field: 'currency_string7', title: '报表编码', minWidth:100}
+				,{field: 'currency_string14', title: '采样人员', minWidth:120}
                 ,{field: 'currency_date2', title: '采样完成时间', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd HH:ss:mm")}}</div>'}
                 ,{field: 'currency_string8', title: '检测类型', minWidth:100}
                 ,{field: 'currency_date3', title: '报告完成时间', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:ss:mm")}}</div>'}

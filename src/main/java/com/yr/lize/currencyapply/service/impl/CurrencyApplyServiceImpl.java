@@ -784,14 +784,19 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 								currencyApply3.setCurrency_string17(endTime);
 								u8DataMapper.insertCMContractB36(currencyApply3);
 							}else {//信泽技术服务盖章合同审批完成
+								//用于更新合同ID
+								CurrencyApply currencyApply47 = new CurrencyApply();
+								currencyApply47.setCurrency_id(currencyApply2.getCurrency_id());
 								String strContractID = xzu8DataMapper.selectStrContractID9();
 								if (strContractID != null) {
 									strContractID = strContractID.replaceFirst("1", "0");
 									currencyApply2.setCurrency_string6(strContractID);
 									currencyApply3.setCurrency_string6(strContractID);
+									currencyApply47.setCurrency_string17(strContractID);
 								}else {
 									currencyApply2.setCurrency_string6("0000000001");
 									currencyApply3.setCurrency_string6("0000000001");
+									currencyApply47.setCurrency_string17("0000000001");
 								}
 								currencyApply3.setCurrency_string3("03");
 								currencyApply3.setCurrency_string4("应收类合同");
@@ -806,14 +811,16 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 								currencyApply3.setCurrency_string17(endTime);
 
 								xzu8DataMapper.insertCMContractB47(currencyApply3);
+								//更新47合同id
+								currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply47);
 
 								//获取联系人和联系方式
 								String contract_person = currencyApply2.getCurrency_string15();
 								String contract_phone = currencyApply2.getCurrency_string16();
-								String content = "在"+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date())+"，合同编号为："+ strContractID +"的合同已经审批完成，其中联系人为"+contract_person+"联系电话为："+contract_phone;
+								String service_type = currencyApply2.getCurrency_int2().equals(1)?"一次性服务":"长期服务";
+								String content = "与"+currencyApply2.getCurrency_string5()+"签订的"+service_type+"合同，编号为："+ strContractID +"已审批完成，其中联系人为"+contract_person+"联系电话为："+contract_phone;
 								remind("1671780017",content);//通知合同管理员
 								remind("1671660577",content);//通知业务交接员
-
 							}
 							int sum = 0;
 							//技术服务类合同无商品明细，无需添加子表信息
@@ -2954,13 +2961,18 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		return currencyApplyMapper.getDevilLiquorDetail(currencyApply);
 	}
 
-	public void remind(String dingId,String content) throws ApiException {
+    @Override
+    public void updateTaskContract(CurrencyApply currencyApply) {
+        currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+    }
+
+    public void remind(String dingId,String content) throws ApiException {
 		ResponseResult result = dingDingUtilsService.selectDingRoleStaff(dingId);
 		if (!"".equals(result.getMsg())) {
 			String[]  strs2=result.getMsg().split(",");
 			for(int i=0,len=strs2.length;i<len;i++){
 				//发送工作消息
-				dingDingUtilsService.sendrRemind(strs2[i], content);
+				dingDingUtilsService.sendMessageAgain47(strs2[i], content);
 			}
 		}
 	}

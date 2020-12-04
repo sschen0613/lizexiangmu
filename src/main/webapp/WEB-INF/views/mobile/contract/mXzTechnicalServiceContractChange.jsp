@@ -95,13 +95,13 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">合同开始日期变更 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="strContractStartDateChange" class="layui-input date-revise" id="date4" placeholder="请选择日期" lay-verify="required">
+							<input type="text" name="strContractStartDateChange" class="layui-input date-revise" id="date4" placeholder="请选择日期">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">合同结束日期变更 :</label>
 						<div class="layui-input-block">
-							<input type="text" name="strContractEndDateChange" class="layui-input date-revise" id="date5" placeholder="请选择日期" lay-verify="required">
+							<input type="text" name="strContractEndDateChange" class="layui-input date-revise" id="date5" placeholder="请选择日期">
 						</div>
 					</div>
  					<div class="layui-form-item">
@@ -131,13 +131,13 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">上传原合同 :</label>
 						<div class="layui-input-block">
-							<input type="file" id="pics1" name="pics1" accept="image/*" capture="camera" multiple lay-verify="required">
+							<input type="file" id="pics1" name="pics1" accept="image/*" capture="camera" multiple>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">上传变更合同 :</label>
 						<div class="layui-input-block">
-							<input type="file" id="pics2" name="pics2" accept="image/*" capture="camera" multiple lay-verify="required">
+							<input type="file" id="pics2" name="pics2" accept="image/*" capture="camera" multiple>
 						</div>
 					</div>
 					<!-- 明细信息 -->
@@ -424,7 +424,7 @@
 								contract_price = Math.max(item.cDefine26,contract_price); //number类型
 								var html = ''
 										+  '<div class="pay-detail">'
-										+    '<div class="payDetails">'
+										+    '<div class="contract-details">'
 
 										+		'<div class="layui-form-item">'
 										+			'<label class="layui-form-label">合同条款名称 :</label>'

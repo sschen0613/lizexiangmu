@@ -84,7 +84,7 @@ public interface DetectionMapper {
 
     List<HashMap<String,Object>> selectCurrencyDetailss1(CurrencyApply currencyApply);
 
-    List<HashMap<String,Object>> selectLatest1(Page page2,CurrencyApply currencyApply);
+    List<HashMap<String,Object>> selectLatest1(Page page2,CurrencyApply currencyApply,CurrencyDetails currencyDetails);
 
     Integer updateSampleType(CurrencyApply currencyApply, Integer details_int2, String details_string7, String details_string13);
 
@@ -102,7 +102,7 @@ public interface DetectionMapper {
 
     List<HashMap<String, Object>> selectStaffName();
 
-    Integer getApplyCurrencyRows1(CurrencyApply currencyApply,sampleCode sample);
+    Integer getApplyCurrencyRows1(CurrencyApply currencyApply,CurrencyDetails currencyDetails);
 
     List<HashMap<String,Object>> selectJianCeJiXiaoManarge1(Page page2, CurrencyApply currencyApply);
     CurrencyApply selectselectReprotOneMaxDate(int i, Integer currency_id);

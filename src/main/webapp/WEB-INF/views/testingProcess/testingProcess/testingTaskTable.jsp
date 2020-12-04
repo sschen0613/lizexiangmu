@@ -22,9 +22,27 @@
 <form class="layui-form form-top" action="">
 	<div class="layui-form-item">
 		<div class="layui-inline">
+			<label class="layui-form-label label-revise">样品编码 :</label>
+			<div class="layui-input-block">
+				<input type="text" name="details_string" required  lay-verify="" placeholder="请输入样品编码" autocomplete="off" class="layui-input input-revise">
+			</div>
+		</div>
+		<div class="layui-inline">
 			<label class="layui-form-label label-revise">检测项目 :</label>
 			<div class="layui-input-block">
 				<input type="text" name="currency_string17" required  lay-verify="" placeholder="请输入检测项目" autocomplete="off" class="layui-input input-revise">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label label-revise">开始日期 :</label>
+			<div class="layui-input-block">
+				<input name="currency_date2" type="text" class="layui-input input-revise date-revise" id="date1" placeholder="请选择开始日期">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label label-revise">结束日期 :</label>
+			<div class="layui-input-block">
+				<input name="currency_date3" type="text" class="layui-input input-revise date-revise" id="date2" placeholder="请选择结束日期">
 			</div>
 		</div>
 		<div class="layui-inline">
@@ -62,10 +80,27 @@
         form.render();
         form.render('select');
         //执行一个laydate实例
-        laydate.render({
-            elem: '#date' //指定元素
-            ,type: 'datetime' //yyyy-MM-dd HH:mm:ss
-        });
+		//执行一个laydate实例
+		laydate.render({
+			elem: '#date1' //指定元素
+			,done: function(value, date, endDate){
+				// console.log(value); //得到日期生成的值
+				//开始日选好后，判断结束日期是否合法
+				if($('#date2').val() != ''){
+					$('#date2').val() > value ? 1 : layer.msg('请选择正确日期范围',{time: 2000},function(){$('#date1').val('');});
+				}
+			}
+		});
+		laydate.render({
+			elem: '#date2' //指定元素
+			,done: function (value, date, endDate) {
+				// console.log(value); //得到日期生成的值
+				//结束日选好后，判断开始日期是否合法
+				if($('#date1').val() != ''){
+					$('#date1').val() < value ? 1 : layer.msg('请选择正确日期范围',{time: 2000},function(){$('#date2').val('');});
+				}
+			}
+		});
 
         //监听检索按钮
         form.on('submit(search)', function(data){
@@ -93,9 +128,10 @@
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
-                ,{field: 'details_int', title: '是否领取', minWidth: 80,templet:'<div>{{d.details_int != null ? "已领取" : "未领取"}}</div>'}
+                ,{field: 'details_int', title: '是否领取', minWidth: 80,templet:'<div>{{d.details_int != 0 ? "已领取" : "未领取"}}</div>'}
                 ,{field: 'details_string3', title: '领取人', minWidth: 100,templet:'<div>{{d.details_string3 == null ? "无" : d.details_string3}}</div>'}
                 ,{field: 'details_string', title: '样品编码', minWidth: 150}
+				,{field: 'currency_string', title: '项目名称', minWidth: 130}
                 ,{field: 'details_string2', title: '检测项目', minWidth: 100}
                 ,{field: 'details_money3', title: '样品数量', minWidth: 80}
                 ,{field: 'currency_string2', title: '检测开始时间', minWidth: 130}
@@ -162,7 +198,7 @@
                         shade: 0.8,
                         maxmin: true,
                         area: ['80%', '80%'],
-                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?currency_id='+data.currency_id+'&detailsId='+data.currency_details_id //iframe的url currency_id通用审批流主键
+                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?detailsId='+data.currency_details_id //iframe的url currency_id通用审批流主键
                     });
                 }
                 /*$.ajax({
@@ -220,7 +256,7 @@
                         shade: 0.8,
                         maxmin: true,
                         area: ['80%', '80%'],
-                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?currency_id='+currency_id+'&detailsId='+detailsId //iframe的url
+                        content: 'testingProcess/testingProcess/testingTaskTableForm.action?detailsId='+detailsId //iframe的url
                     });
                     break;
                 case 'delete':

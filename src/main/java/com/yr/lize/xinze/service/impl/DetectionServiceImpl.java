@@ -66,6 +66,7 @@ public class DetectionServiceImpl implements DetectionService {
             if (currencyDetailss != null) {
                 //添加当前通用审批的详情
                 for (CurrencyDetails details : currencyDetailss) {
+                    details.setDetails_int3(0);//是否领取
                     //添加流转的商品明细
                     //List<TestProcess> testProcesses = JSONArray.parseArray(details.getDetails_string2(), TestProcess.class);
                     details.setCurrency_id(currencyApply.getCurrency_id());
@@ -621,8 +622,10 @@ public class DetectionServiceImpl implements DetectionService {
     public void insertLingQuMsg(String detailsId,CurrencyDetails details) {
         String[] ids = detailsId.split(",");
         for (String id:ids){
+            //获取45主流程的id
+            CurrencyDetails currencyDetails45 = currencyApplyMapper.selectCurrencyDetailsByID(Integer.valueOf(id));
             //获取45主流程
-            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(details.getCurrency_id());
+            CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currencyDetails45.getCurrency_id());
             //获取要求时间
             BigDecimal testDateLimit = currencyApply45.getCurrency_money();
             //获取检测开始时间
@@ -732,8 +735,8 @@ public class DetectionServiceImpl implements DetectionService {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectLatest1(Page page2, CurrencyApply currencyApply) {
-        return detectionMapper.selectLatest1(page2, currencyApply);
+    public List<HashMap<String, Object>> selectLatest1(Page page2, CurrencyApply currencyApply,CurrencyDetails currencyDetails) {
+        return detectionMapper.selectLatest1(page2, currencyApply,currencyDetails);
     }
 
     @Override
@@ -998,8 +1001,8 @@ public class DetectionServiceImpl implements DetectionService {
     }
 
     @Override
-    public Integer getApplyCurrencyRows1(CurrencyApply currencyApply,sampleCode sample) {
-        return detectionMapper.getApplyCurrencyRows1(currencyApply,sample);
+    public Integer getApplyCurrencyRows1(CurrencyApply currencyApply,CurrencyDetails currencyDetails) {
+        return detectionMapper.getApplyCurrencyRows1(currencyApply,currencyDetails);
     }
 
     @Override
@@ -1052,51 +1055,118 @@ public class DetectionServiceImpl implements DetectionService {
             String currency_id = (String) hashMap.get("currency_string17");
             CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(Integer.parseInt(currency_id));
             hashMap.put("reportNum",currencyApply43.getCurrency_number());
-            //如果为合同相关的
-            String[] strLevel1 = {"无组织废气","无组织噪声","无组织土壤","采水"};
+            //检测类型
+            String test_type = String.valueOf(hashMap.get("currency_string8"));
+
+            String[] strLevel1 = {"常规检测","自行监测","扩项报告","室内空气检测","实验室间比对、能力验证、参考结果报告"};
             String[] strLevel2 = {"烟气常规检测","水的比对检测"};
             String[] strLevel3 = {"在线监测设备比对检测（气）","水质在线设备验收检测","在线监测设备验收检测（非超低）"};
             String[] strLevel4 = {"在线监测设备验收检测（超低）"};
             String[] strLevel5 = {"环评现状检测","竣工验收检测"};
 
-            //检测类型
+            //检测检测项目类别
             String program_type = String.valueOf(hashMap.get("details_string"));
             //一级检测
-            if (Arrays.asList(strLevel1).contains(program_type)){
-                if ("无组织土壤".equals(program_type) || "采水".equals(program_type)){
-                    hashMap.put("绩效标准",program_type);
-                    hashMap.put("绩效单价",6);//原90
-                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
-                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
-                                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
-                }else if("无组织废气".equals(program_type) || "无组织噪声".equals(program_type)){
-                    hashMap.put("绩效标准",program_type);
+            if (Arrays.asList(strLevel1).contains(test_type)){
+                if("无组织气".equals(program_type) || "噪声".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
                     hashMap.put("绩效单价",6);
                     BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
                     hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money3"))))//检测项目个数
                                             .multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
                                             .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("水和废水".equals(program_type) || "土壤/固废".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);//原90
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("有组织气".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",50);//原90
+                    BigDecimal b = new BigDecimal(50/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5")))));//点位
                 }
-            }else if(Arrays.asList(strLevel2).contains(program_type)){
-                BigDecimal b = new BigDecimal(50/details_string13s.length);//绩效
-                hashMap.put("绩效标准",program_type);
-                hashMap.put("绩效单价",50);
-                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-            }else if(Arrays.asList(strLevel3).contains(program_type)){
-                BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
-                hashMap.put("绩效标准",program_type);
-                hashMap.put("绩效单价",70);
-                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-            }else if(Arrays.asList(strLevel4).contains(program_type)){
-                BigDecimal b = new BigDecimal(110/details_string13s.length);//绩效
-                hashMap.put("绩效标准",program_type);
-                hashMap.put("绩效单价",110);
-                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
-            }else if(Arrays.asList(strLevel5).contains(program_type)){
-                BigDecimal b = new BigDecimal(200/details_string13s.length);//绩效
-                hashMap.put("绩效标准",program_type);
-                hashMap.put("绩效单价",200);
-                hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+            }else if("水在线设备比对".equals(test_type)){
+                if ("水和废水".equals(program_type)){
+                    BigDecimal b = new BigDecimal(50/details_string13s.length);//绩效
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",50);
+                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+                }
+            }else if("水在线设备验收".equals(test_type)){
+                if ("水和废水".equals(program_type)){
+                    BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",70);
+                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+                }
+            }else if("气在线设备比对".equals(test_type)){
+                if ("有组织气".equals(program_type)){
+                    BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",70);
+                    hashMap.put("绩效金额",b.multiply((BigDecimal)hashMap.get("details_money5")).doubleValue());//点位个数
+                }
+            }else if("气在线设备验收".equals(test_type)){
+                if("气在线设备验收（超低）".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",110);
+                    BigDecimal b = new BigDecimal(110/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5")))));//点位
+                }else if ("气在线设备验收（非超低）".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",70);
+                    BigDecimal b = new BigDecimal(70/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5")))));//点位
+                }else if ("无组织气".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);//原90
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money3"))))//检测项目个数
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }
+            }else if("项目竣工验收".equals(test_type)){
+                if("无组织气".equals(program_type) || "噪声".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money3"))))//检测项目个数
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("水和废水".equals(program_type) || "土壤/固废".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);//原90
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("有组织气".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",200);//原90
+                    BigDecimal b = new BigDecimal(200/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5")))));//点位
+                }
+            }else if("环境影响评价".equals(test_type)  || "环境现状检测".equals(test_type)){
+                if("无组织气".equals(program_type) || "噪声".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money3"))))//检测项目个数
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("水和废水".equals(program_type) || "土壤/固废".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",6);//原90
+                    BigDecimal b = new BigDecimal(6/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5"))))//点位
+                            .multiply(new BigDecimal(String.valueOf(hashMap.get("details_int3")))).doubleValue());//频次
+                }else if ("有组织气".equals(program_type)){
+                    hashMap.put("绩效标准",test_type + "|" + program_type);
+                    hashMap.put("绩效单价",200);//原90
+                    BigDecimal b = new BigDecimal(200/details_string13s.length);//绩效
+                    hashMap.put("绩效金额",b.multiply(new BigDecimal(String.valueOf(hashMap.get("details_money5")))));//点位
+                }
             }
 
             for (String details_string13 : details_string13s){

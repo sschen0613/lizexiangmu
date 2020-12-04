@@ -44,7 +44,7 @@ public interface DetectionService {
 
     List<HashMap<String,Object>> selectCurrencyDetailss1(CurrencyApply currencyApply);
 
-    List<HashMap<String,Object>> selectLatest1(Page page2,CurrencyApply currencyApply);
+    List<HashMap<String,Object>> selectLatest1(Page page2,CurrencyApply currencyApply,CurrencyDetails currencyDetails);
 
     Integer updateSampleCode(CurrencyDetails details);
 
@@ -57,7 +57,7 @@ public interface DetectionService {
 
     List<HashMap<String,Object>> selectJianCeJiXiaoManarge(Page page2,CurrencyApply currencyApply);
 
-    Integer getApplyCurrencyRows1(CurrencyApply currencyApply,sampleCode sample);
+    Integer getApplyCurrencyRows1(CurrencyApply currencyApply,CurrencyDetails currencyDetails);
 
     List<HashMap<String,Object>> selectJianCeJiXiaoManarge1(Page page2, CurrencyApply currencyApply);
 

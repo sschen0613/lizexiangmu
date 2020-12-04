@@ -168,4 +168,6 @@ public interface ICurrencyApplyService {
 	List<HashMap<String,Object>> getDevilLiquorTotal(CurrencyApply currencyApply);
 
 	List<HashMap<String,Object>> getDevilLiquorDetail(CurrencyApply currencyApply);
+
+	void updateTaskContract (CurrencyApply currencyApply);
 }
