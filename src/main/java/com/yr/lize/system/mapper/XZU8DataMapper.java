@@ -81,6 +81,10 @@ public interface XZU8DataMapper {
 		void addOtheroutletRelation(HashMap<String, Object> hashMap);
 		//查询所有客户合同
 		List<HashMap<String,Object>> selectAllContract(@Param("cName") String cName);
+
+		//查询所有客户合同
+		HashMap<String,Object> selectCustomerByContract(String cContractID);
+
 		//反写合同——添加合同主表信息
 		Integer insertCMContractB(CurrencyApply currencyApply3);
 		//反写合同——添加合同子表信息
@@ -141,6 +145,9 @@ public interface XZU8DataMapper {
 		List<HashMap<String,Object>> selectContractInformation(@Param("strContractID") String strContractID);
 
 		List<HashMap<String,Object>> selectAllContractByContractId(@Param("contractNumber") String contractNumber);
+
+		public HashMap selectContractById(String strContractID);
+
 		//查询材料类出库单主表最大ID
         Integer selectMaterialOutID();
 		//查询材料类出库单子表最大AutoID

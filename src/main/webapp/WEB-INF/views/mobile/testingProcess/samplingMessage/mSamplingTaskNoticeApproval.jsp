@@ -145,7 +145,7 @@
 							 +				'<input type="text" name="type" value="'+item.currency_string8+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'
-							 +				'<label class="">报告完成时间 :</label>'
+							 +				'<label class="">协议完成时间 :</label>'
 							 +				'<input type="text" name="date2" value="'+Format(item.currency_date3,"yyyy-MM-dd")+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 +			'<div>'

@@ -32,7 +32,13 @@ public class TestingReportRegisterController {
 		return "WEB-INF/views/testingProcess/testingReport/testingReportDetails";
 	}
 
-	
+	//跳转业务下发合同列表界面
+	@RequestMapping("xzTesting/reportTransList.action")
+	public String taskContractList() {
+		return "WEB-INF/views/xzTesting/reportTransList";
+		//return "WEB-INF/views/mobile/xzTesting/mDetectionTaskApprovalList";
+	}
+
 	// 跳转手机端检测报告登记申请界面
 	@RequestMapping("testingProcess/testingReport/mTestingReportRegister.action")
 	public String setupAllmTestingReportRegister() {

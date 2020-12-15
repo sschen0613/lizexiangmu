@@ -62,6 +62,7 @@
             ,title: '废液明细表'
             ,cols: [[
 				{fixed: 'left',field: 'details_string', title: '编码', minWidth:60}
+				,{field: 'currency_string3', title: '地区', minWidth:50}
 				,{field: 'details_string2', title: '重量(kg)', minWidth:20}
                 ,{field: 'currency_string8', title: '站点名称', minWidth:50}
 				,{field: 'details_int', title: '状态', minWidth:50,templet:'<div>{{d.details_int == "1" ? "已转移" : "未转移"}}</div>'}

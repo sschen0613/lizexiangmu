@@ -170,4 +170,7 @@ public interface ICurrencyApplyService {
 	List<HashMap<String,Object>> getDevilLiquorDetail(CurrencyApply currencyApply);
 
 	void updateTaskContract (CurrencyApply currencyApply);
+
+	//通知现场科同事
+	void sendMessage43(CurrencyApply currencyApply) throws ApiException ;
 }

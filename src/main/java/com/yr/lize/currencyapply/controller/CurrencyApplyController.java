@@ -2076,6 +2076,8 @@ public class CurrencyApplyController {
 		xc5.setCellValue("转移日期");
 		XSSFCell xc6 = wr.createCell(6);
 		xc6.setCellValue("所属大区");
+		XSSFCell xc7 = wr.createCell(7);
+		xc7.setCellValue("所在地区");
 
 		SimpleDateFormat s= new SimpleDateFormat("yyyy-MM-dd");
 		int k=1;
@@ -2101,6 +2103,8 @@ public class CurrencyApplyController {
 			xc5s.setCellValue(map.get("details_date") == null ? "无":s.format((Date)map.get("details_date")));
 			XSSFCell xc6s = xrs.createCell(6);
 			xc6s.setCellValue(map.get("currency_string11") == null?"无":String.valueOf(map.get("currency_string11")));
+			XSSFCell xc7s = xrs.createCell(7);
+			xc7s.setCellValue(map.get("currency_string3") == null?"无":String.valueOf(map.get("currency_string3")));
 			k++;
 		}
 		response.setHeader("Content-Disposition","filename=devilLiQuor.xlsx");
@@ -2119,4 +2123,18 @@ public class CurrencyApplyController {
         result.setMsg("领取成功");
         return result;
     }
+
+	//给天人报备流程中选择的通知人发送通知
+	@RequestMapping("/Currency/sendMessage43.action")
+	@ResponseBody
+	public ResponseResult sendMessage43(CurrencyApply currencyApply) {
+		ResponseResult result = new ResponseResult();
+		logger.info("-------------------我发送了消息----------------------");
+		try {
+			iCurrencyApplyService.sendMessage43(currencyApply);
+		}catch (ApiException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

@@ -649,6 +649,12 @@
 		WHERE CM_Contract_B.strContractID LIKE '%${cName}%' OR CM_Contract_B.strContractName LIKE '%${cName}%'
 	</select>
 
+	<select id="selectCustomerByContract" parameterType="string" resultType="HashMap">
+		SELECT * FROM Customer
+		 where cCusCode =
+		 (select strBisectionUnit from CM_Contract_B where strContractID = #{cContractID})
+	</select>
+
 	<select id="selectInventory" resultType="string">
 		SELECT cInvCCode from Inventory WHERE cInvCode=#{param1}
 	</select>
@@ -686,6 +692,10 @@
 		<where>
 			strContractID = #{contractNumber}
 		</where>
+	</select>
+
+	<select id="selectContractById" parameterType="string" resultType="HashMap">
+		SELECT * from CM_Contract_B where strContractID = #{strContractID}
 	</select>
 
 	<!--<insert id="addOtheR"-->

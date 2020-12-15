@@ -744,9 +744,14 @@ public class DetectionController {
     //查询所有报告详情selectBusinessTracking
     @RequestMapping("/Xinze/selectCurrencyDetailsReport.action")
     @ResponseBody
-    public ResponseResult selectCurrencyDetailsReport(CurrencyDetails currencyDetails){
+    public ResponseResult selectCurrencyDetailsReport(Integer limit,Integer page,CurrencyDetails currencyDetails){
         ResponseResult result = new ResponseResult();
-        List<HashMap<String,Object>> list = detectionService.selectCurrencyDetailsReport(currencyDetails);
+        Page page2 = new Page();
+        if (limit != null) {
+            page2.setPagerows(limit);
+            page2.setCurpage(page);
+        }
+        List<HashMap<String,Object>> list = detectionService.selectCurrencyDetailsReport(page2,currencyDetails);
 
         result.setCode(0);
         result.setData(list);
@@ -802,6 +807,20 @@ public class DetectionController {
     public ResponseResult transSample(CurrencyApply currencyApply){
         ResponseResult result = new ResponseResult();
         Integer res = detectionService.transSample(currencyApply);
+        if (res > 0){
+            result.setMsg("流转成功!");
+        }else {
+            result.setMsg("流转失败!");
+        }
+        return result;
+    }
+
+    //接受样品
+    @RequestMapping("/Xinze/confirmReport.action")
+    @ResponseBody
+    public ResponseResult confirmReport(CurrencyDetails currencyDetails){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.confirmReport(currencyDetails);
         if (res > 0){
             result.setMsg("流转成功!");
         }else {

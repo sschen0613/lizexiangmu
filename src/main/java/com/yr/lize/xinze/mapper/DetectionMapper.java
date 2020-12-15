@@ -153,5 +153,7 @@ public interface DetectionMapper {
 
     Integer testingReportAdd(CurrencyDetails currencyDetails);
 
-    List<HashMap<String,Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails);
+    List<HashMap<String,Object>> selectCurrencyDetailsReport(Page page2,CurrencyDetails currencyDetails);
+
+    Integer confirmReport(CurrencyDetails currencyDetails);
 }

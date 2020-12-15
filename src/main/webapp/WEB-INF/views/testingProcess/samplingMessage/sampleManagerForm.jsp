@@ -38,16 +38,18 @@
 			<td>下发部门</td>
 			<td colspan="2"><input id='department' name="issued_department" class="layui-select" lay-filter="issued_department" lay-verify="required"  readonly/></td>
 			<td>下发人</td>
-			<td colspan="1"><input type="text" id='staffName' name="issued_person" lay-verify="required" readonly></td>
+			<td colspan="2"><input type="text" id='staffName' name="issued_person" lay-verify="required" readonly></td>
 			<td>下发日期</td>
-			<td colspan="4"><input type="text" name="issued_date" class="layui-input" id="date" placeholder="请选择日期" autocomplete="off" lay-verify="required" readonly></td>
+			<td colspan="3"><input type="text" name="issued_date" class="layui-input" id="date" placeholder="请选择日期" autocomplete="off" lay-verify="required" readonly></td>
 		</tr>
 
 		<tr>
-			<td>采样任务编码</td>
-			<td colspan="4"><input type="text" id="task_code" name="task_code"  autocomplete="off" lay-verify="required" readonly></td>
+			<td>报告编码</td>
+			<td colspan="2"><input type="text" id="task_code" name="task_code"  autocomplete="off" lay-verify="required" readonly></td>
 			<td>检测完成时间</td>
-			<td colspan="4"><input name="date2" type="text" value="2" class="layui-input" lay-verify="required"></td>
+			<td colspan="2"><input name="date2" type="text" value="2" class="layui-input" lay-verify="required"></td>
+			<td>报告完成时间</td>
+			<td colspan="3"><input name="date3" type="text" value="2" class="layui-input" lay-verify="required"></td>
 		</tr>
 
 		<tr>
@@ -118,12 +120,14 @@
 
         //表单数据初始化填写
         var currency_id0 = '${param.currency_id}';//number类型
-		var currency_type0 = '${param.currency_type0}';
+		var currency_type0 = '${param.currency_type}';
 		var currency_string = '';//项目名称
 		var currency_string70 = '';//报表编码
+		var currency_string80 = '';//检测类型
 		var currency_number0 = '';//表单编码
 		if (currency_type0 == 43){
             currency_string70 = '${param.currency_string7}';
+			currency_string80 = '${param.currency_string8}';
 			currency_string = '${param.currency_string2}';
             $("#task_code").val(currency_string70);
         }else{
@@ -139,6 +143,7 @@
             // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
             var task_code =  data.field.task_code;//业务科下发任务编码
             var date2 =  data.field.date2;//检测完成时间
+			var date3 =  data.field.date3;//报告完成时间
 
             var currentDetails = [];
             $.each($('.details'),function(index,item){
@@ -167,8 +172,10 @@
 					'currency_string':currency_string,//项目名称
                     'currency_string17':currency_id0,//对应检测科任务数据id43
                     'currency_string3':task_code,//对应检测科任务编码
+					'currency_string4':currency_string80,//对应检测科任务编码
                     //'currency_date2':date1,//交接时间
                     'currency_money':date2,//检测完成时间
+					'currency_money2':date3,//报告完成时间
                     'currency_int':2,//为了检测任务表时可查到该数据
                     'currencyDetails':JSON.stringify(currentDetails)
                 }

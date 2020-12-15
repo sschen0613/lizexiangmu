@@ -97,5 +97,7 @@ public interface DetectionService {
 
     Integer transSample(CurrencyApply currencyApply);
 
-    List<HashMap<String,Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails);
+    List<HashMap<String,Object>> selectCurrencyDetailsReport(Page page2,CurrencyDetails currencyDetails);
+
+    Integer confirmReport(CurrencyDetails currencyDetails);
 }

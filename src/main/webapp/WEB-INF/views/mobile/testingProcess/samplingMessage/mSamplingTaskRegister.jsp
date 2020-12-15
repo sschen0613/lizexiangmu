@@ -68,7 +68,7 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<label class="layui-form-label">报告完成时间 :</label>
+				<label class="layui-form-label">协议完成时间 :</label>
 				<div class="layui-input-block">
 					<input type="text" name="date2" id="date2" class="layui-input">
 					<input type="hidden" name="test_content" id="test_content">

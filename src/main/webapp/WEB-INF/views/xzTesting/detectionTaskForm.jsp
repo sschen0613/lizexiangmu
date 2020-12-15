@@ -122,7 +122,7 @@
 			<%--<td >检测完成时间</td>
             <td colspan="1"><input name="date3" type="text" class="layui-input" id="date3" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
             --%>
-			<td>报告完成时间</td>
+			<td>协议完成时间</td>
 			<td colspan="2"><input name="date2" type="text" class="layui-input" id="date2" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
 		</tr>
 
@@ -318,7 +318,7 @@
             var type =  $('#type').find('option:selected').text();//检测类型
             //var type =  data.field.type;//检测类型
             //var date3 = data.field.date3;//检测完成时间
-            var date2 =  data.field.date2;//报告完成时间
+            var date2 =  data.field.date2;//协议完成时间
             //var task_definition = data.field.task_definition;//任务内容
             //var standard =  data.field.standard;//执行标准
             var remarkA = data.field.remark;//备注
@@ -379,7 +379,7 @@
             myForm.set("currency_date2",date1);//采样完成时间
             myForm.set("currency_string7",specimen_name);//报告编码
             myForm.set("currency_string8",type);//检测类型
-            myForm.set("currency_date3",date2);//报告完成时间
+            myForm.set("currency_date3",date2);//协议完成时间
             myForm.set("currency_string9",remarkA);
             myForm.set("currency_int",flag);
             myForm.set("currencyDetails",JSON.stringify(currentDetails));
@@ -428,7 +428,7 @@
             var date1 =  data.field.date1;//采样完成时间
             var specimen_name =  data.field.code;//报告编码
             var type =  $('#type').find('option:selected').text();//检测类型
-            var date2 =  data.field.date2;//报告完成时间
+            var date2 =  data.field.date2;//协议完成时间
             var remarkA = data.field.remark;//备注
 
 			//采样为0，送样为1
@@ -474,7 +474,7 @@
             myForm.set("currency_date2",date1);//采样完成时间
             myForm.set("currency_string7",specimen_name);//报告编码
             myForm.set("currency_string8",type);//检测类型
-            myForm.set("currency_date3",date2);//报告完成时间
+            myForm.set("currency_date3",date2);//协议完成时间
             myForm.set("currency_string9",remarkA);
             myForm.set("currency_int",flag);
             myForm.set("currencyDetails",JSON.stringify(currentDetails));
@@ -954,7 +954,7 @@
                 $("#date1").val(Format0(res.data.currency_date2,"yyyy-MM-dd HH:mm:ss"));//采样完成时间
                 $('#code').val(res.data.currency_string7);//报告编码
                 $('#type').val(res.data.currency_string8);//检测类型
-                $("#date2").val(Format0(res.data.currency_date3,"yyyy-MM-dd HH:mm:ss"));//报告完成时间
+                $("#date2").val(Format0(res.data.currency_date3,"yyyy-MM-dd HH:mm:ss"));//协议完成时间
                 $('#remark').val(res.data.currency_string9);//备注
 
 

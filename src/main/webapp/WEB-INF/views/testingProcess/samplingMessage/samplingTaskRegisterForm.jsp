@@ -69,7 +69,7 @@
 			<td colspan="4"><input name="date1" type="text" class="layui-input" id="date1" placeholder="请选择日期" autocomplete="off" readonly></td>
 			<td>检测类型</td>
 			<td colspan="3"><input type="text" id="type" name="type" readonly /></td>
-			<td>报告完成时间</td>
+			<td>协议完成时间</td>
 			<td colspan="4"><input name="date2" type="text" class="layui-input" id="date2" placeholder="请选择日期" autocomplete="off"  readonly></td>
 			<input type="hidden" id="test_content">
 		</tr>

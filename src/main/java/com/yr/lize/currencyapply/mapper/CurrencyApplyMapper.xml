@@ -1043,6 +1043,7 @@
 		<if test="param2.currency_string9 != null and param2.currency_string9 != ''">AND currency_apply.currency_string9 LIKE '%${param2.currency_string9}%'</if>
 		<if test="param2.currency_string10 != null and param2.currency_string10 != ''">AND currency_apply.currency_string10 LIKE '%${param2.currency_string10}%'</if>
 		<if test="param2.currency_int2 != null">AND currency_apply.currency_int2 =#{param2.currency_int2}</if>
+		<if test="param2.currency_int4 != null">AND currency_apply.currency_int4 =#{param2.currency_int4}</if>
 		<if test="param2.currency_date3 != null">AND currency_apply.currency_date <![CDATA[ <= ]]>#{param2.currency_date3}</if>
 		<if test="param2.currency_date2 != null">AND currency_apply.currency_date >=#{param2.currency_date2}</if>
 		<if test="param1.start != null">AND currency_apply.currency_id NOT IN

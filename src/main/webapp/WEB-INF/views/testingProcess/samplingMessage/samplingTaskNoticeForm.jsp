@@ -89,7 +89,7 @@
 						<option>验收比对检测</option>
 					    </select>
 					</td>
-					<td>报告完成时间</td>
+					<td>协议完成时间</td>
 					<td colspan=4><input name="date2" type="text" class="layui-input" id="date2" placeholder="请选择日期" autocomplete="off" lay-verify="required"></td>
 				</tr>
 				<tr>

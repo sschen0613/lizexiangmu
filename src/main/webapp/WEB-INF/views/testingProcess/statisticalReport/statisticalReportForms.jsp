@@ -78,6 +78,14 @@
 			{{#  } }}
 		</script>
 		<script type="text/html" id="over3">
+			{{#  if(d.over.search("超时") != -1){ }}
+			<span style="color: red;">{{ d.over }}</span>
+			{{#  } else { }}
+			{{ d.over }}
+			{{#  } }}
+		</script>
+
+		<script type="text/html" id="over4">
 			{{#  if(d.report.search("超时") != -1){ }}
 			<span style="color: red;">{{ d.report }}</span>
 			{{#  } else { }}
@@ -221,6 +229,7 @@
                         ,{field: 'currency_string5', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string5 == undefined ? "无" : d.currency_string5}}</div>'}
                         ,{field: 'report', title: '质控科报告', minWidth:120, templet:'#over3'}
                         ,{field: 'currency_string10', title: '完成时间', minWidth:150, templet:'<div>{{d.currency_string10 == undefined ? "无" : d.currency_string10}}</div>'}
+						,{field: 'over', title: '总状态', minWidth:120, templet:'#over4'}
                         //,{field: 'finance', minWidth:150, title: '财务科确认'}
                         //,{field: 'financeTime', title: '到达时间', minWidth:150, templet:'<div>{{d.reportTime == undefined ? "无" : Format0(d.financeTime,"yyyy-MM-dd HH:mm:ss")}}</div>'}
 						,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}

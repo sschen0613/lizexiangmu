@@ -67,6 +67,12 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 		if (currencyApply.getCurrency_type() != 54) {
 			currencyApply.setCurrency_date(date);
 		}
+		if (currencyApply.getCurrency_type() == 50) {//20201207，50提交时把对应43改为已流转状态
+			CurrencyApply ca43 = new CurrencyApply();
+			ca43.setCurrency_int5(1);
+			ca43.setCurrency_id(Integer.valueOf(currencyApply.getCurrency_string18()));
+			currencyApplyMapper.updateCurrencyApplyByCurrencyId(ca43);
+		}
 		for (ApproverRole approverRole : roles) {//遍历审批组//*
 			//循环第一遍进入第一个要发送消息的审批组如果第一个审批组中没有人进行第二次循环
 			if (approverRole.getRole_type() == 1) {//判断是否为角色
@@ -1154,7 +1160,15 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
 								currencyApply43.setCurrency_money3(new BigDecimal(2));
                             }
 							currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
-                        }
+                        }else if (currencyApply2.getCurrency_type() == 50){
+							//String dingId = systemStaffMapper.selectStaffById(currencyApply2.getCurrency_applicant()).getDingding_staffid();
+							String code = currencyApply2.getCurrency_string11();
+							String customer_name = currencyApply2.getCurrency_string17();
+							//获取联系人和联系方式
+							String content = "报告流转及盖章已审批完成，客户为："+customer_name+"，报告编码为："+ code +"已审批完成";
+							remind("1671660577",content);//通知业务交接员
+							//remind50(dingId,content);//通知合同管理员
+						}
 						//---------------------------审批完成后抄送人没有根据天人来进行查询20200617--------------------------
 						List<ApproverCopy> aCopies = systemApprovalMapper.selectCopyPerson(approval_id , systemStaff.getCompany_Id());
 						systemApprovalMapper.deleteApproveRroleRecord(approverRole3);
@@ -2966,7 +2980,26 @@ public class CurrencyApplyServiceImpl implements ICurrencyApplyService{
         currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
     }
 
-    public void remind(String dingId,String content) throws ApiException {
+	@Override
+	public void sendMessage43(CurrencyApply currencyApply) throws ApiException {
+		CurrencyApply currencyApply43 = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		String content = df.format(currencyApply43.getCurrency_date())+"下发的采样任务由你负责，其中报告编码："+currencyApply43.getCurrency_string7()
+				+"，项目名称："+currencyApply43.getCurrency_string2();
+		dingDingUtilsService.sendMessage43(currencyApply.getCurrency_string17(), content);
+	}
+
+	public void remind(String dingId,String content) throws ApiException {
+		ResponseResult result = dingDingUtilsService.selectDingRoleStaff(dingId);
+		if (!"".equals(result.getMsg())) {
+			String[]  strs2=result.getMsg().split(",");
+			for(int i=0,len=strs2.length;i<len;i++){
+				//发送工作消息
+				dingDingUtilsService.sendMessageAgain47(strs2[i], content);
+			}
+		}
+	}
+	public void remind50(String dingId,String content) throws ApiException {
 		ResponseResult result = dingDingUtilsService.selectDingRoleStaff(dingId);
 		if (!"".equals(result.getMsg())) {
 			String[]  strs2=result.getMsg().split(",");

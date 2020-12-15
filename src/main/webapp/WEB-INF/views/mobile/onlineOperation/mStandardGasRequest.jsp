@@ -62,7 +62,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">请购区域 :</label>
                 <div class="layui-input-block">
-                    <select name="area" id="area" lay-filter="area" class="layui-select" lay-verify="required" disabled></select>
+                    <select name="area" id="area" lay-filter="area" class="layui-select" disabled></select>
                 </div>
             </div>
             <div class="layui-form-item">

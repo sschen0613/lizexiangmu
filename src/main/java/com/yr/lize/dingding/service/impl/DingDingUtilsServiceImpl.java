@@ -727,6 +727,35 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 		System.err.println(response.getBody());
 	}
 
+	//信泽技术服务合同审批结束后，给合同管理员以及业务交接员发送相关信息
+	@Override
+	public void sendMessageAgain50(String userlist, String content) throws ApiException {
+		String accessToken = getAccessToken();
+
+		Date date = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		String date2 = df.format(date);// new Date()为获取当前系统时间
+
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+		OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+		System.err.println(userlist+"发送抄送消息"+content);
+		request.setUseridList(userlist);
+		request.setAgentId(251250837L);
+		request.setToAllUser(false);
+		OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+
+		msg.setOa(new OapiMessageCorpconversationAsyncsendV2Request.OA());
+		msg.getOa().setHead(new OapiMessageCorpconversationAsyncsendV2Request.Head());
+		msg.getOa().getHead().setText("合同流转审批完成提醒");
+		msg.getOa().setBody(new OapiMessageCorpconversationAsyncsendV2Request.Body());
+		msg.getOa().getBody().setTitle("合同流转审批完成提醒");
+		msg.getOa().getBody().setContent("提醒时间:"+date2+";"+content);
+		msg.setMsgtype("oa");
+		request.setMsg(msg);
+		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
+		System.err.println(response.getBody());
+	}
+
 	//获取所有上级部门路径
 	@Override
 	public List<Long> getDingDepartmentSup(String department_id) throws ApiException {
@@ -795,6 +824,33 @@ public class DingDingUtilsServiceImpl implements IDingDingUtilsService{
 		request.setMsg(msg);
 		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
 		System.err.println(response.getBody());
+	}
 
+	@Override
+	public void sendMessage43(String userlist,String content) throws ApiException {
+		//1.获取token
+		String accessToken = getAccessToken();
+
+		DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+		OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+
+		//丽泽正式使用
+		request.setAgentId(251250837L);
+		request.setToAllUser(false); //	是否发送给企业全部用户(ISV不能设置true) 83307209
+
+		OapiMessageCorpconversationAsyncsendV2Request.Msg msg = new OapiMessageCorpconversationAsyncsendV2Request.Msg();
+
+		msg.setOa(new OapiMessageCorpconversationAsyncsendV2Request.OA());
+		msg.getOa().setHead(new OapiMessageCorpconversationAsyncsendV2Request.Head());
+		msg.getOa().getHead().setText("采样任务提醒");
+		msg.getOa().setBody(new OapiMessageCorpconversationAsyncsendV2Request.Body());
+			request.setUseridList("0847572503855936"); //接收者的用户userid列表，最大列表长度：20
+			//request.setUseridList("203719292837623745");
+			msg.getOa().getBody().setContent(content);
+
+		msg.setMsgtype("oa");
+		request.setMsg(msg);
+		OapiMessageCorpconversationAsyncsendV2Response response = client.execute(request,accessToken);
+		System.err.println(response.getBody());
 	}
 }

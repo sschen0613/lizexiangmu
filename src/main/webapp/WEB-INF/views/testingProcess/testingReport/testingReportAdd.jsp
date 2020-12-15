@@ -83,6 +83,9 @@
 
         //表单数据初始化
         var currency_id = '${param.currency_id}';
+		var currency_string3 = '${param.currency_string3}';//报告编码
+		var currency_string4 = '${param.currency_string4}';//报告类型
+		initReport(currency_string3,currency_string4);
 
         //监听提交按钮
         form.on('submit(submitForm)', function(data){
@@ -129,6 +132,28 @@
                 e.target.title = e.target.value;
             });
         }
+
+        function initReport(report_code,report_type){
+        	$("#report_code").val(report_code);
+        	var oneArr = ["自行检测","常规检测","扩展报告","室内空气检测","实验室间比对、能力验证、参考结果报告"];
+			var twoArr = ["水在线设备比对","水在线设备验收","气在线设备比对","气在线设备验收"];
+			var threeArr = ["项目竣工验收"];
+			var fourArr = ["环境影响评价","环境现状检测"];
+
+        	if ($.inArray(report_type,oneArr) != -1){
+				$("#report_type").find("option[value='一类']").attr("selected",true);
+			}
+			if ($.inArray(report_type,twoArr) != -1){
+				$("#report_type").find("option[value='二类']").attr("selected",true);
+			}
+			if ($.inArray(report_type,threeArr) != -1){
+				$("#report_type").find("option[value='三类']").attr("selected",true);
+			}
+			if ($.inArray(report_type,fourArr) != -1){
+				$("#report_type").find("option[value='四类']").attr("selected",true);
+			}
+			form.render('select');
+		}
 
     });
 </script>

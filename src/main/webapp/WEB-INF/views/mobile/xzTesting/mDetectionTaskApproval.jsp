@@ -138,7 +138,7 @@
                     +				'<input type="text" name="type" value="'+item.currency_string8+'" class="layui-input" readonly>'
                     +			'</div>'
                     +			'<div>'
-                    +				'<label class="">报告完成时间 :</label>'
+                    +				'<label class="">协议完成时间 :</label>'
                     +				'<input type="text" name="date2" value="'+Format(item.currency_date3,"yyyy-MM-dd")+'" class="layui-input" readonly>'
                     +			'</div>'
                     +			'<div>'
@@ -156,6 +156,11 @@
 						+				'<option value="同意">同意</option>'
 						+				'<option value="拒绝">拒绝</option>'
 						+				'</select>'
+						+				'<label class="" style="padding-right: 30%">&nbsp;</label>'
+						+			'</div>'
+						+			'<div class="">'
+						+				'<label class="">通知责任人 :</label>'
+						+				'<select id="messageMan" name="messageMan" lay-verify="" lay-search class="layui-select"></select>'
 						+				'<label class="" style="padding-right: 30%">&nbsp;</label>'
 						+			'</div>'
 						+			'<div class="approval-opinion">'
@@ -220,6 +225,23 @@
                         $('.approval-detail-container').html(html0);
                     }
                 });
+
+				$.ajax({
+					url : "Xinze/selectXCStaff.action",
+					type : "post",
+					data : {'department_id':107738747},
+					dataType : "JSON",
+					success : function(res){
+						var html = '<option value="">请选择通知人</option>';
+						$.each(res.data,function(index,item){
+							html += '<option value="'+item.staff_id+'">'+item.staff_name+'</option>';
+							//html += '<option value="203719292837623745">陈书生</option>';
+						});
+						$('#messageMan').html(html);
+						form.render('select');
+					}
+				});
+
                 //渲染进度条
                 element.render('progress');
                 //更新进度条
@@ -262,7 +284,6 @@
                                 if (res.msg() == "success"){
                                     $('.content-list').addClass('style1');
                                     $('.content-list').find('button').addClass('layui-btn-disabled').attr('disabled',true);
-                                    break;
                                 }
                             }
                         });

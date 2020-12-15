@@ -100,7 +100,7 @@
                 ,{field: 'currency_string7', title: '样品名称', minWidth:100}
                 ,{field: 'currency_date2', title: '采样完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string8', title: '检测类型', minWidth:100}
-                ,{field: 'currency_date3', title: '报告完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
+                ,{field: 'currency_date3', title: '协议完成时间', minWidth:120, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string9', title: '执行标准', minWidth:200}
                 //,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:100}

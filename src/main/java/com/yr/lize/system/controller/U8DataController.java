@@ -140,6 +140,19 @@ public class U8DataController {
 	}
 
 	// 获取U8当前的客户合同中收款总金额
+	@RequestMapping("/System/selectXZContractById.action")
+	@ResponseBody
+	public ResponseResult selectXZContractById(String strContractID) {
+
+		HashMap<String, Object> contract = U8DataService.selectXZContractById(strContractID);
+
+		ResponseResult result = new ResponseResult();
+
+		result.setData(contract);
+		return result;
+	}
+
+	// 获取U8当前的客户合同中收款总金额
 	@RequestMapping("/System/selectReceivables.action")
 	@ResponseBody
 	public ResponseResult selectReceivables(String strContractID) {
@@ -447,6 +460,18 @@ public class U8DataController {
 		ResponseResult result = new ResponseResult();
 
 		result.setData(allContract);
+		return result;
+	}
+
+	//查询所有信泽客户合同
+	@RequestMapping("/System/selectXZCustomerByContract.action")
+	@ResponseBody
+	public ResponseResult selectXZCustomerByContract(String cContractID){
+		HashMap<String, Object> customer = U8DataService.selectXZCustomerByContract(cContractID);
+
+		ResponseResult result = new ResponseResult();
+
+		result.setData(customer);
 		return result;
 	}
 

@@ -129,7 +129,9 @@
 // 			    	,totalRow: true //开启合计行
 			,cols: [[ //表头
 				{fixed: 'left',field: 'currency_int3', title: '是否领取', minWidth: 80,templet:'<div>{{d.currency_int3 == 1 ? "已领取" : "未领取"}}</div>'}
-				,{field: 'currency_string17', title: '合同编号', minWidth:100}
+				,{field: 'currency_string17', title: '合同编号', minWidth:120}
+				,{field: 'currency_string15', title: '联系人', minWidth:100}
+				,{field: 'currency_string16', title: '联系电话', minWidth:100}
 				,{field: 'staff_name', title: '申请人', minWidth:80}
 				,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
 				,{field: 'currency_string5', title: '客户名称', minWidth:200}

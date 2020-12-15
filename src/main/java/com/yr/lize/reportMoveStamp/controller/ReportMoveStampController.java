@@ -8,6 +8,7 @@ public class ReportMoveStampController {
 	@RequestMapping("testingProcess/reportMoveStamp/reportMoveStamp.action")
 	public String setupAllocationApproverView1() {
 		return "WEB-INF/views/testingProcess/reportMoveStamp/reportMoveStamp";
+		//return "WEB-INF/views/mobile/testingProcess/reportMoveStamp/mReportMoveStampReady";
 	}
 	//跳转报告流转及盖章表页面
 	@RequestMapping("testingProcess/reportMoveStamp/reportMoveStampForm.action")
@@ -18,6 +19,7 @@ public class ReportMoveStampController {
 	@RequestMapping("testingProcess/reportMoveStamp/reportMoveStampApproval.action")
 	public String setupAllocationApproverView3() {
 		return "WEB-INF/views/testingProcess/reportMoveStamp/reportMoveStampApproval";
+		//return "WEB-INF/views/mobile/testingProcess/reportMoveStamp/mReportMoveStampApprovalList";
 	}
 
 	//跳转检测合同发票开具审批（信泽）页面
@@ -26,6 +28,13 @@ public class ReportMoveStampController {
 		return "WEB-INF/views/testingProcess/reportMoveStamp/reportMoveStampApprovalDetail";
 	}
 
+
+
+	// 跳转手机端报告流转及盖章申请界面
+	@RequestMapping("testingProcess/reportMoveStamp/mReportMoveStampReady.action")
+	public String setupAllmReportMoveStampReady() {
+		return "WEB-INF/views/mobile/testingProcess/reportMoveStamp/mReportMoveStampReady";
+	}
 	// 跳转手机端报告流转及盖章申请界面
 	@RequestMapping("testingProcess/reportMoveStamp/mReportMoveStamp.action")
 	public String setupAllmReportMoveStamp() {

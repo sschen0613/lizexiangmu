@@ -43,6 +43,18 @@ function buttonClick(action1,action2,data){
                     }
                 });
             }
+
+			if (ifAgree == "同意" && data.currency_type == 43){
+				var messageMan = $('#messageMan').find('option:selected').val();//被通知人钉钉id
+				$.ajax({
+					url : "Currency/sendMessage43.action",
+					type : "post",
+					data : {"currency_id":data.currency_id,"currency_string17":messageMan},
+					dataType : "JSON",
+					success : function(res){
+					}
+				});
+			}
 			layer.close(index);
 		});
 		return false;

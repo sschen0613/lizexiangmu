@@ -192,7 +192,7 @@
                         currency_string2:'项目名称',
                         //currency_string3: '联系人',currency_string4: '联系电话',currency_string5: '委托单位地址', currency_string10:'委托单位名称',
                         currency_string7: '报告编码',currency_date2: '采样完成时间',currency_string8: '检测类型',
-                        currency_date3:"报告完成时间"//,currency_string9:"执行标准"
+                        currency_date3:"协议完成时间"//,currency_string9:"执行标准"
                     });
                     // 3. 执行导出函数，系统会弹出弹框
                     LAY_EXCEL.exportExcel(data, '采样任务下发.xlsx', 'xlsx');
@@ -221,7 +221,7 @@
                 ,{field: 'currency_string7', title: '报告编码', minWidth:120}
 				,{field: 'currency_date2', title: '采样完成时间', sort: true, minWidth:180, templet:'<div>{{ Format0(d.currency_date2,"yyyy-MM-dd HH:mm:ss")}}</div>'}
 				,{field: 'currency_string8', title: '检测类型', minWidth:120}
-				,{field: 'currency_date3', title: '报告完成时间', sort: true, minWidth:180, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:mm:ss")}}</div>'}
+				,{field: 'currency_date3', title: '协议完成时间', sort: true, minWidth:180, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:mm:ss")}}</div>'}
                 //,{field: 'currency_string9', title: '执行标准', minWidth:200}
                 //,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:300}

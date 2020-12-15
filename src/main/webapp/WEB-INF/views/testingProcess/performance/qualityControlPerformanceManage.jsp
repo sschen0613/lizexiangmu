@@ -23,12 +23,12 @@
 	 	<form class="layui-form form-top" action="">
 	 		<div class="layui-form-item">
 				<div class="layui-inline">
-					<label class="layui-form-label label-revise">样品编码 :</label>
+					<label class="layui-form-label label-revise">报告编码 :</label>
 					<div class="layui-input-block">
-						<input type="text" name="currency_string18" required  lay-verify="" placeholder="请输入样品编码" autocomplete="off" class="layui-input input-revise">
+						<input type="text" name="details_string" required  lay-verify="" placeholder="请输入报告编码" autocomplete="off" class="layui-input input-revise">
 					</div>
 				</div>
-				<div class="layui-inline">
+				<%--<div class="layui-inline">
 					<label class="layui-form-label label-revise">检测项目 :</label>
 					<div class="layui-input-block">
 						<input type="text" name="currency_string17" required  lay-verify="" placeholder="请输入检测项目" autocomplete="off" class="layui-input input-revise">
@@ -39,17 +39,17 @@
 					<div class="layui-input-block">
 						<input type="text" name="currency_string" required  lay-verify="" placeholder="请输入检测员" autocomplete="off" class="layui-input input-revise">
 					</div>
-				</div>
+				</div>--%>
 				<div class="layui-inline">
 					<label class="layui-form-label label-revise">开始日期 :</label>
 					<div class="layui-input-block">
-						<input name="currency_date2" type="text" class="layui-input input-revise date-revise" id="date1" placeholder="请选择检测日期">
+						<input name="details_date2" type="text" class="layui-input input-revise date-revise" id="date1" placeholder="请选择完成日期">
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label label-revise">结束日期 :</label>
 					<div class="layui-input-block">
-						<input name="currency_date3" type="text" class="layui-input input-revise date-revise" id="date2" placeholder="请选择检测日期">
+						<input name="details_date3" type="text" class="layui-input input-revise date-revise" id="date2" placeholder="请选择完成日期">
 					</div>
 				</div>
 			  	<div class="layui-inline">
@@ -149,54 +149,43 @@
                 form.on('submit(out)', function(data){
                     var date1 = $('input[name="currency_date2"]').val();
                     var date2 = $('input[name="currency_date3"]').val();
-                    var currency_string18 = $('input[name="currency_string18"]').val();//样品编码
-                    var currency_string17 = $('input[name="currency_string17"]').val();//检测项目
-                    var currency_string = $('input[name="currency_string"]').val();//检测员
+                    var details_string = $('input[name="details_string"]').val();//样品编码
 
-                    var url = 'Xinze/jianceJiXiaoManarge.action?currency_type=45&currency_int=2&code_int2=2';
-                    if (currency_string18 != null && currency_string18 != ''){
-                        url += '&currency_string18='+currency_string18;
-                    }
-                    if (currency_string17 != null && currency_string17 != ''){
-                        url += '&currency_string17='+currency_string17;
-                    }
-                    if (currency_string != null && currency_string != ''){
-                        url += '&currency_string='+currency_string;
+                    var url = 'Xinze/selectCurrencyDetailsReport.action?currency_id=0';
+                    if (details_string != null && details_string != ''){
+                        url += '&details_string='+details_string;
                     }
                     if (date1 != null && date1 != ''){
-                        url += '&currency_date2='+date1;
+                        url += '&details_date2='+date1;
                     }
                     if (date2 != null && date2 != ''){
-                        url += '&currency_date3='+date2;
+                        url += '&details_date3='+date2;
                     }
                     $.ajax({
                         url: url,
                         dataType: 'json',
                         success: function(res) {
                             var data = LAY_EXCEL.filterExportData(res.data, {
-                                currency_string3:'currency_string3',
-                                currency_date2:function (value,line,data) {
-                                    return value == undefined ? "" : Format0(value,"yyyy-MM-dd");
-                                },
-                                details_date:function (value,line,data) {
-                                    return value == undefined ? "" : Format0(value,"yyyy-MM-dd");
-                                },
                                 details_string:"details_string",
-                                details_string2:"details_string2",
-                                details_string12:"details_string12",
-                                details_date4:function (value,line,data) {
-                                    return value == undefined ? "" : Format0(value,"yyyy-MM-dd");
-                                },
-                                details_int3:"details_int3",
-                                money:"money"
+								details_string2:"details_string2",
+								details_string4:"details_string4",
+								details_date:function (value,line,data) {
+									return value == undefined ? "" : Format0(value,"yyyy-MM-dd");
+								},
+								details_int2:function (value,line,data) {
+									return value == 1 ? "逾期" : "未逾期";
+								},
+								details_int:"details_int"
                             });
                             data.unshift({
-                                currency_string3: '业务下发编码',currency_date2: '交接时间',details_date: '领样日期',
-								details_string:"样品编码", details_string2:"检测项目",details_string12:"检测人",
-                                details_date4: '检测日期',details_int3:'检测数量',money:'绩效金额'
+								details_string: '报告编码',details_string2: '报告类型'
+								,details_string4: '业务员'
+								,details_date: '完成时间'
+								,details_int2: '是否逾期'
+								,details_int:"绩效"
                             });
                             // 3. 执行导出函数，系统会弹出弹框
-                            LAY_EXCEL.exportExcel(data, '检测科绩效统计.xlsx', 'xlsx');
+                            LAY_EXCEL.exportExcel(data, '质控科绩效统计.xlsx', 'xlsx');
                         }
                     });
 
@@ -217,7 +206,7 @@
 						,{field: 'details_string4', title: '业务员', minWidth: 100}
 						,{field: 'details_date', title: '完成时间', minWidth:120, sort: true, templet:'<div>{{ Format0(d.details_date,"yyyy-MM-dd HH:ss:mm")}}</div>'}
 						,{field: 'details_int2', title: '是否逾期', minWidth: 120,templet:'<div>{{d.details_int2 == 1 ? "逾期" : "未逾期"}}</div>'}
-						,{field: 'details_int2', title: '绩效', minWidth: 100}
+						,{field: 'details_int', title: '绩效', minWidth: 100}
 					]]
 
                 });

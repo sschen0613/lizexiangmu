@@ -97,13 +97,14 @@
             ,title: '检测报告登记'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
-				{fixed: 'left',field: 'currency_number', title: '编码单号', minWidth:200}
+				//{fixed: 'left',field: 'currency_number', title: '编码单号', minWidth:200}
+				{field: 'currency_string3', title: '报告编码', minWidth:150}
 				,{field: 'currency_int3', title: '是否确认', minWidth: 100,templet:'<div>{{d.currency_int3 == 1 ? "已确认" : "未确认"}}</div>'}
-				,{field: 'currency_int2', title: '检测超期', minWidth: 100,templet:'<div>{{d.currency_int2 == 1 ? "超期" : "未超期"}}</div>'}
-				,{field: 'currency_string3', title: '检测任务编码', minWidth:230}
-				,{field: 'currency_string2', title: '检测开始时间', minWidth:150}
-				,{field: 'currency_money', title: '检测限制天数', minWidth:80}
-				,{field: 'currency_date3', title: '报告期限', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:ss:mm")}}</div>'}
+				,{field: 'currency_int6', title: '是否完成', minWidth: 100,templet:'<div>{{d.currency_int6 == 1 ? "已完成" : "未完成"}}</div>'}
+				//,{field: 'currency_int2', title: '检测超期', minWidth: 100,templet:'<div>{{d.currency_int2 == 1 ? "超期" : "未超期"}}</div>'}
+				//,{field: 'currency_string2', title: '检测开始时间', minWidth:150}
+				,{field: 'currency_money2', title: '报告限制天数', minWidth:120}
+				,{field: 'currency_date3', title: '协议完成期限', minWidth:150, sort: true, templet:'<div>{{ Format0(d.currency_date3,"yyyy-MM-dd HH:ss:mm")}}</div>'}
 				//,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
 				,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:210}
             ]]/*,
@@ -150,7 +151,7 @@
 					shade: 0.8,
 					maxmin: true,
 					area: ['80%', '80%'],
-					content: 'testingProcess/testingReport/testingReportAdd.action?currency_id='+data.currency_id
+					content: 'testingProcess/testingReport/testingReportAdd.action?currency_id='+data.currency_id+'&currency_string3='+data.currency_string3+'&currency_string4='+data.currency_string4
 					//content: 'testingProcess/testingReport/testingReportRegisterForm.action?currency_id='+data.currency_id+'&currency_type='+data.currency_type+'&currency_int2='+data.currency_int2+'&currency_string17='+data.currency_string17 //iframe的url currency_id通用审批流主键
 				});
 			}else if(layEvent === 'detail'){ //查看明细

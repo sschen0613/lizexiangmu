@@ -27,6 +27,8 @@ public interface U8DataService {
 
 		public HashMap selectContractById(String strContractID);
 
+		public HashMap selectXZContractById(String strContractID);
+
 		//根据合同编码查询所有合同带出内容
 		List<HashMap<String, Object>>selectContractAll(String strContractID);
 
@@ -82,6 +84,9 @@ public interface U8DataService {
 		List<HashMap<String,Object>> selectAllContract(String cName);
 
 		List<HashMap<String,Object>> selectXZAllContract(String cName);
+
+		//查询所有客户合同
+		HashMap<String,Object> selectXZCustomerByContract(String cContractID);
 
 		//查询所有客户信息
 	    List<HashMap<String,Object>> selectAllUser();

@@ -64,4 +64,10 @@ public interface IDingDingUtilsService {
 
 	//发送提醒给各科室科长
 	void sendMessageAgain47(String userlist,String content) throws ApiException;
+
+	//发送提醒给各科室科长
+	void sendMessageAgain50(String userlist,String content) throws ApiException;
+
+	//为现场科同事发送通知消息
+	void sendMessage43(String userlist,String content) throws ApiException;
 }

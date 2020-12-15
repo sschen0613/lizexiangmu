@@ -1252,11 +1252,11 @@ public class DetectionServiceImpl implements DetectionService {
                                 hashMap.put("report", "超时完成");//现场科
                             }
                             //总体是否超期
-                            /*if (currencyApply43.getCurrency_money4().compareTo(BigDecimal.ZERO) != 1) {//未逾期
+                            if (currencyApply43.getCurrency_money4().compareTo(BigDecimal.ZERO) != 1) {//未逾期
                                 hashMap.put("over", "正常");//现场科
                             } else {
                                 hashMap.put("over", "超时");//现场科
-                            }*/
+                            }
 
                         }
 
@@ -1335,6 +1335,9 @@ public class DetectionServiceImpl implements DetectionService {
 
     @Override
     public Integer confirmTest45(CurrencyApply currencyApply) {
+        //把45更新为已确认
+        currencyApply.setCurrency_int3(1);
+        currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
         //获取45主流程
         CurrencyApply currencyApply45 = currencyApplyMapper.selectCurrencyApplyById(currencyApply.getCurrency_id());
         //获取43主流程
@@ -1360,13 +1363,33 @@ public class DetectionServiceImpl implements DetectionService {
             currencyDetails.setDetails_int3(currencyApply43.getCurrency_id());//保存43
             currencyDetails.setDetails_int4(currency_id);//保存45
 
+            BigDecimal reportDateLimit = currencyApply45.getCurrency_money2();
+
+            Date reportDateStart = new Date();
+            try {
+                reportDateStart = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(currencyApply43.getCurrency_string10());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //判断当前日期减去检测开始日期
+            BigDecimal days = new BigDecimal((nowDate.getTime() - reportDateStart.getTime())/(1000 * 60 * 60 * 24));
+
+            //报告是否超期
+            //判断当前时间是否>检测开始时间+期限天数，是则超期 记录到43
+            if (days.compareTo(reportDateLimit) == 1){//超期
+                currencyDetails.setDetails_int2(1);//记录到报告
+                currencyApply43.setCurrency_money3(new BigDecimal(1));
+            }else {
+                currencyDetails.setDetails_int2(0);//记录到报告
+                currencyApply43.setCurrency_money3(new BigDecimal(0));
+            }
+
+            //总体是否超期
             //判断当前日期与日期期限大小，大则是超期 记录到43
             if (nowDate.getTime()-currencyApply45.getCurrency_date3().getTime()>0){
-                currencyApply43.setCurrency_money3(new BigDecimal(1));
-                currencyDetails.setDetails_int2(1);//记录到报告
+                currencyApply43.setCurrency_money4(new BigDecimal(1));
             }else {
-                currencyApply43.setCurrency_money3(new BigDecimal(0));
-                currencyDetails.setDetails_int2(0);//记录到报告
+                currencyApply43.setCurrency_money4(new BigDecimal(0));
             }
             //更新43报告相关信息
             currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
@@ -1405,6 +1428,7 @@ public class DetectionServiceImpl implements DetectionService {
         currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
         //给43完成时间
         currencyApply43.setCurrency_string10(reportDateEnd);
+        currencyApply43.setCurrency_int4(1);
         //更新43报告相关信息
         currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply43);
         return 1;
@@ -1484,7 +1508,12 @@ public class DetectionServiceImpl implements DetectionService {
     }
 
     @Override
-    public List<HashMap<String, Object>> selectCurrencyDetailsReport(CurrencyDetails currencyDetails) {
-        return detectionMapper.selectCurrencyDetailsReport(currencyDetails);
+    public List<HashMap<String, Object>> selectCurrencyDetailsReport(Page page2,CurrencyDetails currencyDetails) {
+        return detectionMapper.selectCurrencyDetailsReport(page2,currencyDetails);
+    }
+
+    @Override
+    public Integer confirmReport(CurrencyDetails currencyDetails) {
+        return detectionMapper.confirmReport(currencyDetails);
     }
 }

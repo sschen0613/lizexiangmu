@@ -123,8 +123,12 @@
                             +				'<input type="text" name="source" value="'+source+'" class="layui-input" readonly>'
                             +			'</div>'
 								+			'<div>'
-								+				'<label class="">报表编码 :</label>'
+								+				'<label class="">报告编码 :</label>'
 								+				'<input type="text" name="code" value="'+item.currency_string11+'" class="layui-input" readonly>'
+								+			'</div>'
+								+			'<div>'
+								+				'<label class="">客户名称 :</label>'
+								+				'<input type="text" name="customer_name" value="'+item.currency_string17+'" class="layui-input" readonly>'
 								+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">合同编号 :</label>'
@@ -199,7 +203,7 @@
 							 +		'</form>'
 							 +	'</div>';
 						$('.content').append(html);
-						//获取明细信息
+						/*//获取明细信息
 						$.ajax({
 							url:'Currency/selectCurrencyDetails.action?currency_id='+currency_id,
 							type:'post',
@@ -232,7 +236,7 @@
 								});
 								$('.approval-detail-container').html(html0);
 							}
-						});
+						});*/
 
 						//检测内容
                         $.ajax({

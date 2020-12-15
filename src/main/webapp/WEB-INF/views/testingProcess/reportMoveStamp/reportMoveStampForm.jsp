@@ -40,19 +40,19 @@
 		 			<td>申请日期</td>
 		 			<td><input type="text" name="currency_date" id="date" readonly></td>
 		 		</tr>
-				<%--<tr>
+				<tr>
 					<td>报表编码</td>
 					<td id="tdCode" class="container" colspan="9">
 						<input id='code' name="code" class="code-search-box" placeholder="直接输入报表编码调取数据，必填!!!">
 						<div class="list-container" style="display:none;">
 							<ul></ul>
 						</div>
-				</tr>--%>
-				<tr>
-					<td>报表编码</td>
-					<td><input type="text" id='code' name="code" class="layui-input" lay-verify="required"></td>
 				</tr>
-				<tr>
+				<%--<tr>
+					<td>报告编码</td>
+					<td><input type="text" id='code' name="code" class="layui-input" lay-verify="required"></td>
+				</tr>--%>
+				<%--<tr>
 					<td>委托单位</td>
 					<td colspan="5"><input type="text" id='client_department' name="client_department" class="layui-input"  readonly /></td>
 				</tr>
@@ -68,18 +68,23 @@
 							<option value="2">丽泽</option>
 						</select>
 					</td>
-				</tr>
-				<tr>
+				</tr>--%>
+				<%--<tr>
 					<td>区域</td>
 					<td colspan=2><select name="area" id="area" lay-filter="area" lay-search lay-verify="required"></select></td>
 					<td>客户名称</td>
 					<td colspan=2><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
-				</tr>
+				</tr>--%>
 				<tr class="contract_tr">
+					<td>客户名称</td>
+					<td colspan="2">
+						<input type="text" id='customer_name' name="customer_name" readonly>
+						<%--<select name="contract_id" id="contract_id" lay-filter="contract_id" lay-search lay-verify="required"></select>--%>
+					</td>
 					<td>合同编号</td>
-					<td colspan="5">
-						<%--<input type="text" id='contract_id' name="contract_id" readonly>--%>
-						<select name="contract_id" id="contract_id" lay-filter="contract_id" lay-search lay-verify="required"></select>
+					<td colspan="2">
+						<input type="text" id='contract_id' name="contract_id" readonly>
+						<%--<select name="contract_id" id="contract_id" lay-filter="contract_id" lay-search lay-verify="required"></select>--%>
 					</td>
 				</tr>
 				<tr>
@@ -145,11 +150,11 @@
 				//detailsRender(1); //明细信息每行自定义渲染事件
 				inputRender();//input框自定义渲染
 
-                //searchProcess_code($('#tdCode'));
+                searchProcess_code($('#tdCode'));
 
 				//过程一:区域 - 客户名称 - 合同编号 - (合同金额+已收金额+欠款金额)+合同条款+运营设备 - 运营设备其它信息
 				// 过程一第一级 - 获取所有区域
-				$.ajax({
+				/*$.ajax({
 					url:'System/getXZRegion.action',
 					type:'post',
 					data:{},
@@ -227,10 +232,10 @@
 					$($('.details')[0]).siblings('.details').remove();
 					$('.details').find('input:not(input[name="number"])').val('');
 					form.render();
-				});
+				});*/
 				// 过程一第四级 - 根据销售合同编号设置合同金额 / 获取并计算已收金额 / 计算欠款金额(合同金额-已收金额) / 获取合同条款
 				var contract_price = 0;	//合同条款带出的价格
-				form.on('select(contract_id)', function(data){
+				/*form.on('select(contract_id)', function(data){
 					//重置之前内容
 					//明细信息重置
 					$($('.details')[0]).siblings('.details').remove();
@@ -287,7 +292,7 @@
 							});
 						}
 					});
-				});
+				});*/
 
 
 				//监听提交按钮
@@ -298,12 +303,13 @@
                     var source = data.field.source;
 					var buy_number = data.field.buy_number;//编号
 					var code = data.field.code;//报表编码
-                    var clientDepartment = data.field.client_department//委托单位
-                    var taskDefinition = data.field.task_definition//任务内容
-					var area_id = data.field.area;													//区域编号
-					var area_name = $('#area').find('option:selected').text();						//区域名称
-					var customer_id = data.field.customer_name;										//客户编号
-					var customer_name = $('#customer_name').find('option:selected').text();			//客户名称
+                    //var clientDepartment = data.field.client_department//委托单位
+                    //var taskDefinition = data.field.task_definition//任务内容
+					//var area_id = data.field.area;													//区域编号
+					//var area_name = $('#area').find('option:selected').text();						//区域名称
+					/*var customer_id = data.field.customer_name;										//客户编号
+					var customer_name = $('#customer_name').find('option:selected').text();			//客户名称*/
+					var customer_name = data.field.customer_name
 					var contract_number = data.field.contract_id;//合同id
 					var contract_name = data.field.contract_name;//合同名称
 					var contract_date = data.field.contract_date;//签订日期
@@ -316,7 +322,7 @@
 
 					var state = data.field.state;//合同状况
 
-					if (source == 1){//信泽
+					/*if (source == 1){//信泽*/
                         $.ajax({
                             url : "Currency/launchCurrencyApply.action"
                             ,type : "post"
@@ -342,7 +348,7 @@
 								,'currency_string15':area_name//报表编码
 								,'currency_string16':customer_id//委托单位
 								,'currency_string17':customer_name//任务内容
-
+								,'currency_string18':currency_id43//任务内容
                             }
                             ,dataType : "JSON"
                             ,beforeSend: function(){
@@ -357,7 +363,7 @@
                                 $('#myForm').attr("disabled",'disabled');
                             }
                         });
-					}else if (source == 2) {//丽泽
+					/*}else if (source == 2) {//丽泽
                         $.ajax({
                             url : "Currency/launchCurrencyApply.action"
                             ,type : "post"
@@ -388,7 +394,7 @@
                                 $('#myForm').attr("disabled",'disabled');
                             }
                         });
-					}
+					}*/
 
 					return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 				});
@@ -415,6 +421,7 @@
                 //数据回调
                 //过程三 - 自定义带搜索的下拉列表,根据合同编号设置其它项内容
                 var back = '';//记录当前合同编号
+				var currency_id43 = '';
                 function searchProcess_code($demo){
                     // 过程二第一级 - 获取合同编号
                     //过程三-第一级 - 即时监听搜索框,形成合同编号下拉列表框(附带其它内容)
@@ -435,13 +442,14 @@
                                 success:function(res){
                                     var html = '<li value="" class="list-this">请选择历史通知任务书</li>';
                                     $.each(res.data,function(index,item){
-                                        html += '<li value="'+item.currency_id+'" data-source="'+item.currency_int3//下发来源
-                                            +'" data-taskDefinition="'+item.currency_string11//任务内容
+                                        html += '<li value="'+item.currency_id
+												//+'" data-source="'+item.currency_int3//下发来源
+                                            //+'" data-taskDefinition="'+item.currency_string11//任务内容
                                             +'" data-code="'+item.currency_string7//报表编码
                                             +'" data-number="'+item.currency_string18//合同编号
-                                            +'" data-department="'+item.currency_string10//委托单位
-                                            +'" >报表编码：'+item.currency_string7
-                                            +'；委托单位:'+item.currency_string10+'；任务内容：'+item.currency_string11+'；申请时间：'+Format0(item.currency_date,"yyyy-MM-dd HH:mm:ss")
+                                            //+'" data-department="'+item.currency_string10//委托单位
+                                            +'" >报告编码：'+item.currency_string7
+                                            +'；项目名称:'+item.currency_string2+'；申请时间：'+Format0(item.currency_date,"yyyy-MM-dd HH:mm:ss")
                                             +'</li>';
                                     });
                                     $demo.find('.list-container>ul').html(html);
@@ -457,38 +465,51 @@
                     $demo.find(".list-container>ul").on("click","li",function(){      //只需要找到你点击的是哪个ul里面的就行
                         var value = $(this).val();//number类型
                         var text = $(this).text();
-                        var taskDefinition = $(this).attr('data-taskDefinition');//任务内容
-                        var source = $(this).attr('data-source');//下发来源
+						currency_id43 = value;
+                        //var taskDefinition = $(this).attr('data-taskDefinition');//任务内容
+                        //var source = $(this).attr('data-source');//下发来源
                         var code = $(this).attr('data-code');//报表编码
-                        var department = $(this).attr('data-department');//委托单位
+                        //var department = $(this).attr('data-department');//委托单位
                         var number = $(this).attr('data-number');//合同编码
-                        $("#task_definition").val(taskDefinition);//任务内容
+                        //$("#task_definition").val(taskDefinition);//任务内容
                         $('#code').val(code);//报表编码
-                        $('#client_department').val(department);//委托单位
-                        $('#source').val(source);//下发来源
+                        //$('#client_department').val(department);//委托单位
+                        //$('#source').val(source);//下发来源
                         //下发来源添加事件
-                            if(source == 1){//默认信泽
+                           /* if(source == 1){//默认信泽
                                 //$("#contract_tr1").removeAttr("class");
                                 $(".contract_tr").show();
                                 //$("#contract_tr2").removeAttr("class");
                                 $("#contract_id").attr("lay-verify","required");
-                                $('#contract').show();
+                                $('#contract').show();*/
                                 //form.render('select');
                                 $('#contract_id').val(number);//合同编码
 
                                 //查询合同
                                 $.ajax({
-                                    url:'System/selectAllContract.action',
+                                    url:'System/selectXZContractById.action',
                                     type:'post',
-                                    data:{'cName':number},
+                                    data:{'strContractID':number},
                                     dataType:'JSON',
                                     success:function(res){
-                                        var contractAmount = (res.data)[0].dblTotalCurrency;//合同金额
-                                        var strContractOrderDate = (res.data)[0].strContractOrderDate;//合同签订日期
-                                    	var contractName = (res.data)[0].strContractName;//合同名称
+
+										//查询客户名称
+										$.ajax({
+											url:'System/selectXZCustomerByContract.action',
+											type:'post',
+											data:{"cContractID": number},
+											dataType:'JSON',
+											success:function(res){
+												//查询客户名称
+												$("#customer_name").val(res.data.cCusName);
+											}
+										});
+										var contractAmount = res.data.dblTotalCurrency;//合同金额
+										var strContractName = res.data.strContractName;//合同名称
+										var strContractOrderDate = res.data.strContractOrderDate;//合同签订时间
 
                                         $('#contract_date').val(strContractOrderDate);//合同日期
-                                        $('#contract_name').val(contractName);//合同名称
+                                        $('#contract_name').val(strContractName);//合同名称
 
                                         //查询合同收款计划
                                         $.ajax({
@@ -515,31 +536,31 @@
                                         $.ajax({
                                             url:'System/selectXZContractAll.action',
                                             type:'post',
-                                            data:{'strContractID':strContractID},
+                                            data:{'strContractID':number},
                                             dataType:'JSON',
                                             success:function(res){
                                                 var value = '';//手机端
                                                 $.each(res.data,function(index,item){
                                                     //电脑端
                                                     var html = '<tr class="contract-details">'
-                                                        + 	'<td colspan='+c1+'><input type="text" name="contract_str_name" value="'+item.strName+'" readonly></td>'
-                                                        +	'<td colspan='+c2+'><input type="text" name="contract_str_memo" value="'+item.strMemo+'" readonly></td>'
+                                                        + 	'<td colspan="2"><input type="text" name="contract_str_name" value="'+item.strName+'" readonly></td>'
+                                                        +	'<td colspan="4"><input type="text" name="contract_str_memo" value="'+item.strMemo+'" readonly></td>'
                                                         + '</tr>';
                                                     $('.contract').after(html);
-                                                    $('#contract_str_name').val(item.strName);
-                                                    $('#contract_str_memo').val(item.strMemo);
-                                                    callback();//回调函数//inputRender();//input框自定义渲染
+                                                    /*$('#contract_str_name').val(item.strName);
+                                                    $('#contract_str_memo').val(item.strMemo);*/
+                                                    //callback();//回调函数//inputRender();//input框自定义渲染
                                                     //手机端
-                                                    value += '【合同条款名称】：《'+item.strName+'》【 合同条款内容】：'+item.strMemo+'\n';
+                                                    //value += '【合同条款名称】：《'+item.strName+'》【 合同条款内容】：'+item.strMemo+'\n';
                                                 });
                                                 //手机端
-                                                $('textarea[name="contract"]').val(value);
+                                                //$('textarea[name="contract"]').val(value);
 
                                             }
                                         });
                                     }
                                 });
-                            }else{
+                            /*}else{
                                 $(".contract_tr").hide();
                                 //$("#contract_tr1").attr("class","layui-hide");
                                 //$("#contract_tr2").removeAttr("class");
@@ -551,7 +572,7 @@
                                 //currentContractId = '';//合同编号重置为空
                                 //form.render('select');//select是固定写法 不是选择器
 
-                            }
+                            }*/
                         form.render();
                         //重置下拉列表框
                         $(this).parent().empty();

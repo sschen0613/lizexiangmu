@@ -106,6 +106,11 @@ public class U8DataServiceImpl implements U8DataService{
 	}
 
 	@Override
+	public HashMap selectXZContractById(String strContractID) {
+		return xzu8DataMapper.selectContractById(strContractID);
+	}
+
+	@Override
 	public List<HashMap<String, Object>> selectTarget(String cInvName) {
 		//获取U8当前的客户合同中的商品信息
 		return U8DataMapper.selectTarget(cInvName);
@@ -242,6 +247,11 @@ public class U8DataServiceImpl implements U8DataService{
 	@Override
 	public List<HashMap<String, Object>> selectXZAllContract(String cName) {
 		return xzu8DataMapper.selectAllContract(cName);
+	}
+
+	@Override
+	public HashMap<String, Object> selectXZCustomerByContract(String cContractID) {
+		return xzu8DataMapper.selectCustomerByContract(cContractID);
 	}
 
 	@Override

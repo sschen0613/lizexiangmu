@@ -1259,8 +1259,10 @@
     </insert>
 
     <!-- 查看采样详情 -->
-    <select id="selectCurrencyDetailsReport" parameterType="com.yr.lize.pojo.CurrencyDetails" resultType="HashMap">
-        SELECT currency_details.currency_details_id,currency_details.currency_id,currency_details.details_string
+    <select id="selectCurrencyDetailsReport" resultType="HashMap">
+        SELECT
+        <if test="param1.pagerows != null">TOP ${param1.pagerows}</if>
+        currency_details.currency_details_id,currency_details.currency_id,currency_details.details_string
         ,currency_details.details_string2,currency_details.details_string3,currency_details.details_string4
         ,currency_details.details_string5,currency_details.details_string6,currency_details.details_string7
         ,currency_details.details_int,currency_details.details_int2,currency_details.details_int3,currency_details.details_int4
@@ -1269,23 +1271,47 @@
         ,currency_details.details_string10,currency_details.details_string11,currency_details.details_string12,currency_details.details_string13
         ,currency_details.details_date
         FROM currency_details
-        <where>
+        where
             currency_id = 0
-            <if test="details_int4 != null and details_int4 != 0">
-                AND details_int4 = #{details_int4}
+            <if test="param2.details_int4 != null and param2.details_int4 != 0">
+                AND details_int4 = #{param2.details_int4}
             </if>
-            <if test="details_date3 != null">
-                AND details_date <![CDATA[ <= ]]>#{details_date3}
+            <if test="param2.details_date3 != null">
+                AND details_date <![CDATA[ <= ]]>#{param2.details_date3}
             </if>
-            <if test="details_date2 != null">
-                AND details_date >=#{param1.details_date2}
+            <if test="param2.details_date2 != null">
+                AND details_date >=#{param2.details_date2}
             </if>
-            <if test="details_string4 != null and details_string4 != ''">
-                AND  details_string4 LIKE '%${details_string4}%'
+            <if test="param2.details_string4 != null and param2.details_string4 != ''">
+                AND  details_string4 LIKE '%${param2.details_string4}%'
             </if>
-            <if test="details_string3 != null and details_string3 != ''">
-                AND  details_string3 LIKE '%${details_string3}%'
+            <if test="param2.details_string3 != null and param2.details_string3 != ''">
+                AND  details_string3 LIKE '%${param2.details_string3}%'
             </if>
-        </where>
+        <if test="param1.start != null">AND currency_details.currency_details_id NOT IN
+        (SELECT TOP ${param1.start} currency_details.currency_details_id FROM currency_details
+        where
+        currency_id = 0
+        <if test="param2.details_int4 != null and param2.details_int4 != 0">
+            AND details_int4 = #{param2.details_int4}
+        </if>
+        <if test="param2.details_date3 != null">
+            AND details_date <![CDATA[ <= ]]>#{param2.details_date3}
+        </if>
+        <if test="param2.details_date2 != null">
+            AND details_date >=#{param2.details_date2}
+        </if>
+        <if test="param2.details_string4 != null and param2.details_string4 != ''">
+            AND  details_string4 LIKE '%${param2.details_string4}%'
+        </if>
+        <if test="param2.details_string3 != null and param2.details_string3 != ''">
+            AND  details_string3 LIKE '%${param2.details_string3}%'
+        </if>)</if>
+        ORDER BY currency_details.currency_details_id,currency_details.details_string5 DESC
     </select>
+
+    <update id="confirmReport" parameterType="com.yr.lize.pojo.CurrencyDetails">
+        UPDATE currency_details SET details_string5 = #{details_string5}
+        WHERE currency_details_id = #{currency_details_id}
+    </update>
 </mapper>
