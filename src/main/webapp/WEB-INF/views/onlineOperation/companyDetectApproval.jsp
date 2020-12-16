@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 故障检测审批 -->
+<!-- 运维企业技术支持检测审批 -->
 <html>
 <head>
 	<base href="<%=basePath%>">
@@ -76,7 +76,7 @@
             ,form = layui.form
             ,layedit = layui.layedit;
 
-        var currency_type = 79;
+        var currency_type = 80;
         var staffid ="${sessionScope.systemStaff.dingding_staffid }";
 
         //表单更新渲染
@@ -145,7 +145,7 @@
 
             var currency_department = $('#department').find('option:selected').val();
 
-            var url = 'Currency/selectCurrencyApprover2.action?currency_type=79&currency_string='+staffid;
+            var url = 'Currency/selectCurrencyApprover2.action?currency_type=80&currency_string='+staffid;
             if (date1 != null && date1 != ''){
                 url += '&currency_date2='+date1;
             }
@@ -199,7 +199,7 @@
             ,url: 'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid //数据接口
             ,page: true //开启分页
             ,toolbar: true
-            ,title: '故障检测审批'
+            ,title: '运维企业技术支持检测审批'
 // 			    	,totalRow: true //开启合计行
             ,cols: [[ //表头
                 {type: 'checkbox', fixed: 'left'}
@@ -233,7 +233,7 @@
                     maxmin: true,
                     area: ['80%', '80%'],
                     content: 'Currency/approvalProgress.action?currency_id='+data.currency_id+"&current_approvalCount="
-                    +data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type=79"//iframe的url
+                    +data.current_approvalCount+"&approver_count="+data.approver_count+"&approvalOpinion_type=80"//iframe的url
                 });
             } else if(layEvent === 'edit'){ //审批
                 layer.open({
@@ -244,7 +244,7 @@
                     shade: 0.8,
                     maxmin: true,
                     area: ['30%', '50%'],
-                    content: 'Currency/approvalOpinion.action?approval_id=79' +
+                    content: 'Currency/approvalOpinion.action?approval_id=80' +
 							'&currency_id='+data.currency_id
                 });
             }

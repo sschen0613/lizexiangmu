@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 故障检测申请详情-手机端 -->
+<!-- 销售及运维设备调试检测申请详情-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -24,7 +24,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-onlineOperation"></use>
 	        	</svg>
-	        	故障检测申请详情
+	        	销售及运维设备调试检测申请详情
 			</h2>
 			<div class="content">
 				
@@ -49,13 +49,11 @@
                 var department_name = '${param.department_name}'; //申请部门
                 var currency_date = '${param.currency_date}'; //申请日期
 
-                var currency_date2 = '${param.currency_date2}';
                 var currency_string2 = '${param.currency_string2}'; //客户名称
 				var currency_string3 = '${param.currency_string3}'; //客户名称
 				var currency_string4 = '${param.currency_string4}'; //客户名称
                 var currency_string5 = '${param.currency_string5}';
                 var currency_string7 = '${param.currency_string7}'; //申请事由
-                var currency_string8 = '${param.currency_string8}';
                 
                 var currency_id = '${param.currency_id}';
     			var approvalOpinion_type = '${param.approvalOpinion_type}';
@@ -101,17 +99,9 @@
 							+				'<label class="">站点名称 :</label>'
 							+				'<input type="text" name="client_name" id="client_name" value="'+currency_string5+'" class="layui-input" readonly>'
 							+			'</div>'
-							+			'<div>'
-							+				'<label class="">检测项目 :</label>'
-							+				'<input type="text" name="monitor_site" id="monitor_site" value="'+currency_string7+'" class="layui-input" readonly>'
-							+			'</div>'
-                            +			'<div>'
-                            +				'<label class="">检测需求日期 :</label>'
-                            +				'<input type="text" name="plan_date" id="plan_date" value="'+currency_date2+'" class="layui-input" readonly>'
-                            +			'</div>'
 							 +			'<div>'
-							 +				'<label class="">申请原因 :</label>'
-							 +				'<input type="text" name="taskGet_department" id="taskGet_department" value="'+currency_string8+'" class="layui-input" readonly>'
+							 +				'<label class="">验收项目 :</label>'
+							 +				'<input type="text" name="taskGet_department" id="taskGet_department" value="'+currency_string7+'" class="layui-input" readonly>'
 							 +			'</div>'
 							 + 			'<div class="approval-progress">'
 							 +				'<label class="">审批进度 :</label>'

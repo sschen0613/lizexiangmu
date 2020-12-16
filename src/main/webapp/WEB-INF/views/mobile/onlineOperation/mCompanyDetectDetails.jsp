@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 故障检测申请详情-手机端 -->
+<!-- 运维企业技术支持检测申请详情-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -24,7 +24,7 @@
 	        	<svg class="alSvgIcon" aria-hidden="true">
 	            	<use xlink:href="#icon-onlineOperation"></use>
 	        	</svg>
-	        	故障检测申请详情
+	        	运维企业技术支持检测申请详情
 			</h2>
 			<div class="content">
 				

@@ -5,7 +5,7 @@
 	String basePath = request.getScheme()+"://" +request.getServerName()+":" +request.getServerPort()+path+"/" ;   
 %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!-- 故障检测任务审批列表-手机端 -->
+<!-- 运维企业技术支持检测任务审批列表-手机端 -->
 <html>
 	<head>
 		<base href="<%=basePath%>">
@@ -22,7 +22,7 @@
 		<div class="approval-list">
 			<div class="approval-list-title">
 				<a href="mobile/view/Mindex.action?currentTab=approval" class="layui-icon layui-icon-left"></a>
-				<h2 class="">故障检测任务审批</h2>
+				<h2 class="">运维企业技术支持检测任务审批</h2>
 				<span class="menu layui-icon layui-icon-more">
 					<div class="sub-menu">
 						<ul>
@@ -88,7 +88,7 @@
                 //UNIT //每页加载数量(in funtion_tool.js)
                 
                 //数据初始化
-                var currency_type = 79;
+                var currency_type = 80;
     			var staffid ="${sessionScope.systemStaff.dingding_staffid }";
     			$.ajax({
     				url:'Currency/selectCurrencyApprover.action?currency_type='+ currency_type+"&currency_string="+staffid,
@@ -115,7 +115,7 @@
     				    		 +		'<h2>【'+Format(item.currency_date,"yyyy-MM-dd")+'】发起申请</h2>'
     				    		 +		'<i>申请人 : '+item.staff_name+'</i>'
     				    		 +		'<i>申请部门 : '+item.department_name+'</i>'
-    				    		 +		'<a href="onlineOperation/mFaultDetectApproval.action?currency_id='+item.currency_id
+    				    		 +		'<a href="onlineOperation/mCompanyDetectApproval.action?currency_id='+item.currency_id
                                 +		'&dingStaffid='+staffid
     				    				 +'&approverState='+state+'" id="a'+index+'" onclick="approvalDetails(this);return false;">'
     				    		 +			'查看详情'
