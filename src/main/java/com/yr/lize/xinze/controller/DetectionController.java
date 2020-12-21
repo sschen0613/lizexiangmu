@@ -828,5 +828,19 @@ public class DetectionController {
         }
         return result;
     }
+
+    //接受样品
+    @RequestMapping("/Xinze/getContract.action")
+    @ResponseBody
+    public ResponseResult getContract(CurrencyApply currencyApply){
+        ResponseResult result = new ResponseResult();
+        Integer res = detectionService.getContract(currencyApply);
+        if (res > 0){
+            result.setMsg("领取成功!");
+        }else {
+            result.setMsg("领取失败!");
+        }
+        return result;
+    }
 }
 

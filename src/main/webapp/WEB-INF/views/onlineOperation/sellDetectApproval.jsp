@@ -52,9 +52,9 @@
 			<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 				检索
 			</button>
-			<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
+			<%--<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
 				导出
-			</button>
+			</button>--%>
 		</div>
 	</div>
 </form>
@@ -207,7 +207,8 @@
                 ,{field: 'department_name', title: '申请部门', minWidth:100}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
 				,{field: 'currency_string3', title: '地区', minWidth:100}
-				,{field: 'currency_string5', title: '站点名称', minWidth:150}
+				,{field: 'currency_string5', title: '企业名称', minWidth:150}
+				,{field: 'currency_string9', title: '站点名称', minWidth:150}
 				,{field: 'currency_string7', title: '验收项目', minWidth:200}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 //,{field: '', title: '合同付款约定', minWidth:200}

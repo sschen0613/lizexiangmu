@@ -100,4 +100,6 @@ public interface DetectionService {
     List<HashMap<String,Object>> selectCurrencyDetailsReport(Page page2,CurrencyDetails currencyDetails);
 
     Integer confirmReport(CurrencyDetails currencyDetails);
+
+    Integer getContract(CurrencyApply currencyApply);
 }

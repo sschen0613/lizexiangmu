@@ -41,8 +41,10 @@
 		<tr>
 			<td>区域</td>
 			<td colspan="2"><select name="area" id="area" lay-filter="area" lay-search lay-verify="required"></select></td>
+			<td>企业名称</td>
+			<td colspan="2"><input type="text" id="customer_name" name="customer_name" lay-verify="required"></td>
 			<td>站点名称</td>
-			<td colspan="2"><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
+			<td><input type="text" id="site_name" name="site_name"></td>
 		</tr>
 		<tr>
 			<td>验收项目</td>
@@ -87,9 +89,9 @@
             // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
 			var area_id = data.field.area;													//区域编号
 			var area_name = $('#area').find('option:selected').text();						//区域名称
-			var customer_id = data.field.customer_name;										//站点编号
-			var customer_name = $('#customer_name').find('option:selected').text();			//站点名称
-			var check_project = data.check_project;											//验收项目
+			var customer_name = data.field.customer_name;										//站点编号
+			var site_name = data.field.site_name;
+			var check_project = data.field.check_project;									//验收项目
 
             $.ajax({
                 url : "Currency/launchCurrencyApply.action"
@@ -98,8 +100,8 @@
                     'currency_type':81,
                     'currency_string2':area_id,
 					'currency_string3':area_name,
-					'currency_string4':customer_id,
                     'currency_string5':customer_name,
+					'currency_string9':site_name,
                     'currency_string7':check_project
                 }
                 ,dataType : "JSON"
@@ -143,23 +145,6 @@
 				$('#area').html(html);
 				form.render('select');
 			}
-		});
-		form.on('select(area)', function(data) {
-			var cDCCode = data.value;
-			$.ajax({
-				url: 'System/selectUser.action',
-				type: 'post',
-				data: {"cDCCode": cDCCode},
-				dataType: 'JSON',
-				success: function (res) {
-					var html = '<option value="">请选择站点名称</option>';
-					$.each(res.data, function (index, item) {
-						html += '<option value="' + item.cCusCode + '" data-cCusPPerson="' + item.cCusPPerson + '">' + item.cCusName + '</option>'
-					});
-					$('#customer_name').html(html);
-					form.render('select');
-				}
-			});
 		});
         //操作
         //input滑过显示内容详情 - 防止溢出情况

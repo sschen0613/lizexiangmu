@@ -56,6 +56,7 @@
                 var currency_string5 = '${param.currency_string5}';
                 var currency_string7 = '${param.currency_string7}'; //申请事由
                 var currency_string8 = '${param.currency_string8}';
+				var currency_string9 = '${param.currency_string9}';
                 
                 var currency_id = '${param.currency_id}';
     			var approvalOpinion_type = '${param.approvalOpinion_type}';
@@ -98,8 +99,12 @@
 							 +				'<input type="text" name="detection_program" id="detection_program" value="'+currency_string3+'" class="layui-input" readonly>'
 							 +			'</div>'
 							+			'<div>'
+							+				'<label class="">企业名称 :</label>'
+							+				'<input type="text" name="currency_string5" id="currency_string5" value="'+currency_string5+'" class="layui-input" readonly>'
+							+			'</div>'
+							+			'<div>'
 							+				'<label class="">站点名称 :</label>'
-							+				'<input type="text" name="client_name" id="client_name" value="'+currency_string5+'" class="layui-input" readonly>'
+							+				'<input type="text" name="client_name" id="client_name" value="'+currency_string9+'" class="layui-input" readonly>'
 							+			'</div>'
 							+			'<div>'
 							+				'<label class="">检测项目 :</label>'

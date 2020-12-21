@@ -46,8 +46,8 @@
 					<td colspan=2><input type="text" name="customer_number" id="customer_number" readonly></td>
 				</tr>
 				<tr>
-					<td>备注说明</td>
-					<td colspan=8><input type="text" name="remark" value="无档案的客户名称请填写《客户档案建档申请流程》" readonly></td>
+					<td>说明</td>
+					<td colspan=8><input type="text" name="remar" value="无档案的客户名称请填写《客户档案建档申请流程》" readonly></td>
 				</tr>
 				<tr>
 					<td>联系人</td>
@@ -81,7 +81,10 @@
 					<td>付款方式</td>
 					<td colspan=8><select name="payment"><option value="1">一次性付款</option><option value="2">阶段付款</option><option  value="3">其他</option></select></td>
 				</tr>
-
+				<tr>
+					<td>备注</td>
+					<td colspan=8><input id="remark" type="text" name="remark"></td>
+				</tr>
 				<tr>
 					<th colspan="9" style="text-align: center;">收款计划</th>
 

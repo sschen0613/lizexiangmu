@@ -1516,4 +1516,9 @@ public class DetectionServiceImpl implements DetectionService {
     public Integer confirmReport(CurrencyDetails currencyDetails) {
         return detectionMapper.confirmReport(currencyDetails);
     }
+
+    @Override
+    public Integer getContract(CurrencyApply currencyApply) {
+        return currencyApplyMapper.updateCurrencyApplyByCurrencyId(currencyApply);
+    }
 }

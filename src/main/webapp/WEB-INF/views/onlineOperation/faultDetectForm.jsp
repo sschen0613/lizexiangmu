@@ -40,26 +40,28 @@
 		</tr>
 		<tr>
 			<td>区域</td>
-			<td colspan="2"><select name="area" id="area" lay-filter="area" lay-search lay-verify="required" disabled></select></td>
+			<td><select name="area" id="area" lay-filter="area" lay-search lay-verify="required" disabled></select></td>
+			<td>企业名称</td>
+			<td><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
 			<td>站点名称</td>
-			<td colspan="2"><select name="customer_name" id="customer_name" lay-filter="customer_name" lay-search lay-verify="required"></select></td>
+			<td><input type="text" id="site_name" name="site_name"></td>
 		</tr>
 		<tr>
 			<td>检测项目</td>
 			<td colspan="2">
 				<select id="test_project" name="test_project" lay-filter="test_project" lay-search lay-verify="required">
 					<option value="">==请选择==</option>
-					<option value="SO2、NOx、O2">设备校验</option>
-					<option value="颗粒物">常规检测</option>
-					<option value="流速、排放量">设备校验</option>
-					<option value="烟温">常规检测</option>
-					<option value="湿度">设备校验</option>
-					<option value="HCL">常规检测</option>
-					<option value="CO">设备校验</option>
-					<option value="PH">常规检测</option>
-					<option value="水温">设备校验</option>
-					<option value="流量">常规检测</option>
-					<option value="VOCs">常规检测</option>
+					<option value="SO2、NOx、O2">SO2、NOx、O2</option>
+					<option value="颗粒物">颗粒物</option>
+					<option value="流速、排放量">流速、排放量</option>
+					<option value="烟温">烟温</option>
+					<option value="湿度">湿度</option>
+					<option value="HCL">HCL</option>
+					<option value="CO">CO</option>
+					<option value="PH">PH</option>
+					<option value="水温">水温</option>
+					<option value="流量">流量</option>
+					<option value="VOCs">VOCs</option>
 				</select>
 			</td>
 			<td>检测需求日期</td>
@@ -110,7 +112,8 @@
 			var area_name = $('#area').find('option:selected').text();						//区域名称
 			var customer_id = data.field.customer_name;										//站点编号
 			var customer_name = $('#customer_name').find('option:selected').text();			//站点名称
-			var test_project = data.test_project;											//检测项目
+			var site_name = data.field.site_name;
+			var test_project = data.field.test_project;											//检测项目
             var test_date = data.field.test_date; 											//检测需求日期
             var apply_reason = data.field.apply_reason; 									//申请原因
 
@@ -126,6 +129,7 @@
                     'currency_string5':customer_name,
                     'currency_string7':test_project,
 					'currency_string8':apply_reason,
+					'currency_string9':site_name,
                     'currency_date2':test_date
                 }
                 ,dataType : "JSON"

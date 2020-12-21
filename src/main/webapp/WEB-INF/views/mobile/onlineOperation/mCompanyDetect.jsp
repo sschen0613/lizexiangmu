@@ -58,13 +58,19 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">区域 :</label>
 						<div class="layui-input-block">
-							<select name="area" id="area" lay-filter="area" class="layui-select" lay-search lay-verify="required" disabled></select>
+							<select name="area" id="area" lay-filter="area" class="layui-select" lay-search lay-verify="required"></select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">企业名称 :</label>
+						<div class="layui-input-block">
+							<select name="customer_name" id="customer_name" lay-filter="customer_name" class="layui-select" lay-search lay-verify="required"></select>
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">站点名称 :</label>
 						<div class="layui-input-block">
-							<select name="customer_name" id="customer_name" lay-filter="customer_name" class="layui-select" lay-search lay-verify="required"></select>
+							<input type="text" id="site_name" name="site_name" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -72,17 +78,17 @@
 						<div class="layui-input-block">
 							<select name="test_project" id="test_project" lay-filter="test_project" class="layui-select" lay-search lay-verify="required">
 								<option value="">==请选择==</option>
-								<option value="SO2、NOx、O2">设备校验</option>
-								<option value="颗粒物">常规检测</option>
-								<option value="流速、排放量">设备校验</option>
-								<option value="烟温">常规检测</option>
-								<option value="湿度">设备校验</option>
-								<option value="HCL">常规检测</option>
-								<option value="CO">设备校验</option>
-								<option value="PH">常规检测</option>
-								<option value="水温">设备校验</option>
-								<option value="流量">常规检测</option>
-								<option value="VOCs">常规检测</option>
+								<option value="SO2、NOx、O2">SO2、NOx、O2</option>
+								<option value="颗粒物">颗粒物</option>
+								<option value="流速、排放量">流速、排放量</option>
+								<option value="烟温">烟温</option>
+								<option value="湿度">湿度</option>
+								<option value="HCL">HCL</option>
+								<option value="CO">CO</option>
+								<option value="PH">PH</option>
+								<option value="水温">水温</option>
+								<option value="流量">流量</option>
+								<option value="VOCs">VOCs</option>
 							</select>
 						</div>
  					</div>
@@ -158,7 +164,8 @@
 					var area_name = $('#area').find('option:selected').text();						//区域名称
 					var customer_id = data.field.customer_name;										//站点编号
 					var customer_name = $('#customer_name').find('option:selected').text();			//站点名称
-					var test_project = data.test_project;											//检测项目
+					var site_name = data.field.site_name;
+					var test_project = data.field.test_project;											//检测项目
 					var test_date = data.field.test_date; 											//检测需求日期
 					var apply_reason = data.field.apply_reason; 									//申请原因
 
@@ -173,6 +180,7 @@
 							'currency_string5':customer_name,
 							'currency_string7':test_project,
 							'currency_string8':apply_reason,
+							'currency_string9':site_name,
 							'currency_date2':test_date
 						}
 				 		,dataType : "JSON"
@@ -199,7 +207,6 @@
 				//获取申请人/申请部门/申请日期
 				var staffName ="${sessionScope.systemStaff.staff_Name }";//获取当前登录用户名称
 				var departmentId ="${sessionScope.systemStaff.department_Id }";//获取当前登录用户部门id
-				var areaid = "${sessionScope.systemStaff.staff_Address }";
 				setApplyMessage(staffName,departmentId);
 
                 // 过程一第一级 - 获取登陆人区域
@@ -214,25 +221,26 @@
                             html += '<option value="'+item.cDCCode+'">'+item.cDCName+'</option>';
                         });
                         $('#area').html(html);
-						$('#area').val(areaid);
                         form.render('select');
                     }
                 });
 
-				var cDCCode = areaid;
-				$.ajax({
-					url:'System/selectUser.action',
-					type:'post',
-					data:{"cDCCode": cDCCode},
-					dataType:'JSON',
-					success:function(res){
-						var html = '<option value="">请选择站点名称</option>';
-						$.each(res.data,function(index,item){
-							html += '<option value="'+item.cCusCode+'" data-cCusPPerson="'+item.cCusPPerson+'">'+item.cCusName+'</option>'
-						});
-						$('#customer_name').html(html);
-						form.render('select');
-					}
+                form.on('select(area)',function (data) {
+					var cDCCode = data.value;
+					$.ajax({
+						url:'System/selectUser.action',
+						type:'post',
+						data:{"cDCCode": cDCCode},
+						dataType:'JSON',
+						success:function(res){
+							var html = '<option value="">请选择站点名称</option>';
+							$.each(res.data,function(index,item){
+								html += '<option value="'+item.cCusCode+'" data-cCusPPerson="'+item.cCusPPerson+'">'+item.cCusName+'</option>'
+							});
+							$('#customer_name').html(html);
+							form.render('select');
+						}
+					});
 				});
 				// 重置[客户名称]级下面的内容(合同编号 合同条款)
 				$('#contract_id').siblings().remove();

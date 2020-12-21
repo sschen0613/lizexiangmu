@@ -52,9 +52,9 @@
 			<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 				检索
 			</button>
-			<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
+			<%--<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
 				导出
-			</button>
+			</button>--%>
 		</div>
 	</div>
 </form>

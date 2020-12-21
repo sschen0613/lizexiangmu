@@ -75,9 +75,9 @@
 						</div>
 					</div>
 					<div class="layui-form-item">
- 						<label class="layui-form-label">备注说明 :</label>
+ 						<label class="layui-form-label">说明 :</label>
 						<div class="layui-input-block">
-							<textarea class="layui-textarea" name="remark" readonly>无档案的客户名称请填写《客户档案建档申请流程》</textarea>
+							<textarea class="layui-textarea" name="remar" readonly>无档案的客户名称请填写《客户档案建档申请流程》</textarea>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -128,6 +128,12 @@
 						<label class="layui-form-label">付款方式 :</label>
 						<div class="layui-input-block">
 							<select name="payment"><option value="1">一次性付款</option><option value="2">阶段付款</option><option value="3">其他</option></select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">备注 :</label>
+						<div class="layui-input-block">
+							<input type="text" id="remark" name="remark" class="layui-input">
 						</div>
 					</div>
 

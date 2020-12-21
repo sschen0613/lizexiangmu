@@ -34,9 +34,9 @@
 			</div>
 		</div>
 		<div class="layui-inline">
-			<label class="layui-form-label label-revise">站点名称 :</label>
+			<label class="layui-form-label label-revise">企业名称 :</label>
 			<div class="layui-input-block">
-				<input type="text" name="currency_string5" placeholder="站点名称 :" autocomplete="off" class="layui-input input-revise">
+				<input type="text" name="currency_string5" placeholder="企业名称 :" autocomplete="off" class="layui-input input-revise">
 			</div>
 		</div>
 		<div class="layui-inline">
@@ -142,7 +142,8 @@
                 ,{field: 'currency_number', title: '编号', minWidth:200, sort:true}
                 ,{field: 'currency_date', title: '申请日期', minWidth:100, sort: true, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
                 ,{field: 'currency_string3', title: '地区', minWidth:100}
-                ,{field: 'currency_string5', title: '站点名称', minWidth:150}
+                ,{field: 'currency_string5', title: '企业名称', minWidth:150}
+				,{field: 'currency_string9', title: '站点名称', minWidth:150}
 				,{field: 'currency_string7', title: '验收项目', minWidth:200}
                 ,{field: 'approver_progress', title: '审批进度', minWidth:100, sort: true, templet:'<div>{{ d.current_approvalCount/d.approver_count*100 + "%" }}</div>'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo', minWidth:150}

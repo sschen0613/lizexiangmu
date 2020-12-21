@@ -58,13 +58,19 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">区域 :</label>
 						<div class="layui-input-block">
-							<select name="area" id="area" lay-filter="area" class="layui-select" lay-search lay-verify="required" disabled></select>
+							<select name="area" id="area" lay-filter="area" class="layui-select" lay-search lay-verify="required"></select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">企业名称 :</label>
+						<div class="layui-input-block">
+							<input type="text" id="customer_name" name="customer_name" class="layui-input" lay-verify="required">
 						</div>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">站点名称 :</label>
 						<div class="layui-input-block">
-							<select name="customer_name" id="customer_name" lay-filter="customer_name" class="layui-select" lay-search lay-verify="required"></select>
+							<input type="text" id="site_name" name="site_name" class="layui-input">
 						</div>
 					</div>
  					<div class="layui-form-item">
@@ -131,9 +137,9 @@
                     // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
 					var area_id = data.field.area;													//区域编号
 					var area_name = $('#area').find('option:selected').text();						//区域名称
-					var customer_id = data.field.customer_name;										//站点编号
-					var customer_name = $('#customer_name').find('option:selected').text();			//站点名称
-					var check_project = data.check_project;											//验收项目
+					var customer_name = data.field.customer_name;									//企业名称
+					var site_name = data.field.site_name;											//站点名称
+					var check_project = data.field.check_project;									//验收项目
 
 				 	$.ajax({
 				 		 url : "Currency/launchCurrencyApply.action"
@@ -142,7 +148,7 @@
 							'currency_type':81,
 							'currency_string2':area_id,
 							'currency_string3':area_name,
-							'currency_string4':customer_id,
+							'currency_string9':site_name,
 							'currency_string5':customer_name,
 							'currency_string7':check_project
 						}
@@ -170,7 +176,6 @@
 				//获取申请人/申请部门/申请日期
 				var staffName ="${sessionScope.systemStaff.staff_Name }";//获取当前登录用户名称
 				var departmentId ="${sessionScope.systemStaff.department_Id }";//获取当前登录用户部门id
-				var areaid = "${sessionScope.systemStaff.staff_Address }";
 				setApplyMessage(staffName,departmentId);
 
                 // 过程一第一级 - 获取登陆人区域
@@ -185,30 +190,9 @@
                             html += '<option value="'+item.cDCCode+'">'+item.cDCName+'</option>';
                         });
                         $('#area').html(html);
-						$('#area').val(areaid);
                         form.render('select');
                     }
                 });
-
-				var cDCCode = areaid;
-				$.ajax({
-					url:'System/selectUser.action',
-					type:'post',
-					data:{"cDCCode": cDCCode},
-					dataType:'JSON',
-					success:function(res){
-						var html = '<option value="">请选择站点名称</option>';
-						$.each(res.data,function(index,item){
-							html += '<option value="'+item.cCusCode+'" data-cCusPPerson="'+item.cCusPPerson+'">'+item.cCusName+'</option>'
-						});
-						$('#customer_name').html(html);
-						form.render('select');
-					}
-				});
-				// 重置[客户名称]级下面的内容(合同编号 合同条款)
-				$('#contract_id').siblings().remove();
-				$('#contract_id').html('');
-				$('.contract-details').remove();
 				form.render();
             });
         </script>

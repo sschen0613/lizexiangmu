@@ -134,8 +134,10 @@
 				,{field: 'currency_string16', title: '联系电话', minWidth:100}
 				,{field: 'staff_name', title: '申请人', minWidth:80}
 				,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
+				,{field: 'currency_string2', title: '地区', minWidth:100}
 				,{field: 'currency_string5', title: '客户名称', minWidth:200}
 				,{field: 'currency_int2', title: '服务类型', minWidth:100, templet:'<div>{{d.currency_int2=="1" ? "一次性服务" : "长期服务"}}</div>'}
+				,{field: 'currency_string', title: '备注', minWidth:200}
 				,{field: 'currency_string14', title: '合同期间', minWidth:300}
 				,{field: 'currency_money', title: '合同金额', minWidth:100}
 				,{field: 'currency_string13', title: '合同金额大写', minWidth:150}
@@ -187,14 +189,18 @@
 				}else {
 					//向服务端发送删除指令
 					$.ajax({
-						url:'Xinze/endTest.action',
+						url:'Xinze/getContract.action',
 						type:'post',
 						data:{'currency_id':data.currency_id,'currency_int3':1},
 						dataType:'JSON',
 						success:function(result){
-							obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-							layer.close(index);
-							layer.msg(result.msg,{time: 2000});
+							layer.msg(result.msg);
+							//重载表格
+							tableInner.reload({
+								where: data.field
+								//重新从第 1 页开始
+								,page: {curr: 1}
+							});
 						}
 					});
 				}

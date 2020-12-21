@@ -52,9 +52,9 @@
 			<button lay-filter="search" class="layui-btn layui-btn-warm layui-btn-xs button-revise" lay-submit="">
 				检索
 			</button>
-			<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
+			<%--<button lay-filter="out" class="layui-btn layui-btn-danger layui-btn-xs button-revise" lay-submit="">
 				导出
-			</button>
+			</button>--%>
 		</div>
 	</div>
 </form>
@@ -177,7 +177,8 @@
                             return Format(value,"yyyy-MM-dd");
                         },
                         currency_string7:"currency_string7",
-                        currency_string8:"currency_string8"
+                        currency_string8:"currency_string8",
+						currency_string9:"currency_string9"
                     });
                     data.unshift({
                         currency_number: '编号',staff_name:"申请人",department_name:"申请部门",currency_date: '申请日期',
@@ -207,6 +208,7 @@
                 ,{field: 'department_name', title: '申请部门', minWidth:100}
                 ,{field: 'currency_date', title: '申请日期', sort: true, minWidth:100, templet:'<div>{{ Format(d.currency_date,"yyyy-MM-dd")}}</div>'}
 				,{field: 'currency_string3', title: '地区', minWidth:100}
+				,{field: 'currency_string9', title: '企业名称', minWidth:150}
 				,{field: 'currency_string5', title: '站点名称', minWidth:150}
 				,{field: 'currency_string7', title: '检测项目', minWidth:100}
 				,{field: 'currency_date2', title: '检测需求日期', minWidth:140, templet:'<div>{{ Format(d.currency_date2,"yyyy-MM-dd")}}</div>'}

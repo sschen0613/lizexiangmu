@@ -51,7 +51,7 @@
 
                 var currency_string2 = '${param.currency_string2}'; //客户名称
 				var currency_string3 = '${param.currency_string3}'; //客户名称
-				var currency_string4 = '${param.currency_string4}'; //客户名称
+				var currency_string9 = '${param.currency_string9}'; //客户名称
                 var currency_string5 = '${param.currency_string5}';
                 var currency_string7 = '${param.currency_string7}'; //申请事由
                 
@@ -96,8 +96,12 @@
 							 +				'<input type="text" name="detection_program" id="detection_program" value="'+currency_string3+'" class="layui-input" readonly>'
 							 +			'</div>'
 							+			'<div>'
-							+				'<label class="">站点名称 :</label>'
+							+				'<label class="">企业名称 :</label>'
 							+				'<input type="text" name="client_name" id="client_name" value="'+currency_string5+'" class="layui-input" readonly>'
+							+			'</div>'
+							+			'<div>'
+							+				'<label class="">站点名称 :</label>'
+							+				'<input type="text" name="currency_string9" id="currency_string9" value="'+currency_string9+'" class="layui-input" readonly>'
 							+			'</div>'
 							 +			'<div>'
 							 +				'<label class="">验收项目 :</label>'
